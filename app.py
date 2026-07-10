@@ -750,10 +750,19 @@ def create_sale():
     conn = get_db()
     c = conn.cursor()
     
-    subtotal = sum(item['price'] * item['quantity'] for item in items)
+    # Calculate totals with proper error handling
+    subtotal = 0
+    for item in items:
+        price = float(item.get('price', 0))
+        quantity = int(item.get('quantity', 0))
+        subtotal += price * quantity
+    
     tax_rate = float(data.get('tax_rate', 16))
     tax = subtotal * (tax_rate / 100)
     total = subtotal + tax
+    
+    # Debug: print calculated values
+    print(f"Subtotal: {subtotal}, Tax: {tax}, Total: {total}")
     
     order_number = f"ORD-{datetime.now().strftime('%Y%m%d%H%M%S')}"
     receipt_number = f"RCP-{datetime.now().strftime('%Y%m%d%H%M%S')}"
@@ -764,6 +773,7 @@ def create_sale():
               (order_number, session['user_id'], customer_name, customer_phone, 
                subtotal, tax, total, payment_method, receipt_number, 'completed'))
     sale_id = c.lastrowid
+    print(f"Sale created with ID: {sale_id}, Total: {total}")
     
     for item in items:
         c.execute("INSERT INTO sale_items (sale_id, product_id, quantity, price_at_time) VALUES (?, ?, ?, ?)",
@@ -873,27 +883,38 @@ def refund_sale(sale_id):
 def view_receipt(sale_id):
     conn = get_db()
     c = conn.cursor()
+    
+    # Get sale with proper column names
     c.execute("SELECT * FROM sales WHERE id = ?", (sale_id,))
     sale = c.fetchone()
     if not sale:
         return "Sale not found", 404
     
+    # Get column names for proper indexing
+    c.execute("PRAGMA table_info(sales)")
+    columns = [row[1] for row in c.fetchall()]
+    
+    # Create a dict for easy access
+    sale_dict = {columns[i]: sale[i] for i in range(len(columns))}
+    
+    # Get sale items
     c.execute("""SELECT p.name, si.quantity, si.price_at_time FROM sale_items si 
                  JOIN products p ON si.product_id = p.id WHERE si.sale_id = ?""", (sale_id,))
     items = c.fetchall()
     conn.close()
     
-    # Get values with fallbacks and convert to proper types
+    # Get values with proper fallbacks
     try:
-        order_num = sale[1] if len(sale) > 1 and sale[1] is not None else 'N/A'
-        customer = sale[3] if len(sale) > 3 and sale[3] is not None else 'Walk-in'
-        subtotal = float(sale[4]) if len(sale) > 4 and sale[4] is not None else 0
-        tax = float(sale[5]) if len(sale) > 5 and sale[5] is not None else 0
-        total = float(sale[6]) if len(sale) > 6 and sale[6] is not None else 0
-        payment = sale[7] if len(sale) > 7 and sale[7] is not None else 'Cash'
-        receipt = sale[8] if len(sale) > 8 and sale[8] is not None else 'N/A'
-        date = sale[10] if len(sale) > 10 and sale[10] is not None else datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    except (ValueError, TypeError):
+        order_num = sale_dict.get('order_number', 'N/A')
+        customer = sale_dict.get('customer_name', 'Walk-in')
+        subtotal = float(sale_dict.get('subtotal', 0) or 0)
+        tax = float(sale_dict.get('tax', 0) or 0)
+        total = float(sale_dict.get('total', 0) or 0)
+        payment = sale_dict.get('payment_method', 'Cash')
+        receipt = sale_dict.get('receipt_number', 'N/A')
+        date = sale_dict.get('sale_date', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    except (ValueError, TypeError) as e:
+        print(f"Error converting values: {e}")
         subtotal = 0
         tax = 0
         total = 0
@@ -915,33 +936,37 @@ def view_receipt(sale_id):
     address = settings.get('address', 'Nairobi, Kenya')
     footer = settings.get('footer', 'Thank you for shopping with us!')
     
+    # Build the receipt HTML
     html = f"""
     <!DOCTYPE html>
     <html>
-    <head><title>Receipt</title>
-    <style>
-        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-        body {{ 
-            font-family: 'Courier New', monospace; 
-            width: 300px; 
-            margin: 20px auto; 
-            padding: 20px;
-            background: white;
-        }}
-        .header {{ text-align: center; margin-bottom: 15px; }}
-        .header h2 {{ font-size: 18px; font-weight: bold; }}
-        .header p {{ font-size: 11px; color: #666; margin: 3px 0; }}
-        .divider {{ border-top: 1px dashed #000; margin: 10px 0; }}
-        .item {{ display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }}
-        .total {{ font-weight: bold; font-size: 16px; }}
-        .footer {{ text-align: center; font-size: 11px; color: #666; margin-top: 15px; }}
-        .text-center {{ text-align: center; }}
-        .order-info {{ font-size: 12px; }}
-        @media print {{
-            body {{ margin: 0; padding: 10px; }}
-            .no-print {{ display: none; }}
-        }}
-    </style>
+    <head>
+        <title>Receipt</title>
+        <meta charset="UTF-8">
+        <style>
+            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+            body {{ 
+                font-family: 'Courier New', monospace; 
+                width: 300px; 
+                margin: 20px auto; 
+                padding: 20px;
+                background: white;
+            }}
+            .header {{ text-align: center; margin-bottom: 15px; }}
+            .header h2 {{ font-size: 18px; font-weight: bold; }}
+            .header p {{ font-size: 11px; color: #666; margin: 3px 0; }}
+            .divider {{ border-top: 1px dashed #000; margin: 10px 0; }}
+            .item {{ display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }}
+            .total {{ font-weight: bold; font-size: 16px; }}
+            .footer {{ text-align: center; font-size: 11px; color: #666; margin-top: 15px; }}
+            .text-center {{ text-align: center; }}
+            .order-info {{ font-size: 12px; }}
+            .payment-method {{ font-size: 13px; font-weight: bold; }}
+            @media print {{
+                body {{ margin: 0; padding: 10px; }}
+                .no-print {{ display: none; }}
+            }}
+        </style>
     </head>
     <body>
         <div class="header">
@@ -961,19 +986,24 @@ def view_receipt(sale_id):
         <div class="items">
     """
     
-    for item in items:
-        try:
-            name = item[0] if item[0] else 'Unknown'
-            quantity = int(item[1]) if item[1] else 0
-            price = float(item[2]) if item[2] else 0
-            html += f"""
-                <div class="item">
-                    <span>{name} x{quantity}</span>
-                    <span>Ksh {price * quantity:.2f}</span>
-                </div>
-            """
-        except (ValueError, TypeError):
-            continue
+    if items:
+        for item in items:
+            try:
+                name = item[0] if item[0] else 'Unknown'
+                quantity = int(item[1]) if item[1] else 0
+                price = float(item[2]) if item[2] else 0
+                total_price = price * quantity
+                html += f"""
+                    <div class="item">
+                        <span>{name} x{quantity}</span>
+                        <span>Ksh {total_price:.2f}</span>
+                    </div>
+                """
+            except (ValueError, TypeError) as e:
+                print(f"Error processing item: {e}")
+                continue
+    else:
+        html += '<div class="item"><span>No items</span><span>Ksh 0.00</span></div>'
     
     html += f"""
         </div>
@@ -995,7 +1025,7 @@ def view_receipt(sale_id):
         
         <div class="divider"></div>
         
-        <div class="text-center">
+        <div class="text-center payment-method">
             Payment: {payment}
         </div>
         
@@ -1007,28 +1037,31 @@ def view_receipt(sale_id):
         </div>
         
         <div class="text-center no-print" style="margin-top: 20px;">
-            <button onclick="window.print()" style="padding: 10px 30px; background: #1e3c72; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">
+            <button onclick="window.print()" style="padding: 10px 30px; background: #1e3c72; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; margin: 5px;">
                 🖨️ Print Receipt
             </button>
-            <br><br>
-            <button onclick="window.close()" style="padding: 8px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">
+            <br>
+            <button onclick="window.close()" style="padding: 8px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; margin: 5px;">
                 Close
             </button>
         </div>
         
         <script>
+            // Auto print when page loads
             window.onload = function() {{
                 setTimeout(function() {{
                     window.print();
-                }}, 500);
+                }}, 800);
             }};
             
+            // Close after print
             window.onafterprint = function() {{
                 setTimeout(function() {{
                     window.close();
                 }}, 1000);
             }};
             
+            // Fallback: close after 10 seconds
             setTimeout(function() {{
                 window.close();
             }}, 10000);
@@ -1360,7 +1393,7 @@ def recent_sales():
     conn = get_db()
     c = conn.cursor()
     c.execute("SELECT order_number, total, payment_method, sale_date FROM sales WHERE status IS NULL OR status != 'refunded' ORDER BY sale_date DESC LIMIT 10")
-    sales = [{'er_number': row[0], 'total': float(row[1] or 0), 'payment_method': row[2], 'date': row[3]} for row in c.fetchall()]
+    sales = [{'order_number': row[0], 'total': float(row[1] or 0), 'payment_method': row[2], 'date': row[3]} for row in c.fetchall()]
     conn.close()
     return jsonify(sales)
 
