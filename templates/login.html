@@ -2,69 +2,580 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - General Shop POS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Login - Multi-Shop POS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #1e3c72;
+            --primary-dark: #2b3b6e;
+            --secondary: #667eea;
+            --accent: #764ba2;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72 0%, #2b3b6e 40%, #667eea 70%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
         }
-        .login-card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
+        
+        /* Animated background shapes */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.03) 0%, transparent 40%);
+            animation: float 20s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(10px, -10px) rotate(2deg); }
+            66% { transform: translate(-5px, 15px) rotate(-2deg); }
+        }
+        
+        .login-container {
             width: 100%;
-            max-width: 400px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 440px;
+            position: relative;
+            z-index: 1;
         }
-        .login-card h3 {
-            color: #333;
-            margin-bottom: 30px;
+        
+        .login-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 44px 36px 36px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.25),
+                        0 0 0 1px rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        
+        .login-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.3);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .login-header .logo-wrapper {
+            display: inline-block;
+            position: relative;
+            margin-bottom: 16px;
+        }
+        
+        .login-header .logo-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: white;
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.35);
+            transition: all 0.3s ease;
+        }
+        
+        .login-header .logo-icon:hover {
+            transform: scale(1.05) rotate(-3deg);
+        }
+        
+        .login-header .logo-icon i {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        .login-header h3 {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.65rem;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+        
+        .login-header h3 span {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .login-header p {
+            color: #6b7a8f;
+            font-size: 0.9rem;
+            margin-top: 4px;
+            letter-spacing: 0.2px;
+        }
+        
+        .login-header .shop-badge {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.12);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--secondary);
+            margin-top: 8px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        
+        .login-header .shop-badge i {
+            margin-right: 4px;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: #374151;
+            margin-bottom: 6px;
+            display: block;
+            letter-spacing: 0.2px;
+        }
+        
+        .form-group label i {
+            color: var(--secondary);
+            margin-right: 6px;
+            width: 16px;
+        }
+        
+        .form-group .input-group-custom {
+            position: relative;
+        }
+        
+        .form-group .input-group-custom .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+        
+        .form-group .input-group-custom input {
+            width: 100%;
+            padding: 13px 16px 13px 46px;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            background: #f8fafc;
+            color: #1f2937;
+            font-weight: 500;
+        }
+        
+        .form-group .input-group-custom input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            background: white;
+            box-shadow: 0 0 0 5px rgba(102, 126, 234, 0.12);
+        }
+        
+        .form-group .input-group-custom input:focus ~ .input-icon {
+            color: var(--secondary);
+        }
+        
+        .form-group .input-group-custom input::placeholder {
+            color: #9ca3af;
+            font-weight: 400;
+        }
+        
+        .form-group .input-group-custom input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px white inset !important;
+            -webkit-text-fill-color: #1f2937 !important;
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             border: none;
-            padding: 12px;
+            border-radius: 14px;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-login::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.5s ease;
+            transform: translate(-50%, -50%);
+        }
+        
+        .btn-login:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(30, 60, 114, 0.35);
+        }
+        
+        .btn-login:active {
+            transform: scale(0.97);
+        }
+        
+        .btn-login i {
+            margin-right: 10px;
+        }
+        
+        .btn-login:disabled {
+            opacity: 0.8;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        .error-message {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-top: 16px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #fecaca;
+        }
+        
+        .error-message.show {
+            display: flex;
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+        
+        .error-message i {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            letter-spacing: 0.2px;
+        }
+        
+        .login-footer i {
+            margin-right: 4px;
+        }
+        
+        .login-footer a {
+            color: var(--secondary);
+            text-decoration: none;
             font-weight: 600;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Spinner */
+        .spinner-small {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2.5px solid rgba(255,255,255,0.3);
+            border-top: 2.5px solid white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Demo credentials */
+        .demo-credentials {
+            background: #f0f4ff;
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-top: 18px;
+            border: 1px solid #e0e7ff;
+            transition: all 0.3s;
+        }
+        
+        .demo-credentials:hover {
+            background: #e8eeff;
+        }
+        
+        .demo-credentials .demo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .demo-credentials .demo-header strong {
+            color: var(--primary);
+            font-size: 0.8rem;
+        }
+        
+        .demo-credentials .demo-header strong i {
+            color: var(--secondary);
+            margin-right: 4px;
+        }
+        
+        .demo-credentials .demo-buttons {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .btn-fill-demo {
+            background: rgba(102, 126, 234, 0.12);
+            border: none;
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.7rem;
+            padding: 4px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-fill-demo:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .demo-credentials .cred-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            font-size: 0.8rem;
+            color: #4b5563;
+        }
+        
+        .demo-credentials .cred-row span:last-child {
+            font-family: 'Courier New', monospace;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.75rem;
+            background: rgba(30, 60, 114, 0.08);
+            padding: 0 8px;
+            border-radius: 4px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px 24px;
+                border-radius: 20px;
+            }
+            
+            .login-header .logo-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
+            
+            .login-header h3 {
+                font-size: 1.3rem;
+            }
+            
+            .form-group .input-group-custom input {
+                padding: 11px 14px 11px 42px;
+                font-size: 0.9rem;
+            }
+            
+            .demo-credentials .cred-row {
+                flex-direction: column;
+                gap: 2px;
+            }
+            
+            .demo-credentials .cred-row span:last-child {
+                display: inline-block;
+                width: fit-content;
+            }
+        }
+        
+        @media (max-width: 380px) {
+            .login-card {
+                padding: 24px 16px 20px;
+            }
+            
+            .demo-credentials .demo-header {
+                flex-direction: column;
+                gap: 6px;
+                align-items: stretch;
+            }
+            
+            .demo-credentials .demo-buttons {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <h3 class="text-center">
-            <i class="fas fa-store me-2"></i> General Shop POS
-        </h3>
-        <form id="loginForm">
-            <div class="mb-3">
-                <label class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" required autocomplete="off">
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Header -->
+            <div class="login-header">
+                <div class="logo-wrapper">
+                    <div class="logo-icon">
+                        <i class="fas fa-store-alt"></i>
+                    </div>
+                </div>
+                <h3>Multi-<span>Shop</span> POS</h3>
+                <p>Sign in to manage your stores</p>
+                <span class="shop-badge"><i class="fas fa-store-alt me-1"></i> Multiple Shops Supported</span>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" required>
+            
+            <!-- Login Form -->
+            <form id="loginForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> Username</label>
+                    <div class="input-group-custom">
+                        <input type="text" id="username" placeholder="Enter your username" required autocomplete="username">
+                        <i class="fas fa-user input-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <div class="input-group-custom">
+                        <input type="password" id="password" placeholder="Enter your password" required autocomplete="current-password">
+                        <i class="fas fa-lock input-icon"></i>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </form>
+            
+            <!-- Error Message -->
+            <div id="errorMsg" class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorText">Invalid credentials</span>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
-        <div id="errorMsg" class="alert alert-danger mt-3 d-none"></div>
+            
+            <!-- Demo Credentials -->
+            <div class="demo-credentials">
+                <div class="demo-header">
+                    <strong><i class="fas fa-info-circle"></i> Demo Credentials</strong>
+                    <div class="demo-buttons">
+                        <button type="button" class="btn-fill-demo" onclick="fillDemo('admin')">Admin</button>
+                        <button type="button" class="btn-fill-demo" onclick="fillDemo('cashier')">Cashier</button>
+                    </div>
+                </div>
+                <div class="cred-row">
+                    <span>Admin</span>
+                    <span>admin / admin123</span>
+                </div>
+                <div class="cred-row">
+                    <span>Cashier</span>
+                    <span>cashier / cashier123</span>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="login-footer">
+                <i class="fas fa-shield-alt"></i> Secure · Multi-shop POS System v2.0
+            </div>
+        </div>
     </div>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script>
+        // ==================== DEMO CREDENTIALS HELPER ====================
+        
+        function fillDemo(role) {
+            if (role === 'admin') {
+                $('#username').val('admin');
+                $('#password').val('admin123');
+            } else if (role === 'cashier') {
+                $('#username').val('cashier');
+                $('#password').val('cashier123');
+            }
+            // Trigger input event for styling
+            $('#username, #password').trigger('input');
+            // Hide error if showing
+            $('#errorMsg').removeClass('show');
+        }
+        
+        // ==================== SHOW ERROR ====================
+        
+        function showError(message) {
+            $('#errorText').text(message);
+            $('#errorMsg').addClass('show');
+            // Auto-hide after 4 seconds
+            setTimeout(() => {
+                $('#errorMsg').removeClass('show');
+            }, 4000);
+        }
+        
+        // ==================== LOGIN HANDLER ====================
+        
         $('#loginForm').submit(function(e) {
             e.preventDefault();
             
-            const username = $('#username').val();
-            const password = $('#password').val();
+            const username = $('#username').val().trim();
+            const password = $('#password').val().trim();
+            
+            // Validate
+            if (!username || !password) {
+                showError('Please enter both username and password');
+                return;
+            }
+            
+            // Show loading state
+            const btn = $('#loginBtn');
+            const originalHtml = btn.html();
+            btn.html('<span class="spinner-small"></span> Signing in...');
+            btn.prop('disabled', true);
+            $('#errorMsg').removeClass('show');
             
             $.ajax({
                 url: '/login',
@@ -76,30 +587,60 @@
                 }),
                 success: function(res) {
                     if (res.success) {
-                        // Redirect based on role
+                        // Store user info
+                        sessionStorage.setItem('username', res.username);
+                        sessionStorage.setItem('role', res.role);
+                        
+                        // Redirect based on role and shop selection
                         if (res.role === 'admin') {
+                            // Admin goes to admin panel (they can select shop there)
                             window.location.href = '/admin';
                         } else {
-                            window.location.href = '/pos';
+                            // Cashier goes to shop selection first
+                            window.location.href = '/select-shop';
                         }
+                    } else {
+                        showError(res.error || 'Invalid credentials');
+                        btn.html(originalHtml);
+                        btn.prop('disabled', false);
                     }
                 },
                 error: function(xhr) {
-                    let errorMsg = 'Invalid credentials';
+                    let errorMsg = 'Invalid credentials. Please try again.';
                     if (xhr.responseJSON && xhr.responseJSON.error) {
                         errorMsg = xhr.responseJSON.error;
                     }
-                    $('#errorMsg').removeClass('d-none').text(errorMsg);
-                    setTimeout(() => $('#errorMsg').addClass('d-none'), 3000);
+                    showError(errorMsg);
+                    btn.html(originalHtml);
+                    btn.prop('disabled', false);
                 }
             });
         });
         
-        // Enter key support
+        // ==================== ENTER KEY SUPPORT ====================
+        
         $('#password, #username').on('keypress', function(e) {
             if (e.which === 13) {
                 $('#loginForm').submit();
             }
+        });
+        
+        // ==================== INPUT FOCUS EFFECTS ====================
+        
+        $('.input-group-custom input').on('focus', function() {
+            $(this).closest('.input-group-custom').find('.input-icon').css('color', '#667eea');
+        });
+        
+        $('.input-group-custom input').on('blur', function() {
+            if (!$(this).val()) {
+                $(this).closest('.input-group-custom').find('.input-icon').css('color', '#9ca3af');
+            }
+        });
+        
+        // ==================== AUTO-FOCUS FIRST INPUT ====================
+        
+        $(document).ready(function() {
+            $('#username').focus();
         });
     </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>POS cashier</title>
+    <title>POS - Multi-Shop Cashier</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -23,9 +23,21 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.02);
             position: sticky;
             top: 0;
-           
             z-index: 1020;
             padding: 0.85rem 1.5rem;
+        }
+        .shop-badge {
+            background: rgba(30,60,114,0.15);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1e2a47;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .shop-badge i {
+            margin-right: 4px;
         }
         /* Category pills */
         .category-scroll {
@@ -224,6 +236,13 @@
             .top-bar .row > div {
                 margin-bottom: 8px;
             }
+            .shop-badge {
+                font-size: 0.65rem;
+                padding: 2px 10px;
+                margin-left: 5px;
+                display: block;
+                margin-top: 4px;
+            }
         }
         .empty-cart-placeholder {
             text-align: center;
@@ -365,57 +384,66 @@
             background: #a8a8a8;
         }
         .payment-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.payment-buttons .btn {
-    flex: 1; /* Makes all buttons equal width */
-}
-
-/* Cash Button */
-.btn-pay-cash {
-    background: #0016a1;
-    border: none;
-    font-weight: 600;
-    padding: 12px;
-    border-radius: 10px;
-    transition: all 0.3s;
-}
-
-.btn-pay-cash:hover {
-    background: #b57574;
-    transform: translateY(-2px);
-}
-
-/* M-Pesa Button */
-.btn-pay-mpesa {
-    background: #2b8c4a;
-    border: none;
-    font-weight: 600;
-    padding: 12px;
-    border-radius: 10px;
-    transition: all 0.3s;
-}
-
-.btn-pay-mpesa:hover {
-    background: #1f6e3a;
-    transform: translateY(-2px);
-}
-
-/* Cancel Button */
-.btn-cancel {
-    background: #ff0000;
-    border: none;
-    color: #fff;
-    border-radius: 10px;
-    transition: all 0.3s;
-}
-
-.btn-cancel:hover {
-    background: #cc0000;
-}
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .payment-buttons .btn {
+            flex: 1;
+        }
+        .btn-pay-cash {
+            background: #0016a1;
+            border: none;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        .btn-pay-cash:hover {
+            background: #b57574;
+            transform: translateY(-2px);
+        }
+        .btn-pay-mpesa {
+            background: #2b8c4a;
+            border: none;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        .btn-pay-mpesa:hover {
+            background: #1f6e3a;
+            transform: translateY(-2px);
+        }
+        .btn-cancel {
+            background: #ff0000;
+            border: none;
+            color: #fff;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        .btn-cancel:hover {
+            background: #cc0000;
+        }
+        .no-shop-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .no-shop-warning i {
+            font-size: 2rem;
+            color: #ffc107;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .no-shop-warning a {
+            color: #1e466e;
+            font-weight: 600;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -424,8 +452,13 @@
     <div class="top-bar">
         <div class="row align-items-center g-2">
             <div class="col-md-4 col-12">
-                <h5 class="mb-0 fw-semibold" style="color:#1e2a47;"><i class="fas fa-store me-2"></i>  POS</h5>
-                <small class="text-muted"> Real-time stock</small>
+                <h5 class="mb-0 fw-semibold" style="color:#1e2a47;">
+                    <i class="fas fa-store me-2"></i> POS
+                    <span class="shop-badge" id="shopBadge">
+                        <i class="fas fa-store-alt"></i> <span id="shopName">Loading...</span>
+                    </span>
+                </h5>
+                <small class="text-muted">Real-time stock</small>
             </div>
             <div class="col-md-5 col-12">
                 <div class="input-group">
@@ -443,6 +476,14 @@
     <div class="row g-0">
         <!-- Left panel -->
         <div class="col-md-7 p-3 p-md-4">
+            <!-- No Shop Warning -->
+            <div id="noShopWarning" class="no-shop-warning" style="display:none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h5>No Shop Selected</h5>
+                <p>Please select a shop to start selling.</p>
+                <a href="/select-shop">Click here to select a shop</a>
+            </div>
+            
             <div class="category-scroll" id="categoriesList"></div>
             <div id="productsGrid" class="products-grid"></div>
         </div>
@@ -460,19 +501,17 @@
                 <div class="d-flex justify-content-between mb-2"><span>VAT (16%)</span><strong id="tax">Ksh 0.00</strong></div>
                 <div class="d-flex justify-content-between border-top pt-2 mt-1 fs-5 fw-bold"><span>Total Due</span><span id="total" style="color:#1e466e;">Ksh 0.00</span></div>
             </div>
-           <div class="payment-buttons mt-2">
-    <button class="btn btn-pay-cash text-white" id="payCashBtn">
-        <i class="fas fa-money-bill-wave me-2"></i> Pay Cash
-    </button>
-
-    <button class="btn btn-pay-mpesa text-white" id="payMpesaBtn">
-        <i class="fas fa-mobile-alt me-2"></i> Pay M-Pesa
-    </button>
-
-    <button class="btn btn-cancel" id="cancelSaleBtn">
-        <i class="fas fa-times me-2"></i> Cancel Sale
-    </button>
-</div>
+            <div class="payment-buttons mt-2">
+                <button class="btn btn-pay-cash text-white" id="payCashBtn">
+                    <i class="fas fa-money-bill-wave me-2"></i> Pay Cash
+                </button>
+                <button class="btn btn-pay-mpesa text-white" id="payMpesaBtn">
+                    <i class="fas fa-mobile-alt me-2"></i> Pay M-Pesa
+                </button>
+                <button class="btn btn-cancel" id="cancelSaleBtn">
+                    <i class="fas fa-times me-2"></i> Cancel Sale
+                </button>
+            </div>
             <footer class="mt-4 text-muted">
                 <i class="fas fa-receipt"></i> All transactions logged
             </footer>
@@ -569,6 +608,8 @@
     let cart = [];
     let currentCategory = null;
     let modalCallback = null;
+    let currentShopId = null;
+    let currentShopName = '';
     
     // Helper functions
     function formatKsh(amount) {
@@ -660,8 +701,58 @@
     setInterval(updateDateTime, 1000);
     updateDateTime();
     
-    // Load categories
+    // ==================== SHOP CONTEXT ====================
+    
+    function getCurrentShop() {
+        $.ajax({
+            url: '/api/current-user',
+            method: 'GET',
+            success: function(user) {
+                if (user.shop_id) {
+                    currentShopId = user.shop_id;
+                    // Get shop name
+                    $.get('/api/shops', function(shops) {
+                        const shop = shops.find(s => s.id === user.shop_id);
+                        if (shop) {
+                            currentShopName = shop.name;
+                            $('#shopName').text(shop.name);
+                            $('#shopBadge').show();
+                            $('#noShopWarning').hide();
+                            // Load products and categories
+                            loadCategories();
+                            loadProducts();
+                        } else {
+                            $('#shopName').text('Unknown Shop');
+                            $('#noShopWarning').show();
+                            $('#categoriesList').html('');
+                            $('#productsGrid').html('<div class="alert alert-warning">Please select a shop first.</div>');
+                        }
+                    });
+                } else {
+                    // No shop selected
+                    $('#shopName').text('No Shop');
+                    $('#shopBadge').show();
+                    $('#noShopWarning').show();
+                    $('#categoriesList').html('');
+                    $('#productsGrid').html('<div class="alert alert-warning">Please select a shop first.</div>');
+                    showError('No shop selected. Please select a shop to continue.');
+                }
+            },
+            error: function() {
+                // Not logged in or error - redirect to login
+                window.location.href = '/';
+            }
+        });
+    }
+    
+    // ==================== CATEGORIES ====================
+    
     function loadCategories() {
+        if (!currentShopId) {
+            $('#categoriesList').html('');
+            return;
+        }
+        
         showLoading('Loading categories...');
         $.get('/api/categories')
             .done(function(categories) {
@@ -682,8 +773,14 @@
             });
     }
     
-    // Load products with skeleton loading
+    // ==================== PRODUCTS ====================
+    
     function loadProducts() {
+        if (!currentShopId) {
+            $('#productsGrid').html('<div class="alert alert-warning">Please select a shop first.</div>');
+            return;
+        }
+        
         // Show skeleton loading
         let skeletonHtml = '';
         for(let i = 0; i < 8; i++) {
@@ -731,6 +828,8 @@
                 showError('Failed to load products. Please check your connection.');
             });
     }
+    
+    // ==================== CART FUNCTIONS ====================
     
     // Add to cart
     $(document).on('click', '.product-card', function() {
@@ -796,63 +895,6 @@
         $('#tax').text(formatKsh(taxAmount));
         $('#total').text(formatKsh(totalDue));
     }
-    // Replace the existing printReceipt function with this
-function printReceipt(receiptData) {
-    // Open receipt in new window
-    const receiptWindow = window.open('/api/print/receipt', '_blank', 'width=400,height=600');
-    
-    // Send receipt data via POST
-    fetch('/api/print/receipt', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ receipt_data: receiptData })
-    })
-    .then(response => response.text())
-    .then(html => {
-        // Write the HTML to the new window
-        receiptWindow.document.write(html);
-        receiptWindow.document.close();
-    })
-    .catch(error => {
-        console.error('Error printing receipt:', error);
-        // Fallback: try to print using the old method
-        const printWindow = window.open('', '_blank', 'width=400,height=600');
-        printWindow.document.write(`
-            <html>
-            <head><title>Receipt</title>
-            <style>
-                body { font-family: monospace; width: 300px; margin: auto; text-align: center; padding: 20px; }
-                hr { border-top: 1px dashed #000; }
-                .item-row { display: flex; justify-content: space-between; }
-                .total { font-weight: bold; }
-            </style>
-            </head>
-            <body>
-                <h3>GENERAL SHOP</h3>
-                <p>Date: ${new Date().toLocaleString()}</p>
-                <hr/>
-                <p>Customer: ${receiptData.customer_name || 'Walk-in'}</p>
-                <hr/>
-                ${receiptData.items.map(item => `<div class="item-row"><span>${item.name} x${item.quantity}</span><span>Ksh ${(item.price * item.quantity).toFixed(2)}</span></div>`).join('')}
-                <hr/>
-                <div class="item-row"><span>Subtotal:</span><span>Ksh ${receiptData.subtotal.toFixed(2)}</span></div>
-                <div class="item-row"><span>VAT 16%:</span><span>Ksh ${receiptData.tax.toFixed(2)}</span></div>
-                <div class="item-row total"><span>TOTAL:</span><span>Ksh ${receiptData.total.toFixed(2)}</span></div>
-                <hr/>
-                <p>Payment: ${receiptData.payment_method}</p>
-                <p>Thank you!</p>
-                <script>
-                    window.print();
-                    setTimeout(() => window.close(), 500);
-                <\/script>
-            </body>
-            </html>
-        `);
-        printWindow.document.close();
-    });
-}
     
     // Handle inc/dec
     $(document).on('click', '.inc', function() {
@@ -901,10 +943,17 @@ function printReceipt(receiptData) {
         });
     });
     
+    // ==================== PAYMENT FUNCTIONS ====================
+    
     // Process payment
     function processSale(paymentMethod, mpesaTxId = null) {
         if (cart.length === 0) {
             showError('No items in cart!');
+            return false;
+        }
+        
+        if (!currentShopId) {
+            showError('No shop selected. Please select a shop first.');
             return false;
         }
         
@@ -918,7 +967,8 @@ function printReceipt(receiptData) {
                 quantity: i.qty
             })),
             payment_method: paymentMethod,
-            mpesa_transaction_id: mpesaTxId || null
+            mpesa_transaction_id: mpesaTxId || null,
+            shop_id: currentShopId
         };
         
         $.ajax({
@@ -968,6 +1018,10 @@ function printReceipt(receiptData) {
             showError('Cart is empty');
             return;
         }
+        if(!currentShopId) {
+            showError('No shop selected. Please select a shop first.');
+            return;
+        }
         showModal('Confirm Payment', `Process cash payment of ${$('#total').text()}?`, () => {
             processSale('cash');
         });
@@ -978,6 +1032,10 @@ function printReceipt(receiptData) {
     $('#payMpesaBtn').click(() => {
         if(cart.length === 0) {
             showError('Cart is empty');
+            return;
+        }
+        if(!currentShopId) {
+            showError('No shop selected. Please select a shop first.');
             return;
         }
         const totalVal = parseFloat($('#total').text().replace(/[^0-9.-]+/g, ''));
@@ -1039,6 +1097,8 @@ function printReceipt(receiptData) {
         });
     });
     
+    // ==================== CATEGORY & SEARCH ====================
+    
     // Category click
     $(document).on('click', '.category-card', function() {
         $('.category-card').removeClass('active');
@@ -1060,18 +1120,31 @@ function printReceipt(receiptData) {
         }
     });
     
-    // Logout
+    // ==================== LOGOUT ====================
+    
     window.logout = function() {
         showModal('Confirm Logout', 'Are you sure you want to logout?', () => {
             window.location.href = '/logout';
         });
     };
     
-    // Initialize
+    // ==================== INITIALIZE ====================
+    
     $(document).ready(function() {
-        loadCategories();
-        loadProducts();
+        // Get current shop first
+        getCurrentShop();
         updateCartUI();
+        
+        // Check session periodically
+        setInterval(function() {
+            $.ajax({
+                url: '/api/current-user',
+                method: 'GET',
+                error: function() {
+                    window.location.href = '/';
+                }
+            });
+        }, 60000); // Check every minute
     });
 </script>
 </body>
