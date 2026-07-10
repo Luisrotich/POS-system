@@ -796,6 +796,63 @@
         $('#tax').text(formatKsh(taxAmount));
         $('#total').text(formatKsh(totalDue));
     }
+    // Replace the existing printReceipt function with this
+function printReceipt(receiptData) {
+    // Open receipt in new window
+    const receiptWindow = window.open('/api/print/receipt', '_blank', 'width=400,height=600');
+    
+    // Send receipt data via POST
+    fetch('/api/print/receipt', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ receipt_data: receiptData })
+    })
+    .then(response => response.text())
+    .then(html => {
+        // Write the HTML to the new window
+        receiptWindow.document.write(html);
+        receiptWindow.document.close();
+    })
+    .catch(error => {
+        console.error('Error printing receipt:', error);
+        // Fallback: try to print using the old method
+        const printWindow = window.open('', '_blank', 'width=400,height=600');
+        printWindow.document.write(`
+            <html>
+            <head><title>Receipt</title>
+            <style>
+                body { font-family: monospace; width: 300px; margin: auto; text-align: center; padding: 20px; }
+                hr { border-top: 1px dashed #000; }
+                .item-row { display: flex; justify-content: space-between; }
+                .total { font-weight: bold; }
+            </style>
+            </head>
+            <body>
+                <h3>GENERAL SHOP</h3>
+                <p>Date: ${new Date().toLocaleString()}</p>
+                <hr/>
+                <p>Customer: ${receiptData.customer_name || 'Walk-in'}</p>
+                <hr/>
+                ${receiptData.items.map(item => `<div class="item-row"><span>${item.name} x${item.quantity}</span><span>Ksh ${(item.price * item.quantity).toFixed(2)}</span></div>`).join('')}
+                <hr/>
+                <div class="item-row"><span>Subtotal:</span><span>Ksh ${receiptData.subtotal.toFixed(2)}</span></div>
+                <div class="item-row"><span>VAT 16%:</span><span>Ksh ${receiptData.tax.toFixed(2)}</span></div>
+                <div class="item-row total"><span>TOTAL:</span><span>Ksh ${receiptData.total.toFixed(2)}</span></div>
+                <hr/>
+                <p>Payment: ${receiptData.payment_method}</p>
+                <p>Thank you!</p>
+                <script>
+                    window.print();
+                    setTimeout(() => window.close(), 500);
+                <\/script>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+    });
+}
     
     // Handle inc/dec
     $(document).on('click', '.inc', function() {
