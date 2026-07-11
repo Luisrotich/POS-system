@@ -15,21 +15,28 @@ from requests.auth import HTTPBasicAuth
 
 app = Flask(__name__)
 CORS(app)
+
+# ==================== SESSION CONFIGURATION ====================
 app.config['SECRET_KEY'] = 'your-secret-key-change-in-production'
+app.config['SESSION_COOKIE_NAME'] = 'pos_session'
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SECURE'] = False
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-app.permanent_session_lifetime = timedelta(days=7)
 
 # ==================== M-PESA CONFIGURATION ====================
-# UPDATE THESE WITH YOUR ACTUAL CREDENTIALS
 MPESA_CONSUMER_KEY = os.environ.get('MPESA_CONSUMER_KEY', 'hD3cOKtRr2ONwtnXtxY6G7WTTdLExtpy2WuXhoBMzC9favSQ')
 MPESA_CONSUMER_SECRET = os.environ.get('MPESA_CONSUMER_SECRET', '1GvarbsyhwnbDlNRO9ArzqX9nd2zPgpM0nZpAC3XWr1FiI6szEPqGO5fxs5JXqKk')
 MPESA_SHORTCODE = os.environ.get('MPESA_SHORTCODE', '174379')
-MPESA_PASSKEY = os.environ.get('MPESA_PASSKEY', 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919')  # ← UPDATE THIS!
+MPESA_PASSKEY = os.environ.get('MPESA_PASSKEY', 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919')
 MPESA_CALLBACK_URL = os.environ.get('MPESA_CALLBACK_URL', 'https://unelegant-uncombatable-gerald.ngrok-free.dev/api/mpesa/callback')
 MPESA_ENVIRONMENT = os.environ.get('MPESA_ENVIRONMENT', 'sandbox')
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
+# ==================== HELPER FUNCTIONS ====================
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -44,13 +51,11 @@ def save_product_image(file):
     return None
 
 def get_db():
-    """Get database connection with row factory for dict results"""
     conn = sqlite3.connect('shop.db')
     conn.row_factory = sqlite3.Row
     return conn
 
 def column_exists(table, column):
-    """Check if a column exists in a table"""
     conn = get_db()
     c = conn.cursor()
     c.execute(f"PRAGMA table_info({table})")
@@ -59,7 +64,6 @@ def column_exists(table, column):
     return column in columns
 
 def add_column_if_not_exists(table, column, column_type):
-    """Add a column to a table if it doesn't exist"""
     if not column_exists(table, column):
         conn = get_db()
         c = conn.cursor()
@@ -73,11 +77,9 @@ def add_column_if_not_exists(table, column, column_type):
             conn.close()
 
 def get_current_shop_id():
-    """Get the current shop ID from session"""
     return session.get('shop_id')
 
 def shop_required(f):
-    """Decorator to require a shop to be selected"""
     @wraps(f)
     def decorated(*args, **kwargs):
         if 'user_id' not in session:
@@ -88,14 +90,21 @@ def shop_required(f):
         return f(*args, **kwargs)
     return decorated
 
+# ==================== AFTER REQUEST HANDLER ====================
+
+@app.after_request
+def after_request(response):
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
 # ==================== DATABASE ====================
 
 def init_db():
-    """Initialize database with all tables including multi-shop support"""
     conn = get_db()
     c = conn.cursor()
     
-    # ===== SHOPS TABLE =====
     c.execute('''CREATE TABLE IF NOT EXISTS shops (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -111,7 +120,6 @@ def init_db():
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )''')
     
-    # Users table with shop_id
     c.execute('''CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
@@ -124,7 +132,6 @@ def init_db():
         FOREIGN KEY (shop_id) REFERENCES shops(id)
     )''')
     
-    # Categories table with shop_id
     c.execute('''CREATE TABLE IF NOT EXISTS categories (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -135,7 +142,6 @@ def init_db():
         UNIQUE(name, shop_id)
     )''')
     
-    # Products table with shop_id
     c.execute('''CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -159,7 +165,6 @@ def init_db():
         UNIQUE(sku, shop_id)
     )''')
     
-    # Sales table with shop_id
     c.execute('''CREATE TABLE IF NOT EXISTS sales (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         order_number TEXT UNIQUE NOT NULL,
@@ -178,7 +183,6 @@ def init_db():
         FOREIGN KEY (shop_id) REFERENCES shops(id)
     )''')
     
-    # Sale items table
     c.execute('''CREATE TABLE IF NOT EXISTS sale_items (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         sale_id INTEGER,
@@ -189,7 +193,6 @@ def init_db():
         FOREIGN KEY (product_id) REFERENCES products(id)
     )''')
     
-    # M-Pesa transactions table with shop_id
     c.execute('''CREATE TABLE IF NOT EXISTS mpesa_transactions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         checkout_request_id TEXT UNIQUE,
@@ -202,7 +205,6 @@ def init_db():
         FOREIGN KEY (shop_id) REFERENCES shops(id)
     )''')
     
-    # Inventory transactions table with shop_id
     c.execute('''CREATE TABLE IF NOT EXISTS inventory_transactions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         product_id INTEGER,
@@ -215,7 +217,6 @@ def init_db():
         FOREIGN KEY (shop_id) REFERENCES shops(id)
     )''')
     
-    # Customers table with shop_id
     c.execute('''CREATE TABLE IF NOT EXISTS customers (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
@@ -230,13 +231,11 @@ def init_db():
         UNIQUE(phone, shop_id)
     )''')
     
-    # Settings table
     c.execute('''CREATE TABLE IF NOT EXISTS settings (
         key TEXT PRIMARY KEY,
         value TEXT
     )''')
     
-    # Orders table with shop_id
     c.execute('''CREATE TABLE IF NOT EXISTS orders (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         order_number TEXT UNIQUE,
@@ -257,7 +256,6 @@ def init_db():
     conn.commit()
     conn.close()
     
-    # ===== ADD MISSING COLUMNS =====
     add_column_if_not_exists('users', 'email', 'TEXT')
     add_column_if_not_exists('users', 'shop_id', 'INTEGER')
     add_column_if_not_exists('products', 'unit', 'TEXT DEFAULT "piece"')
@@ -277,11 +275,9 @@ def init_db():
     add_column_if_not_exists('mpesa_transactions', 'shop_id', 'INTEGER')
     add_column_if_not_exists('inventory_transactions', 'shop_id', 'INTEGER')
     
-    # ===== INSERT DEFAULT DATA =====
     conn = get_db()
     c = conn.cursor()
     
-    # Create default shop
     c.execute("SELECT COUNT(*) FROM shops")
     if c.fetchone()[0] == 0:
         c.execute("""INSERT INTO shops (name, slug, address, phone, email, currency, tax_rate, is_active)
@@ -292,7 +288,6 @@ def init_db():
         c.execute("SELECT id FROM shops LIMIT 1")
         default_shop_id = c.fetchone()[0]
     
-    # Default categories for the default shop
     c.execute("SELECT COUNT(*) FROM categories WHERE shop_id = ?", (default_shop_id,))
     if c.fetchone()[0] == 0:
         default_categories = [
@@ -311,7 +306,6 @@ def init_db():
             c.execute("INSERT OR IGNORE INTO categories (name, color, icon, shop_id) VALUES (?, ?, ?, ?)",
                       (cat[0], cat[1], cat[2], default_shop_id))
     
-    # Default users
     c.execute("SELECT COUNT(*) FROM users")
     if c.fetchone()[0] == 0:
         admin_pass = generate_password_hash('admin123')
@@ -321,7 +315,6 @@ def init_db():
         c.execute("INSERT INTO users (username, password, role, full_name, email, shop_id) VALUES (?, ?, ?, ?, ?, ?)",
                   ('cashier', cashier_pass, 'cashier', 'Store Cashier', 'cashier@generalshop.com', default_shop_id))
     
-    # Default settings
     default_settings = {
         'business_name': 'General Shop',
         'logo': '',
@@ -336,7 +329,6 @@ def init_db():
     for key, value in default_settings.items():
         c.execute("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)", (key, value))
     
-    # Sample products for default shop
     c.execute("SELECT COUNT(*) FROM products WHERE shop_id = ?", (default_shop_id,))
     if c.fetchone()[0] == 0:
         c.execute("SELECT id FROM categories WHERE name = 'Food' AND shop_id = ? LIMIT 1", (default_shop_id,))
@@ -360,7 +352,6 @@ def init_db():
     conn.close()
     print("✅ Database initialized with multi-shop support")
 
-# Run initialization
 init_db()
 
 # ==================== AUTH DECORATORS ====================
@@ -408,6 +399,13 @@ def login():
         session['role'] = user[3]
         if user[4]:
             session['shop_id'] = user[4]
+            conn = get_db()
+            c = conn.cursor()
+            c.execute("SELECT name FROM shops WHERE id = ?", (user[4],))
+            shop = c.fetchone()
+            conn.close()
+            if shop:
+                session['shop_name'] = shop[0]
         return jsonify({'success': True, 'role': user[3], 'username': user[1], 'shop_id': user[4]})
     return jsonify({'success': False, 'error': 'Invalid credentials'}), 401
 
@@ -420,6 +418,25 @@ def logout():
 def pos():
     if 'user_id' not in session:
         return redirect(url_for('index'))
+    
+    if not session.get('shop_id'):
+        conn = get_db()
+        c = conn.cursor()
+        c.execute("SELECT shop_id FROM users WHERE id = ?", (session['user_id'],))
+        user = c.fetchone()
+        conn.close()
+        if user and user[0]:
+            session['shop_id'] = user[0]
+            conn = get_db()
+            c = conn.cursor()
+            c.execute("SELECT name FROM shops WHERE id = ?", (user[0],))
+            shop = c.fetchone()
+            conn.close()
+            if shop:
+                session['shop_name'] = shop[0]
+        else:
+            return redirect(url_for('select_shop'))
+    
     return render_template('index.html')
 
 @app.route('/admin')
@@ -432,14 +449,12 @@ def admin_panel():
 
 @app.route('/select-shop')
 def select_shop():
-    """Shop selection page"""
     if 'user_id' not in session:
         return redirect(url_for('index'))
     return render_template('select_shop.html')
 
 @app.route('/api/current-user')
 def get_current_user():
-    """Get the current logged-in user info"""
     if 'user_id' not in session:
         return jsonify({'error': 'Not logged in'}), 401
     
@@ -474,7 +489,6 @@ def get_current_user():
 
 @app.route('/api/shops')
 def get_shops():
-    """Get all shops the user has access to"""
     if 'user_id' not in session:
         return jsonify({'error': 'Not logged in'}), 401
     
@@ -482,6 +496,7 @@ def get_shops():
     c = conn.cursor()
     
     role = session.get('role')
+    user_id = session.get('user_id')
     
     if role == 'admin':
         c.execute("""SELECT s.*, u.username as owner_name 
@@ -490,12 +505,14 @@ def get_shops():
                      WHERE s.is_active = 1 
                      ORDER BY s.name""")
     else:
-        shop_id = session.get('shop_id')
-        if shop_id:
+        # Get the user's assigned shop from the database
+        c.execute("SELECT shop_id FROM users WHERE id = ?", (user_id,))
+        user = c.fetchone()
+        if user and user[0]:
             c.execute("""SELECT s.*, u.username as owner_name 
                          FROM shops s 
                          LEFT JOIN users u ON s.owner_id = u.id 
-                         WHERE s.id = ? AND s.is_active = 1""", (shop_id,))
+                         WHERE s.id = ? AND s.is_active = 1""", (user[0],))
         else:
             conn.close()
             return jsonify([])
@@ -523,7 +540,6 @@ def get_shops():
 @app.route('/api/shops', methods=['POST'])
 @admin_required
 def create_shop():
-    """Create a new shop"""
     data = request.get_json()
     
     name = data.get('name', '').strip()
@@ -574,7 +590,6 @@ def create_shop():
 @app.route('/api/shops/<int:shop_id>', methods=['PUT'])
 @admin_required
 def update_shop(shop_id):
-    """Update shop details"""
     data = request.get_json()
     conn = get_db()
     c = conn.cursor()
@@ -592,7 +607,6 @@ def update_shop(shop_id):
 @app.route('/api/shops/<int:shop_id>', methods=['DELETE'])
 @admin_required
 def delete_shop(shop_id):
-    """Delete a shop (soft delete by deactivating)"""
     conn = get_db()
     c = conn.cursor()
     c.execute("UPDATE shops SET is_active = 0 WHERE id = ?", (shop_id,))
@@ -602,7 +616,6 @@ def delete_shop(shop_id):
 
 @app.route('/api/shops/<int:shop_id>/select', methods=['POST'])
 def select_shop_route(shop_id):
-    """Select a shop to work with"""
     if 'user_id' not in session:
         return jsonify({'error': 'Not logged in'}), 401
     
@@ -617,12 +630,12 @@ def select_shop_route(shop_id):
     
     session['shop_id'] = shop[0]
     session['shop_name'] = shop[1]
+    session.permanent = True
     
     return jsonify({'success': True, 'shop_id': shop[0], 'shop_name': shop[1]})
 
 @app.route('/api/shops/<int:shop_id>/stats')
 def get_shop_stats(shop_id):
-    """Get statistics for a specific shop"""
     if 'user_id' not in session:
         return jsonify({'error': 'Not logged in'}), 401
     
@@ -661,7 +674,6 @@ def get_shop_stats(shop_id):
 # ==================== M-PESA HELPERS ====================
 
 def get_mpesa_access_token():
-    """Get OAuth access token from Safaricom"""
     url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
     if MPESA_ENVIRONMENT == 'production':
         url = 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
@@ -694,54 +706,43 @@ def get_mpesa_access_token():
         return None
 
 def generate_mpesa_password(shortcode, passkey, timestamp):
-    """Generate the base64 encoded password for STK push"""
     data_to_encode = shortcode + passkey + timestamp
     encoded = base64.b64encode(data_to_encode.encode()).decode('utf-8')
     return encoded
 
 def stk_push_request(phone_number, amount, account_reference="POS Payment", transaction_desc="Payment for goods"):
-    """
-    Send STK Push request to Safaricom API
-    """
     print("\n" + "="*60)
     print("💰 M-PESA STK PUSH REQUEST")
     print("="*60)
     
-    # Check if passkey is configured
     if MPESA_PASSKEY == 'your_passkey_here' or not MPESA_PASSKEY:
         error_msg = 'M-Pesa Passkey not configured. Please set MPESA_PASSKEY.'
         print(f"❌ {error_msg}")
         return {'error': error_msg}, None
     
-    # Get access token
     access_token = get_mpesa_access_token()
     if not access_token:
         error_msg = 'Failed to get M-Pesa access token. Check your Consumer Key and Secret.'
         print(f"❌ {error_msg}")
         return {'error': error_msg}, None
     
-    # Generate timestamp and password
     timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     password = generate_mpesa_password(MPESA_SHORTCODE, MPESA_PASSKEY, timestamp)
     
-    # Format phone number
     original_phone = phone_number
     if phone_number.startswith('0'):
         phone_number = '254' + phone_number[1:]
     elif phone_number.startswith('+'):
         phone_number = phone_number[1:]
     
-    # Clean phone number - remove any non-digit characters
     phone_number = ''.join(filter(str.isdigit, phone_number))
     
-    # Ensure it starts with 254
     if not phone_number.startswith('254'):
         if phone_number.startswith('0'):
             phone_number = '254' + phone_number[1:]
         else:
             phone_number = '254' + phone_number
     
-    # Validate phone number length
     if len(phone_number) != 12:
         error_msg = f'Invalid phone number length: {len(phone_number)}. Expected 12 digits.'
         print(f"❌ {error_msg}")
@@ -751,10 +752,8 @@ def stk_push_request(phone_number, amount, account_reference="POS Payment", tran
     print(f"💰 Amount: KES {amount}")
     print(f"📋 Reference: {account_reference}")
     
-    # Determine transaction type
     transaction_type = "CustomerPayBillOnline" if MPESA_SHORTCODE == '174379' else "CustomerBuyGoodsOnline"
     
-    # Prepare payload
     payload = {
         "BusinessShortCode": MPESA_SHORTCODE,
         "Password": password,
@@ -771,7 +770,6 @@ def stk_push_request(phone_number, amount, account_reference="POS Payment", tran
     
     print(f"\n📦 Payload sent to Safaricom")
     
-    # Determine API URL
     url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
     if MPESA_ENVIRONMENT == 'production':
         url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
@@ -791,7 +789,6 @@ def stk_push_request(phone_number, amount, account_reference="POS Payment", tran
         if response.status_code == 200:
             response_data = response.json()
             
-            # Check for error response from Safaricom
             response_code = response_data.get('ResponseCode')
             response_desc = response_data.get('ResponseDescription', '')
             
@@ -818,7 +815,6 @@ def stk_push_request(phone_number, amount, account_reference="POS Payment", tran
         return {'error': error_msg}, None
 
 # ==================== API ENDPOINTS ====================
-
 # ---------- CATEGORIES ----------
 @app.route('/api/categories')
 @shop_required
@@ -1720,7 +1716,6 @@ def mpesa_transactions():
 
 @app.route('/api/mpesa/test', methods=['GET'])
 def test_mpesa():
-    """Test M-Pesa configuration"""
     results = {
         'environment': MPESA_ENVIRONMENT,
         'shortcode': MPESA_SHORTCODE,
@@ -1746,7 +1741,6 @@ def test_mpesa():
     else:
         results['tests'].append({'name': 'Passkey', 'status': '❌', 'message': 'Not configured'})
     
-    # Try to get token
     token = get_mpesa_access_token()
     if token:
         results['tests'].append({'name': 'Token Generation', 'status': '✅', 'message': 'Success'})
@@ -1885,12 +1879,18 @@ def low_stock_products():
 def get_users():
     conn = get_db()
     c = conn.cursor()
-    has_email = column_exists('users', 'email')
-    if has_email:
-        c.execute("SELECT id, username, full_name, email, role, created_at FROM users ORDER BY created_at DESC")
-    else:
-        c.execute("SELECT id, username, full_name, '' as email, role, created_at FROM users ORDER BY created_at DESC")
-    users = [{'id': row[0], 'username': row[1], 'full_name': row[2], 'email': row[3] or '', 'role': row[4], 'created_at': row[5]} for row in c.fetchall()]
+    c.execute("SELECT id, username, full_name, email, role, shop_id, created_at FROM users ORDER BY created_at DESC")
+    users = []
+    for row in c.fetchall():
+        users.append({
+            'id': row[0],
+            'username': row[1],
+            'full_name': row[2] or '',
+            'email': row[3] or '',
+            'role': row[4],
+            'shop_id': row[5],
+            'created_at': row[6]
+        })
     conn.close()
     return jsonify(users)
 
@@ -1899,15 +1899,18 @@ def get_users():
 def get_user(user_id):
     conn = get_db()
     c = conn.cursor()
-    has_email = column_exists('users', 'email')
-    if has_email:
-        c.execute("SELECT id, username, full_name, email, role FROM users WHERE id = ?", (user_id,))
-    else:
-        c.execute("SELECT id, username, full_name, '' as email, role FROM users WHERE id = ?", (user_id,))
+    c.execute("SELECT id, username, full_name, email, role, shop_id FROM users WHERE id = ?", (user_id,))
     row = c.fetchone()
     conn.close()
     if row:
-        return jsonify({'id': row[0], 'username': row[1], 'full_name': row[2], 'email': row[3] or '', 'role': row[4]})
+        return jsonify({
+            'id': row[0],
+            'username': row[1],
+            'full_name': row[2] or '',
+            'email': row[3] or '',
+            'role': row[4],
+            'shop_id': row[5]
+        })
     return jsonify({'error': 'Not found'}), 404
 
 @app.route('/api/users', methods=['POST'])
@@ -1919,16 +1922,18 @@ def create_user():
     full_name = data.get('full_name', '')
     email = data.get('email', '')
     role = data.get('role', 'cashier')
+    shop_id = data.get('shop_id')  # Get shop_id from request
     
     conn = get_db()
     c = conn.cursor()
     try:
-        c.execute("INSERT INTO users (username, password, full_name, email, role) VALUES (?, ?, ?, ?, ?)",
-                  (username, password, full_name, email, role))
+        c.execute("""INSERT INTO users (username, password, full_name, email, role, shop_id) 
+                     VALUES (?, ?, ?, ?, ?, ?)""",
+                  (username, password, full_name, email, role, shop_id))
         conn.commit()
-        return jsonify({'success': True})
+        return jsonify({'success': True, 'message': 'User created successfully'})
     except sqlite3.IntegrityError:
-        return jsonify({'error': 'Username exists'}), 400
+        return jsonify({'error': 'Username already exists'}), 400
     finally:
         conn.close()
 
@@ -1940,6 +1945,7 @@ def update_user(user_id):
     full_name = data.get('full_name', '')
     email = data.get('email', '')
     role = data.get('role', 'cashier')
+    shop_id = data.get('shop_id')  # Get shop_id from request
     
     conn = get_db()
     c = conn.cursor()
@@ -1952,11 +1958,13 @@ def update_user(user_id):
     
     if data.get('password'):
         password = generate_password_hash(data['password'])
-        c.execute("UPDATE users SET username=?, full_name=?, email=?, role=?, password=? WHERE id=?",
-                  (username, full_name, email, role, password, user_id))
+        c.execute("""UPDATE users SET username=?, full_name=?, email=?, role=?, password=?, shop_id=? 
+                     WHERE id=?""",
+                  (username, full_name, email, role, password, shop_id, user_id))
     else:
-        c.execute("UPDATE users SET username=?, full_name=?, email=?, role=? WHERE id=?",
-                  (username, full_name, email, role, user_id))
+        c.execute("""UPDATE users SET username=?, full_name=?, email=?, role=?, shop_id=? 
+                     WHERE id=?""",
+                  (username, full_name, email, role, shop_id, user_id))
     
     conn.commit()
     conn.close()

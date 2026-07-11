@@ -34,7 +34,6 @@
             padding-top: var(--header-height);
         }
         
-        /* ===== MOBILE SIDEBAR OVERLAY ===== */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -52,7 +51,6 @@
             display: block;
         }
         
-        /* ===== SIDEBAR ===== */
         .sidebar {
             background: linear-gradient(180deg, var(--primary), #0f1f3d);
             min-height: 100vh;
@@ -161,7 +159,6 @@
             margin: 8px 20px;
         }
         
-        /* Shop selector in sidebar */
         .shop-selector {
             padding: 10px 18px;
             margin: 5px 10px;
@@ -200,7 +197,6 @@
             color: white;
         }
         
-        /* ===== TOP BAR ===== */
         .top-bar {
             background: rgba(255,255,255,0.98);
             padding: 10px 16px;
@@ -328,7 +324,6 @@
             }
         }
         
-        /* ===== MAIN CONTENT ===== */
         .main-content {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
@@ -344,7 +339,6 @@
             padding: 16px;
         }
         
-        /* ===== STAT CARDS ===== */
         .stat-card {
             background: white;
             border-radius: 14px;
@@ -385,7 +379,6 @@
             font-weight: 500;
         }
         
-        /* ===== CARDS ===== */
         .card-custom {
             background: white;
             border-radius: 14px;
@@ -422,7 +415,6 @@
             margin-right: 6px;
         }
         
-        /* ===== BUTTONS ===== */
         .btn-primary-custom {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border: none;
@@ -494,7 +486,6 @@
             color: white;
         }
         
-        /* ===== TABLES ===== */
         .table-custom {
             border-radius: 10px;
             overflow: hidden;
@@ -524,7 +515,6 @@
             background: #f8fafc;
         }
         
-        /* ===== PRODUCT IMAGE ===== */
         .product-image-cell {
             width: 35px;
             height: 35px;
@@ -548,7 +538,6 @@
             transform: scale(1.02);
         }
         
-        /* ===== BADGES ===== */
         .badge-status {
             padding: 4px 10px;
             border-radius: 16px;
@@ -578,7 +567,6 @@
             color: #2563eb;
         }
         
-        /* ===== MODALS ===== */
         .modal-content-custom {
             border-radius: 16px;
             border: none;
@@ -599,7 +587,6 @@
             padding: 6px;
         }
         
-        /* ===== TOAST ===== */
         .toast-notification {
             position: fixed;
             top: 70px;
@@ -635,7 +622,6 @@
             }
         }
         
-        /* ===== FORM ELEMENTS ===== */
         .form-control-custom, .form-select-custom {
             border-radius: 8px;
             border: 1px solid #e2e8f0;
@@ -650,13 +636,11 @@
             box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
         }
         
-        /* ===== CHART ===== */
         #salesChart {
             width: 100% !important;
             height: 250px !important;
         }
         
-        /* Shop card in shops list */
         .shop-card-item {
             background: white;
             border-radius: 12px;
@@ -710,10 +694,6 @@
             background: #fee2e2;
             color: #dc2626;
         }
-        
-        /* ============================================================ */
-        /* ===== RESPONSIVE BREAKPOINTS ===== */
-        /* ============================================================ */
         
         @media (max-width: 992px) {
             :root {
@@ -910,7 +890,6 @@
             }
         }
         
-        /* ===== UTILITY ===== */
         .text-gradient {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
@@ -998,6 +977,7 @@
             <a class="nav-link" href="#" data-page="sales">
                 <i class="fas fa-shopping-cart"></i> <span>Sales</span>
             </a>
+            <!-- 
             <a class="nav-link" href="#" data-page="orders">
                 <i class="fas fa-truck"></i> <span>Orders</span>
                 <span class="badge" id="orderCount">0</span>
@@ -1005,6 +985,7 @@
             <a class="nav-link" href="#" data-page="customers">
                 <i class="fas fa-users"></i> <span>Customers</span>
             </a>
+            -->
             <a class="nav-link" href="#" data-page="transactions">
                 <i class="fas fa-mobile-alt"></i> <span>M-Pesa</span>
             </a>
@@ -1317,7 +1298,7 @@
         </div>
     </div>
 
-    <!-- User Modal -->
+    <!-- User Modal - FIXED -->
     <div class="modal fade" id="userModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-content-custom">
@@ -1340,15 +1321,19 @@
                             <label class="form-label fw-semibold">Email</label>
                             <input type="email" class="form-control form-control-custom" id="userEmail">
                         </div>
+                        <!-- Password Field - Make sure it's visible -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Password</label>
+                            <input type="password" class="form-control form-control-custom" id="userPassword" placeholder="Enter password for new user">
+                            <small class="text-muted">Required for new users. Leave blank to keep current for existing users.</small>
+                        </div>
+                        <!-- Shop Assignment Dropdown -->
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Assign to Shop</label>
                             <select class="form-select form-select-custom" id="userShop">
-                                <option value="">Select Shop</option>
+                                <option value="">No Shop (Global)</option>
                             </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Password</label>
-                            <input type="password" class="form-control form-control-custom" id="userPassword" placeholder="Leave blank to keep current">
+                            <small class="text-muted">Cashiers can only see their assigned shop. Admins see all shops.</small>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Role *</label>
@@ -1667,10 +1652,8 @@
                     selector.innerHTML = '<option value="">No shops available</option>';
                 }
                 
-                // Update shop count badge
                 document.getElementById('shopCount').textContent = shops.length;
                 
-                // Update current shop badge
                 const currentShop = shops.find(s => s.id === currentShopId);
                 if (currentShop) {
                     document.getElementById('currentShopBadge').textContent = '🏪 ' + currentShop.name;
@@ -1691,7 +1674,6 @@
                     if (data.success) {
                         currentShopId = shopId;
                         showToast(`Switched to ${data.shop_name}`, 'success');
-                        // Reload current page
                         refreshPage();
                         loadShopSelector();
                     }
@@ -1811,7 +1793,6 @@
                 </div>
             `;
             
-            // Load stats
             $.get('/api/dashboard/stats', function(data) {
                 const stats = [
                     { label: "Today's Sales", value: formatCurrency(data.today_sales.amount), sub: data.today_sales.count + ' transactions', icon: 'fa-calendar-day', color: '#667eea' },
@@ -1843,7 +1824,6 @@
                 showToast('Failed to load dashboard stats', 'error');
             });
             
-            // Load recent transactions
             $.get('/api/recent/sales', function(sales) {
                 let html = '<div class="table-responsive"><table class="table table-sm table-custom">';
                 html += '<thead><tr><th>Order</th><th>Amount</th><th>Method</th><th>Date</th></tr></thead><tbody>';
@@ -1860,7 +1840,6 @@
                 document.getElementById('recentTransactions').innerHTML = html;
             });
             
-            // Load low stock alerts
             $.get('/api/low-stock/products', function(products) {
                 let html = '<div class="list-group list-group-flush">';
                 products.slice(0, 5).forEach(p => {
@@ -1877,7 +1856,6 @@
                 document.getElementById('lowStockAlerts').innerHTML = html;
             });
             
-            // Load best sellers
             $.get('/api/best-sellers', function(products) {
                 let html = '<div class="list-group list-group-flush">';
                 products.slice(0, 5).forEach(p => {
@@ -1894,7 +1872,6 @@
                 document.getElementById('bestSellers').innerHTML = html;
             });
             
-            // Load sales chart
             loadSalesChart('week');
         }
         
@@ -2047,7 +2024,6 @@
                 container.innerHTML = html;
                 document.getElementById('shopCount').textContent = shops.length;
                 
-                // Load stats for each shop
                 shops.forEach(shop => {
                     loadShopStatsMini(shop.id);
                 });
@@ -3122,7 +3098,6 @@
                 </div>
             `;
             
-            // Load shops for user modal
             loadShopsForUserSelect();
             loadUsersData();
         }
@@ -3137,7 +3112,20 @@
                 
                 let html = '';
                 users.forEach(u => {
-                    const shopName = u.shop_name || 'No Shop';
+                    // Get shop name
+                    let shopName = 'No Shop';
+                    if (u.shop_id) {
+                        $.ajax({
+                            url: '/api/shops',
+                            method: 'GET',
+                            async: false,
+                            success: function(shops) {
+                                const shop = shops.find(s => s.id === u.shop_id);
+                                if (shop) shopName = shop.name;
+                            }
+                        });
+                    }
+                    
                     html += `<tr>
                         <td style="font-size: clamp(0.6rem, 1vw, 0.8rem);">${u.id}</td>
                         <td><strong style="font-size: clamp(0.6rem, 1vw, 0.8rem);">${u.username}</strong></td>
@@ -3173,8 +3161,15 @@
             document.getElementById('userModalTitle').textContent = 'Add User';
             document.getElementById('editUserId').value = '';
             document.getElementById('userForm').reset();
-            document.getElementById('userPassword').placeholder = 'Enter password';
-            document.getElementById('userPassword').required = true;
+            
+            // Ensure password field is visible and required
+            const passwordField = document.getElementById('userPassword');
+            passwordField.placeholder = 'Enter password for new user';
+            passwordField.required = true;
+            passwordField.value = '';
+            passwordField.type = 'password';
+            passwordField.style.display = 'block';
+            
             loadShopsForUserSelect();
             const modal = new bootstrap.Modal(document.getElementById('userModal'));
             modal.show();
@@ -3188,40 +3183,56 @@
                 document.getElementById('userFullName').value = user.full_name || '';
                 document.getElementById('userEmail').value = user.email || '';
                 document.getElementById('userRole').value = user.role;
-                document.getElementById('userPassword').placeholder = 'Leave blank to keep current';
-                document.getElementById('userPassword').required = false;
-                document.getElementById('userPassword').value = '';
                 
-                // Set shop
+                const passwordField = document.getElementById('userPassword');
+                passwordField.placeholder = 'Leave blank to keep current password';
+                passwordField.required = false;
+                passwordField.value = '';
+                passwordField.type = 'password';
+                passwordField.style.display = 'block';
+                
                 loadShopsForUserSelect();
-                if (user.shop_id) {
-                    document.getElementById('userShop').value = user.shop_id;
-                }
+                setTimeout(function() {
+                    if (user.shop_id) {
+                        document.getElementById('userShop').value = user.shop_id;
+                    } else {
+                        document.getElementById('userShop').value = '';
+                    }
+                }, 300);
                 
                 const modal = new bootstrap.Modal(document.getElementById('userModal'));
                 modal.show();
+            }).fail(function() {
+                showToast('Failed to load user details', 'error');
             });
         }
         
         function saveUser() {
             const id = document.getElementById('editUserId').value;
-            const data = {
-                username: document.getElementById('userUsername').value.trim(),
-                full_name: document.getElementById('userFullName').value.trim(),
-                email: document.getElementById('userEmail').value.trim(),
-                role: document.getElementById('userRole').value,
-                shop_id: document.getElementById('userShop').value || null
-            };
+            const username = document.getElementById('userUsername').value.trim();
             const password = document.getElementById('userPassword').value;
-            if (password) data.password = password;
+            const shopId = document.getElementById('userShop').value;
             
-            if (!data.username) {
+            if (!username) {
                 showToast('Username is required', 'error');
                 return;
             }
+            
+            const data = {
+                username: username,
+                full_name: document.getElementById('userFullName').value.trim(),
+                email: document.getElementById('userEmail').value.trim(),
+                role: document.getElementById('userRole').value,
+                shop_id: shopId || null
+            };
+            
             if (!id && !password) {
                 showToast('Password is required for new users', 'error');
                 return;
+            }
+            
+            if (password) {
+                data.password = password;
             }
             
             const url = id ? `/api/users/${id}` : '/api/users';
@@ -3235,7 +3246,7 @@
                 success: function() {
                     bootstrap.Modal.getInstance(document.getElementById('userModal')).hide();
                     loadUsersData();
-                    showToast(id ? 'User updated!' : 'User created!', 'success');
+                    showToast(id ? 'User updated successfully!' : 'User created successfully!', 'success');
                 },
                 error: function(xhr) {
                     const error = xhr.responseJSON?.error || 'Failed to save user';
@@ -3357,7 +3368,6 @@
 
         // ==================== INITIALIZE ====================
         
-        // Get current shop on load
         function getCurrentShop() {
             $.ajax({
                 url: '/api/current-user',
@@ -3374,7 +3384,6 @@
             });
         }
         
-        // Load dashboard on start
         $(document).ready(function() {
             getCurrentShop();
             loadDashboard();
