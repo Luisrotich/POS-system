@@ -1,0 +1,22 @@
+{
+  "name": "Multi-Shop POS Admin",
+  "short_name": "POS Admin",
+  "description": "Manage multiple shops from one dashboard",
+  "start_url": "/admin",
+  "display": "standalone",
+  "background_color": "#1e3c72",
+  "theme_color": "#1e3c72",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "logo.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "logo.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
