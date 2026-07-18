@@ -1154,6 +1154,206 @@
             font-size: 0.8rem;
         }
 
+        /* =============================================
+                   HISTORY - ENHANCED MODERN DESIGN
+                   ============================================= */
+        .history-container {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 0.25rem 0.25rem 0.5rem;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .history-container .history-header-title {
+            padding: 1rem 1.25rem 0.6rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--gray-100);
+            margin-bottom: 0.25rem;
+        }
+        .history-container .history-header-title i {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        .history-container .history-header-title .badge-count {
+            margin-left: auto;
+            background: var(--accent);
+            color: white;
+            padding: 2px 14px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        /* ---- History Item (premium card style) ---- */
+        .history-item {
+            display: flex;
+            align-items: stretch;
+            padding: 0.9rem 1rem;
+            margin: 0.4rem 0.5rem;
+            background: linear-gradient(145deg, #ffffff, #fafbfc);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-100);
+            transition: all 0.25s ease;
+            gap: 14px;
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            touch-action: manipulation;
+        }
+        .history-item:active {
+            transform: scale(0.98);
+            background: var(--gray-50);
+        }
+        .history-item:hover {
+            border-color: var(--gray-300);
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-1px);
+        }
+
+        /* Left side: order + date */
+        .history-item .left {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+        }
+        .history-item .left .order {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.01em;
+        }
+        .history-item .left .order .order-icon {
+            color: var(--accent);
+            font-size: 0.7rem;
+            opacity: 0.6;
+        }
+        .history-item .left .date {
+            font-size: 0.7rem;
+            color: var(--gray-400);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+        }
+        .history-item .left .date i {
+            font-size: 0.6rem;
+            color: var(--gray-300);
+        }
+
+        /* Right side: amount + method */
+        .history-item .right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            flex-shrink: 0;
+            gap: 4px;
+            min-width: 90px;
+        }
+        .history-item .right .amount {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+            background: var(--gray-50);
+            padding: 2px 10px;
+            border-radius: 30px;
+            line-height: 1.4;
+        }
+        .history-item .right .method {
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: var(--gray-100);
+            color: var(--gray-500);
+            border: 1px solid transparent;
+            transition: var(--transition);
+        }
+        .history-item .right .method i {
+            font-size: 0.55rem;
+        }
+        .history-item .right .method.cash {
+            background: #d1fae5;
+            color: #0b6e3f;
+            border-color: rgba(0, 184, 148, 0.25);
+        }
+        .history-item .right .method.mpesa {
+            background: #dbeafe;
+            color: #1d4ed8;
+            border-color: rgba(37, 99, 235, 0.25);
+        }
+        .history-item .right .method.cash i {
+            color: #00b894;
+        }
+        .history-item .right .method.mpesa i {
+            color: #2563eb;
+        }
+
+        /* Left border accent (replaces dot) */
+        .history-item .accent-bar {
+            position: absolute;
+            left: -1px;
+            top: 10%;
+            height: 80%;
+            width: 4px;
+            border-radius: 0 4px 4px 0;
+            background: var(--accent);
+            opacity: 0.5;
+            transition: var(--transition);
+        }
+        .history-item:hover .accent-bar {
+            opacity: 1;
+            width: 5px;
+        }
+        .history-item .accent-bar.cash-bar {
+            background: var(--success);
+        }
+        .history-item .accent-bar.mpesa-bar {
+            background: #2563eb;
+        }
+
+        /* Empty state inside history */
+        .history-empty {
+            padding: 3rem 1rem;
+            text-align: center;
+            color: var(--gray-400);
+        }
+        .history-empty i {
+            font-size: 2.8rem;
+            color: var(--gray-200);
+            margin-bottom: 12px;
+            display: block;
+        }
+        .history-empty p {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--gray-500);
+            margin: 0;
+        }
+        .history-empty small {
+            font-size: 0.8rem;
+            color: var(--gray-400);
+        }
 
         /* ===== RESPONSIVE ===== */
         @media (min-width: 992px) {
@@ -1172,6 +1372,16 @@
             }
             .cart-sidebar {
                 display: block !important;
+            }
+            .history-item {
+                padding: 0.75rem 1rem;
+                margin: 0.3rem 0.4rem;
+            }
+            .history-item .left .order {
+                font-size: 0.9rem;
+            }
+            .history-item .right .amount {
+                font-size: 1rem;
             }
         }
 
@@ -1372,6 +1582,58 @@
                 width: 36px;
                 height: 36px;
             }
+
+            /* ===== HISTORY MOBILE TWEAKS ===== */
+            .history-container {
+                padding: 0.15rem 0.15rem 0.3rem;
+                border-radius: var(--radius-md);
+                margin: 0 -0.25rem;
+            }
+            .history-container .history-header-title {
+                font-size: 0.9rem;
+                padding: 0.6rem 0.75rem 0.4rem;
+            }
+            .history-container .history-header-title .badge-count {
+                font-size: 0.6rem;
+                padding: 1px 12px;
+            }
+            .history-item {
+                padding: 0.65rem 0.85rem;
+                margin: 0.25rem 0.3rem;
+                border-radius: var(--radius-sm);
+                gap: 10px;
+            }
+            .history-item .left .order {
+                font-size: 0.85rem;
+            }
+            .history-item .left .date {
+                font-size: 0.6rem;
+            }
+            .history-item .right .amount {
+                font-size: 0.95rem;
+                padding: 1px 8px;
+            }
+            .history-item .right .method {
+                font-size: 0.5rem;
+                padding: 3px 10px;
+            }
+            .history-item .right .method i {
+                font-size: 0.45rem;
+            }
+            .history-item .accent-bar {
+                height: 70%;
+                top: 15%;
+                width: 3px;
+            }
+            .history-empty {
+                padding: 2rem 0.5rem;
+            }
+            .history-empty i {
+                font-size: 2.2rem;
+            }
+            .history-empty p {
+                font-size: 0.85rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1437,6 +1699,40 @@
                 padding: 8px 12px;
                 font-size: 0.75rem;
             }
+
+            /* HISTORY extra-tight */
+            .history-item {
+                padding: 0.5rem 0.6rem;
+                margin: 0.15rem 0.15rem;
+                gap: 8px;
+            }
+            .history-item .left .order {
+                font-size: 0.75rem;
+            }
+            .history-item .left .date {
+                font-size: 0.5rem;
+            }
+            .history-item .right .amount {
+                font-size: 0.8rem;
+                padding: 0 6px;
+            }
+            .history-item .right .method {
+                font-size: 0.45rem;
+                padding: 2px 8px;
+            }
+            .history-item .accent-bar {
+                height: 60%;
+                top: 20%;
+                width: 3px;
+            }
+            .history-container .history-header-title {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.5rem 0.3rem;
+            }
+            .history-container .history-header-title .badge-count {
+                font-size: 0.5rem;
+                padding: 1px 8px;
+            }
         }
 
         @media print {
@@ -1461,199 +1757,78 @@
                 display: none !important;
             }
         }
-        /* ===========================
-   RECENT SALES CONTAINER
-=========================== */
 
-.history-item{
+        /* Main Container */
+.history-container{
+    background:#fff;
+    width:400px;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
+    overflow:hidden;
+}
+
+/* Header */
+.history-header-title{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:16px;
-    margin-bottom:12px;
-    background:#fff;
-    border:1px solid #edf2f7;
-    border-radius:16px;
-    box-shadow:0 4px 12px rgba(0,0,0,.05);
-    transition:all .3s ease;
-    cursor:pointer;
-}
-
-.history-item:hover{
-    transform:translateY(-3px);
-    box-shadow:0 12px 24px rgba(0,0,0,.12);
-    border-color:var(--primary);
-}
-
-.history-item:last-child{
-    margin-bottom:0;
-}
-
-/* ===========================
-   LEFT SIDE
-=========================== */
-
-.history-item .left{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.history-item .left .order{
-    font-size:15px;
+    padding:18px 20px;
+    background:linear-gradient(135deg,#11ac03,#0d8c02);
+    color:#fff;
+    font-size:18px;
     font-weight:700;
-    color:#1f2937;
 }
 
-.history-item .left .date{
-    font-size:12px;
-    color:#6b7280;
-}
-
-/* ===========================
-   RIGHT SIDE
-=========================== */
-
-.history-item .right{
+/* Left Side */
+.title-left{
     display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-    gap:8px;
+    align-items:center;
+    gap:10px;
 }
 
-.history-item .right .amount{
-    font-size:20px;
-    font-weight:800;
-    color:var(--primary);
-}
-
-/* ===========================
-   PAYMENT BADGES
-=========================== */
-
-.history-item .right .method{
-    display:inline-flex;
+.title-left i{
+    width:38px;
+    height:38px;
+    display:flex;
     align-items:center;
     justify-content:center;
+    background:rgba(255,255,255,.18);
+    border-radius:50%;
+    font-size:16px;
+}
+
+/* Sales Count */
+.badge-count{
+    background:#fff;
+    color:#11ac03;
     padding:6px 14px;
     border-radius:50px;
-    font-size:11px;
+    font-size:13px;
     font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.5px;
-}
-
-/* Cash */
-
-.history-item .right .method.cash{
-    background:#dcfce7;
-    color:#15803d;
-}
-
-/* M-Pesa */
-
-.history-item .right .method.mpesa{
-    background:#dcfce7;
-    color:#0f9d58;
-}
-
-/* Card */
-
-.history-item .right .method.card{
-    background:#dbeafe;
-    color:#2563eb;
-}
-
-/* Bank */
-
-.history-item .right .method.bank{
-    background:#ede9fe;
-    color:#7c3aed;
-}
-
-/* Failed */
-
-.history-item .right .method.failed{
-    background:#fee2e2;
-    color:#dc2626;
-}
-
-/* Pending */
-
-.history-item .right .method.pending{
-    background:#fef3c7;
-    color:#b45309;
-}
-
-/* ===========================
-   EMPTY STATE
-=========================== */
-
-.empty-state{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:50px 20px;
+    min-width:35px;
     text-align:center;
 }
 
-.empty-state i{
-    font-size:60px;
-    color:#d1d5db;
-    margin-bottom:15px;
+/* Scrollable Body */
+.history-body{
+    max-height:65vh;
+    overflow-y:auto;
+    padding:16px;
 }
 
-.empty-state p{
-    color:#6b7280;
-    font-size:15px;
-    margin:0;
-}
-
-/* ===========================
-   SCROLLBAR
-=========================== */
-
-::-webkit-scrollbar{
+/* Scrollbar */
+.history-body::-webkit-scrollbar{
     width:6px;
 }
 
-::-webkit-scrollbar-thumb{
-    background:#d1d5db;
+.history-body::-webkit-scrollbar-thumb{
+    background:#cbd5e1;
     border-radius:20px;
 }
 
-::-webkit-scrollbar-thumb:hover{
-    background:#9ca3af;
-}
-
-/* ===========================
-   MOBILE
-=========================== */
-
-@media (max-width:768px){
-
-    .history-item{
-        padding:14px;
-    }
-
-    .history-item .left .order{
-        font-size:14px;
-    }
-
-    .history-item .left .date{
-        font-size:11px;
-    }
-
-    .history-item .right .amount{
-        font-size:17px;
-    }
-
-    .history-item .right .method{
-        font-size:10px;
-        padding:5px 10px;
-    }
-
+.history-body::-webkit-scrollbar-thumb:hover{
+    background:#94a3b8;
 }
     </style>
 </head>
@@ -1851,7 +2026,7 @@
         </div>
     </div>
 
-    <!-- M-Pesa Custom Modal (replaces Bootstrap modal) -->
+    <!-- M-Pesa Custom Modal -->
     <div class="custom-modal" id="mpesaCustomModal">
         <div class="custom-modal-content">
             <div class="custom-modal-header" style="color:var(--success);">
@@ -1859,7 +2034,7 @@
             </div>
             <div class="custom-modal-body" id="mpesaModalBody">
                 <label style="font-weight:600;font-size:0.85rem;color:var(--gray-600);">Phone Number</label>
-                <input type="tel" id="mpesaPhoneInput" placeholder="" />
+                <input type="tel" id="mpesaPhoneInput" placeholder="254712345678" />
                 <label style="font-weight:600;font-size:0.85rem;color:var(--gray-600);margin-top:12px;display:block;">Amount (KES)</label>
                 <div class="mpesa-amount-display" id="mpesaAmountDisplay">Ksh 0.00</div>
                 <div id="mpesaStatusBox" class="status-box info">
@@ -2041,42 +2216,72 @@
             }
         }
 
-        // ==================== HISTORY ====================
+        // ==================== HISTORY (Enhanced) ====================
         function showHistory() {
             showLoading('Loading history...');
             $.get('/api/recent/sales')
                 .done((sales) => {
                     hideLoading();
+
                     let html = `
-                        <div style="background:white;border-radius:var(--radius-md);padding:1.25rem;border:1px solid var(--gray-200);">
-                            <h6 style="font-weight:600;color:var(--primary);margin-bottom:1rem;">
-                                <i class="fas fa-clock me-2"></i>Recent Sales
-                            </h6>
-                            <div style="max-height:60vh;overflow-y:auto;">
+                        <div class="history-container">
+                            <div class="history-header-title">
+                                <i class="fas fa-clock"></i> Recent Sales
+                                <span class="badge-count">${sales ? sales.length : 0}</span>
+                            </div>
+                            <div style="max-height:65vh;overflow-y:auto;padding:0 0.25rem;">
                     `;
+
                     if (!sales || sales.length === 0) {
-                        html += `<div class="empty-state"><i class="fas fa-receipt"></i><p>No sales yet</p></div>`;
+                        html += `
+                            <div class="history-empty">
+                                <i class="fas fa-receipt"></i>
+                                <p>No sales recorded yet</p>
+                                <small>Complete your first sale to see it here</small>
+                            </div>
+                        `;
                     } else {
                         sales.forEach((s) => {
                             const cls = s.payment_method === 'mpesa' ? 'mpesa' : 'cash';
+                            const barCls = s.payment_method === 'mpesa' ? 'mpesa-bar' : 'cash-bar';
+                            const icon = s.payment_method === 'mpesa' ? 'fa-mobile-alt' : 'fa-money-bill-wave';
+                            const dateObj = new Date(s.date);
+                            const timeStr = dateObj.toLocaleString('en-KE', {
+                                hour12: true,
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric'
+                            });
+
                             html += `
                                 <div class="history-item">
+                                    <div class="accent-bar ${barCls}"></div>
                                     <div class="left">
-                                        <div class="order">${s.order_number}</div>
-                                        <div class="date">${new Date(s.date).toLocaleString()}</div>
+                                        <div class="order">
+                                            <span class="order-icon"><i class="fas fa-hashtag"></i></span>
+                                            ${escapeHtml(s.order_number || 'ORD-' + String(s.id).padStart(4, '0'))}
+                                        </div>
+                                        <div class="date">
+                                            <i class="far fa-calendar-alt"></i> ${timeStr}
+                                        </div>
                                     </div>
                                     <div class="right">
                                         <div class="amount">${formatKsh(s.total)}</div>
-                                        <span class="method ${cls}">${s.payment_method}</span>
+                                        <span class="method ${cls}">
+                                            <i class="fas ${icon}"></i> ${s.payment_method}
+                                        </span>
                                     </div>
                                 </div>
                             `;
                         });
                     }
+
                     html += `</div></div>`;
                     $('#productsGrid').html(html);
                     $('#categoriesList').html('');
-                    $('#productSectionTitle').text('History');
+                    $('#productSectionTitle').text('📋 History');
                     $('#productCount').text('');
                 })
                 .fail(() => {
@@ -2390,12 +2595,9 @@
 
         // ==================== PRINT TWO RECEIPTS ====================
         function printTwoReceipts(receiptData, orderNumber) {
-            // Print Customer Copy
             const customerData = { ...receiptData, copy_type: 'CUSTOMER COPY' };
-            // Print Store Copy
             const storeData = { ...receiptData, copy_type: 'STORE COPY' };
 
-            // First receipt: Customer
             $.ajax({
                 url: '/api/print/receipt',
                 method: 'POST',
@@ -2406,7 +2608,6 @@
                     if (win) {
                         win.document.write(html);
                         win.document.close();
-                        // After a short delay, print the store copy
                         setTimeout(function() {
                             $.ajax({
                                 url: '/api/print/receipt',
@@ -2420,7 +2621,6 @@
                                         win2.document.close();
                                         showToast('✅ Both receipts printed!', 'success');
                                     } else {
-                                        // Fallback: open in same window
                                         const w = window.open('', '_blank');
                                         w.document.write(html2);
                                         w.document.close();
@@ -2433,14 +2633,10 @@
                             });
                         }, 800);
                     } else {
-                        // Fallback: try printing both in one go
-                        showToast('⚠️ Please allow popups. Printing both receipts.', 'warning');
-                        // Attempt store copy in same window
                         const w = window.open('', '_blank');
                         if (w) {
                             w.document.write(html);
                             w.document.close();
-                            // Try store copy after delay
                             setTimeout(function() {
                                 $.ajax({
                                     url: '/api/print/receipt',
@@ -2503,13 +2699,11 @@
                     hideLoading();
                     const totalText = $('#totalDesktop').text();
                     showSuccess(`✅ Sale complete!\nOrder: ${resp.order_number}\nTotal: ${totalText}`);
-                    const savedCart = [...cart];
                     cart = [];
                     updateAllCartUI();
                     loadProducts();
                     closeCartDrawer();
 
-                    // Print TWO receipts
                     if (resp.receipt_data) {
                         printTwoReceipts(resp.receipt_data, resp.order_number);
                     }
@@ -2529,18 +2723,14 @@
         }
 
         // ==================== M-PESA CUSTOM MODAL ====================
-        let mpesaModalCallback = null;
-        let mpesaStatusInterval = null;
-
         function openMpesaModal(amount) {
             $('#mpesaAmountDisplay').text(formatKsh(amount));
             $('#mpesaPhoneInput').val('');
             const statusBox = $('#mpesaStatusBox');
             statusBox.removeClass('success error warning').addClass('info');
-            statusBox.html('<i class="fas fa-info-circle"></i> Enter a valid M-Pesa number ');
+            statusBox.html('<i class="fas fa-info-circle"></i> Enter a valid M-Pesa number (e.g. 254712345678)');
             $('#mpesaCustomModal').addClass('active');
             $('#mpesaPhoneInput').focus();
-            // Reset footer buttons
             const footer = $('#mpesaModalFooter');
             footer.html(`
                 <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
@@ -2548,11 +2738,9 @@
                     <i class="fas fa-paper-plane me-1"></i> Send
                 </button>
             `);
-            // Re-bind the send button
             $('#confirmMpesaCustomBtn').off('click').on('click', function() {
                 initiateMpesaPayment();
             });
-            // Allow Enter key on phone input
             $('#mpesaPhoneInput').off('keydown').on('keydown', function(e) {
                 if (e.key === 'Enter') {
                     initiateMpesaPayment();
@@ -2562,15 +2750,10 @@
 
         function closeMpesaModal() {
             $('#mpesaCustomModal').removeClass('active');
-            if (mpesaStatusInterval) {
-                clearInterval(mpesaStatusInterval);
-                mpesaStatusInterval = null;
-            }
             if (mpesaPollInterval) {
                 clearInterval(mpesaPollInterval);
                 mpesaPollInterval = null;
             }
-            // Restore footer
             const footer = $('#mpesaModalFooter');
             footer.html(`
                 <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
@@ -2584,19 +2767,17 @@
         }
 
         function initiateMpesaPayment() {
-          const phone = $('#mpesaPhoneInput').val().trim();
-
-if (!/^07\d{8}$/.test(phone)) {
-    const statusBox = $('#mpesaStatusBox');
-    statusBox.removeClass('info success').addClass('error');
-    statusBox.html('<i class="fas fa-exclamation-circle"></i> Enter a valid phone number (07XXXXXXXX)');
-    return;
-}
+            const phone = $('#mpesaPhoneInput').val().trim();
+            if (!phone.match(/^254[17][0-9]{8}$/)) {
+                const statusBox = $('#mpesaStatusBox');
+                statusBox.removeClass('info success').addClass('error');
+                statusBox.html('<i class="fas fa-exclamation-circle"></i> Valid format: 2547XXXXXXXX');
+                return;
+            }
             const amountText = $('#mpesaAmountDisplay').text().replace(/[^0-9.]/g, '');
             const amount = parseFloat(amountText);
             if (isNaN(amount) || amount <= 0) return;
 
-            // Disable the send button and show loading
             const footer = $('#mpesaModalFooter');
             footer.html(`
                 <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
@@ -2620,7 +2801,6 @@ if (!/^07\d{8}$/.test(phone)) {
                     statusBox.removeClass('warning').addClass('info');
                     statusBox.html('<i class="fas fa-clock"></i> Check your phone & enter PIN...');
 
-                    // Start polling
                     if (mpesaPollInterval) clearInterval(mpesaPollInterval);
                     mpesaPollInterval = setInterval(function() {
                         $.get(`/api/mpesa/status/${id}`)
@@ -2630,17 +2810,14 @@ if (!/^07\d{8}$/.test(phone)) {
                                     mpesaPollInterval = null;
                                     statusBox.removeClass('info warning').addClass('success');
                                     statusBox.html('<i class="fas fa-check-circle"></i> Payment confirmed!');
-                                    // Update footer
                                     footer.html(`
                                         <button class="btn btn-secondary" onclick="closeMpesaModal()">Close</button>
                                         <button class="btn btn-success" disabled>
                                             <i class="fas fa-check me-1"></i> Completed
                                         </button>
                                     `);
-                                    // Process sale after a small delay
                                     setTimeout(function() {
                                         closeMpesaModal();
-                                        // Use the total from the modal
                                         const totalVal = parseFloat(amountText);
                                         processSale('mpesa', id);
                                     }, 600);
@@ -2660,12 +2837,9 @@ if (!/^07\d{8}$/.test(phone)) {
                                     });
                                 }
                             })
-                            .fail(function() {
-                                // Keep polling
-                            });
+                            .fail(function() {});
                     }, 3500);
 
-                    // Timeout after 65 seconds
                     setTimeout(function() {
                         if (mpesaPollInterval) {
                             clearInterval(mpesaPollInterval);
@@ -2709,7 +2883,6 @@ if (!/^07\d{8}$/.test(phone)) {
 
         // ==================== PAYMENT HANDLERS ====================
         function setupPaymentHandlers() {
-            // Desktop Cash
             $('#payCashBtn').on('click', function() {
                 if (cart.length === 0) { showError('Cart is empty'); return; }
                 showModal('Cash Payment', `Process ${$('#totalDesktop').text()} in cash?`, function() {
@@ -2717,7 +2890,6 @@ if (!/^07\d{8}$/.test(phone)) {
                 });
             });
 
-            // Desktop M-Pesa
             $('#payMpesaBtn').on('click', function() {
                 if (cart.length === 0) { showError('Cart is empty'); return; }
                 const val = parseFloat($('#totalDesktop').text().replace(/[^0-9.-]+/g, ''));
@@ -2725,7 +2897,6 @@ if (!/^07\d{8}$/.test(phone)) {
                 openMpesaModal(val);
             });
 
-            // Desktop Cancel
             $('#cancelSaleBtn').on('click', function() {
                 if (cart.length === 0) { showError('Cart is empty'); return; }
                 showModal('Cancel Sale', 'Clear cart and cancel?', function() {
@@ -2735,7 +2906,6 @@ if (!/^07\d{8}$/.test(phone)) {
                 });
             });
 
-            // Drawer Cash
             $('#payCashBtnDrawer').on('click', function(e) {
                 e.stopPropagation();
                 if (cart.length === 0) { showError('Cart is empty'); return; }
@@ -2745,7 +2915,6 @@ if (!/^07\d{8}$/.test(phone)) {
                 });
             });
 
-            // Drawer M-Pesa
             $('#payMpesaBtnDrawer').on('click', function(e) {
                 e.stopPropagation();
                 if (cart.length === 0) { showError('Cart is empty'); return; }
@@ -2754,7 +2923,6 @@ if (!/^07\d{8}$/.test(phone)) {
                 openMpesaModal(val);
             });
 
-            // Drawer Cancel
             $('#cancelSaleBtnDrawer').on('click', function(e) {
                 e.stopPropagation();
                 if (cart.length === 0) { showError('Cart is empty'); return; }
