@@ -4,8 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
     <title>POS • Cashier</title>
+    <link rel="manifest" href="/manifest.json">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
     <style>
         /* ===== ADMIN DESIGN SYSTEM ===== */
         :root {
@@ -214,6 +216,7 @@
             border-radius: 50px;
             transition: var(--transition);
             border: 1px solid var(--gray-200);
+            cursor: pointer;
         }
         .top-actions .admin-link:hover {
             background: var(--gray-100);
@@ -970,6 +973,14 @@
             background: #fff8e1;
             color: #b7650d;
         }
+        .custom-modal-body .status-box.pulse {
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
         .custom-modal-footer {
             padding: 10px 24px 18px;
             border-top: 1px solid var(--gray-100);
@@ -1353,6 +1364,30 @@
         .history-empty small {
             font-size: 0.8rem;
             color: var(--gray-400);
+        }
+
+        /* Back to Admin button */
+        .back-to-admin {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            border-radius: 50px;
+            background: var(--gray-100);
+            color: var(--gray-600);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+        }
+        .back-to-admin:hover {
+            background: var(--gray-200);
+            color: var(--gray-700);
+            text-decoration: none;
+        }
+        .back-to-admin i {
+            font-size: 0.65rem;
         }
 
         /* ===== RESPONSIVE ===== */
@@ -1757,79 +1792,6 @@
                 display: none !important;
             }
         }
-
-        /* Main Container */
-.history-container{
-    background:#fff;
-    width:400px;
-    border:1px solid #e5e7eb;
-    border-radius:18px;
-    box-shadow:0 8px 24px rgba(0,0,0,.08);
-    overflow:hidden;
-}
-
-/* Header */
-.history-header-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 20px;
-    background:linear-gradient(135deg,#11ac03,#0d8c02);
-    color:#fff;
-    font-size:18px;
-    font-weight:700;
-}
-
-/* Left Side */
-.title-left{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.title-left i{
-    width:38px;
-    height:38px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(255,255,255,.18);
-    border-radius:50%;
-    font-size:16px;
-}
-
-/* Sales Count */
-.badge-count{
-    background:#fff;
-    color:#11ac03;
-    padding:6px 14px;
-    border-radius:50px;
-    font-size:13px;
-    font-weight:700;
-    min-width:35px;
-    text-align:center;
-}
-
-/* Scrollable Body */
-.history-body{
-    max-height:65vh;
-    overflow-y:auto;
-    padding:16px;
-}
-
-/* Scrollbar */
-.history-body::-webkit-scrollbar{
-    width:6px;
-}
-
-.history-body::-webkit-scrollbar-thumb{
-    background:#cbd5e1;
-    border-radius:20px;
-}
-
-.history-body::-webkit-scrollbar-thumb:hover{
-    background:#94a3b8;
-}
     </style>
 </head>
 <body>
@@ -1851,8 +1813,14 @@
         </div>
 
         <div class="top-actions">
+            <a href="/admin" class="back-to-admin" id="backToAdminBtn">
+                <i class="fas fa-arrow-left"></i> Dashboard
+            </a>
             <span class="time-display" id="datetime">--:--</span>
-            <a href="/admin" class="admin-link"><i class="fas fa-th-large me-1"></i>Admin</a>
+            <!-- Install App Button (hidden by default) -->
+            <button class="btn-icon" id="installAppBtn" style="display:none; background: var(--success); color: white; border-radius: 50px; padding: 4px 12px; font-size:0.7rem; gap:6px;" title="Install App">
+                <i class="fas fa-download"></i> Install
+            </button>
             <button class="btn-icon" onclick="logout()" title="Logout">
                 <i class="fas fa-sign-out-alt"></i>
             </button>
@@ -1870,10 +1838,10 @@
                 <div id="noShopWarning" class="empty-state" style="display:none;">
                     <i class="fas fa-store-alt-slash"></i>
                     <p>No Shop Selected</p>
-                    <small>Please select a shop to start selling.</small>
+                    <small>Please select a shop from the admin dashboard to start selling.</small>
                     <br />
-                    <a href="/select-shop" class="btn btn-cash mt-3" style="display:inline-flex;padding:8px 24px;border-radius:50px;text-decoration:none;font-size:0.75rem;">
-                        Select Shop
+                    <a href="/admin" class="btn btn-cash mt-3" style="display:inline-flex;padding:8px 24px;border-radius:50px;text-decoration:none;font-size:0.75rem;">
+                        <i class="fas fa-arrow-left me-1"></i> Go to Admin
                     </a>
                 </div>
 
@@ -2079,931 +2047,1287 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
     </script>
-    <script>
-        // ==================== GLOBAL STATE ====================
-        let cart = [];
-        let currentCategory = null;
-        let modalCallback = null;
-        let currentShopId = null;
-        let currentShopName = '';
-        let mpesaPollInterval = null;
-        let currentTab = 'home';
-        let isProcessing = false;
-        let mpesaCheckoutId = null;
+  <script>
+    // ==================== DATA LAYER (localStorage) - for offline/fallback ====================
+    const DB = {
+        get(key, def) { try { const d = localStorage.getItem('pos_' + key); return d ? JSON.parse(d) : def; } catch (e) { return def; } },
+        set(key, val) { localStorage.setItem('pos_' + key, JSON.stringify(val)); },
+        init() {
+            if (!this.get('initialized', false)) {
+                // (Sample data – keep as before)
+                this.set('shops', [
+                    { id: 1, name: 'Main Store', address: 'Nairobi, Kenya', phone: '+254 700 000 001',
+                        email: 'main@store.com', currency: 'KES', tax_rate: 16, is_active: 1, slug: 'main-store' },
+                    { id: 2, name: 'Branch A', address: 'Mombasa, Kenya', phone: '+254 700 000 002',
+                        email: 'brancha@store.com', currency: 'KES', tax_rate: 16, is_active: 1, slug: 'branch-a' }
+                ]);
+                this.set('categories', [
+                    { id: 1, name: 'Electronics', color: '#6c5ce7', icon: '📱' },
+                    { id: 2, name: 'Clothing', color: '#00b894', icon: '👕' },
+                    { id: 3, name: 'Food', color: '#fdcb6e', icon: '🍔' },
+                    { id: 4, name: 'Books', color: '#74b9ff', icon: '📚' },
+                    { id: 5, name: 'Tools', color: '#ff6b6b', icon: '🔧' }
+                ]);
+                this.set('brands', [
+                    { id: 1, name: 'Samsung', description: 'Electronics giant' },
+                    { id: 2, name: 'Nike', description: 'Sportswear' },
+                    { id: 3, name: 'Kenya Tea', description: 'Local tea brand' },
+                    { id: 4, name: 'Penguin', description: 'Publishing house' }
+                ]);
+                this.set('units', [
+                    { id: 1, name: 'Piece', code: 'pc' },
+                    { id: 2, name: 'Kilogram', code: 'kg' },
+                    { id: 3, name: 'Litre', code: 'l' },
+                    { id: 4, name: 'Pack', code: 'pk' },
+                    { id: 5, name: 'Carton', code: 'ctn' }
+                ]);
+                this.set('suppliers', [
+                    { id: 1, name: 'Tech Distributors Ltd', phone: '+254 700 100 001',
+                        email: 'info@techdist.co.ke', address: 'Nairobi, Kenya', notes: 'Main electronics supplier' },
+                    { id: 2, name: 'Fashion Hub', phone: '+254 700 100 002', email: 'sales@fashionhub.co.ke',
+                        address: 'Mombasa, Kenya', notes: 'Clothing and accessories' },
+                    { id: 3, name: 'Fresh Foods Co', phone: '+254 700 100 003', email: 'orders@freshfoods.co.ke',
+                        address: 'Nairobi, Kenya', notes: 'Perishable goods' }
+                ]);
+                this.set('customers', [
+                    { id: 1, name: 'John Doe', phone: '+254 712 345 678', email: 'john@example.com',
+                        address: 'Nairobi', loyalty_points: 120, credit_limit: 5000, customer_group: 'vip' },
+                    { id: 2, name: 'Jane Smith', phone: '+254 723 456 789', email: 'jane@example.com',
+                        address: 'Mombasa', loyalty_points: 45, credit_limit: 2000, customer_group: 'regular' },
+                    { id: 3, name: 'Peter Mwangi', phone: '+254 734 567 890', email: 'peter@example.com',
+                        address: 'Kisumu', loyalty_points: 200, credit_limit: 10000, customer_group: 'wholesale' }
+                ]);
+                this.set('products', [
+                    { id: 1, name: 'Smartphone X', sku: 'PH-001', barcode: '8901234567890',
+                        category_id: 1, brand_id: 1, buying_price: 25000, selling_price: 35000,
+                        stock_quantity: 15, low_stock_threshold: 5, tax_rate: 16, discount: 0,
+                        supplier: 'Tech Distributors Ltd', expiry_date: '', unit: 'piece',
+                        description: 'Latest model with 6.5" display', image_url: '' },
+                    { id: 2, name: 'Running Shoes', sku: 'SH-002', barcode: '8901234567891',
+                        category_id: 2, brand_id: 2, buying_price: 3000, selling_price: 5500,
+                        stock_quantity: 20, low_stock_threshold: 5, tax_rate: 16, discount: 10,
+                        supplier: 'Fashion Hub', expiry_date: '', unit: 'piece',
+                        description: 'Comfortable running shoes', image_url: '' },
+                    { id: 3, name: 'Tea Bags 100ct', sku: 'FD-003', barcode: '8901234567892',
+                        category_id: 3, brand_id: 3, buying_price: 150, selling_price: 250,
+                        stock_quantity: 50, low_stock_threshold: 10, tax_rate: 16, discount: 0,
+                        supplier: 'Fresh Foods Co', expiry_date: '2027-12-31', unit: 'pack',
+                        description: 'Premium Kenyan tea', image_url: '' },
+                    { id: 4, name: 'Novel - The Journey', sku: 'BK-004', barcode: '8901234567893',
+                        category_id: 4, brand_id: 4, buying_price: 400, selling_price: 800,
+                        stock_quantity: 30, low_stock_threshold: 5, tax_rate: 16, discount: 5,
+                        supplier: 'Tech Distributors Ltd', expiry_date: '', unit: 'piece',
+                        description: 'Bestselling novel', image_url: '' },
+                    { id: 5, name: 'Cordless Drill', sku: 'TL-005', barcode: '8901234567894',
+                        category_id: 5, brand_id: 1, buying_price: 4500, selling_price: 7500,
+                        stock_quantity: 8, low_stock_threshold: 3, tax_rate: 16, discount: 0,
+                        supplier: 'Tech Distributors Ltd', expiry_date: '', unit: 'piece',
+                        description: '18V cordless drill', image_url: '' },
+                    { id: 6, name: 'T-shirt (White)', sku: 'AP-006', barcode: '8901234567895',
+                        category_id: 2, brand_id: 2, buying_price: 500, selling_price: 1200,
+                        stock_quantity: 25, low_stock_threshold: 5, tax_rate: 16, discount: 0,
+                        supplier: 'Fashion Hub', expiry_date: '', unit: 'piece',
+                        description: 'Cotton t-shirt', image_url: '' }
+                ]);
+                this.set('sales', [
+                    { id: 1, order_number: 'ORD-20260717152839', customer_name: 'John Doe',
+                        item_count: 2, total: 36200, paid: 36200, balance: 0, payment_method: 'mpesa',
+                        status: 'completed', date: '2026-07-17T12:28:39', cashier_name: 'Admin' },
+                    { id: 2, order_number: 'ORD-20260717152108', customer_name: 'Jane Smith',
+                        item_count: 1, total: 232, paid: 232, balance: 0, payment_method: 'cash',
+                        status: 'completed', date: '2026-07-17T12:21:08', cashier_name: 'Admin' },
+                    { id: 3, order_number: 'ORD-20260615180955', customer_name: 'Peter Mwangi',
+                        item_count: 1, total: 232, paid: 232, balance: 0, payment_method: 'mpesa',
+                        status: 'completed', date: '2026-06-15T15:09:55', cashier_name: 'Admin' },
+                    { id: 4, order_number: 'ORD-20260615165427', customer_name: 'John Doe',
+                        item_count: 3, total: 1160, paid: 1000, balance: 160, payment_method: 'cash',
+                        status: 'pending', date: '2026-06-15T13:54:27', cashier_name: 'Admin' },
+                    { id: 5, order_number: 'ORD-20260615165334', customer_name: 'Jane Smith',
+                        item_count: 2, total: 1160, paid: 1160, balance: 0, payment_method: 'mpesa',
+                        status: 'completed', date: '2026-06-15T13:53:34', cashier_name: 'Admin' }
+                ]);
+                this.set('users', [
+                    { id: 1, username: 'admin', full_name: 'System Admin', email: 'admin@pos.com',
+                        password: 'admin123', role: 'admin', shop_id: null, commission_rate: 0,
+                        is_admin: true, permissions: {} },
+                    { id: 2, username: 'cashier1', full_name: 'Cashier One', email: 'cashier@pos.com',
+                        password: 'cashier123', role: 'cashier', shop_id: 1, commission_rate: 2,
+                        is_admin: false, permissions: { products: { view: true, add: true, edit: true,
+                                delete: false }, categories: { view: true, add: false, edit: false,
+                                delete: false }, shops: { view: false, add: false, edit: false,
+                                delete: false }, sales: { view: true, add: true, edit: false,
+                                delete: false }, payments: { view: true, add: false, edit: false,
+                                delete: false }, users: { view: false, add: false, edit: false,
+                                delete: false } } }
+                ]);
+                this.set('expenses', [
+                    { id: 1, description: 'Office Rent', amount: 50000, category: 'rent',
+                        date: '2026-07-01', notes: 'Monthly rent' },
+                    { id: 2, description: 'Electricity Bill', amount: 8500, category: 'utilities',
+                        date: '2026-07-05', notes: 'KPLC bill' },
+                    { id: 3, description: 'Staff Salaries', amount: 120000, category: 'salaries',
+                        date: '2026-07-25', notes: 'Monthly payroll' }
+                ]);
+                this.set('mpesa_transactions', [
+                    { id: 1, receipt_number: 'MPESA-001', phone_number: '254712345678',
+                        amount: 36200, status: 'completed', checkout_request_id: 'CHK-001',
+                        date: '2026-07-17T12:30:00' },
+                    { id: 2, receipt_number: 'MPESA-002', phone_number: '254723456789',
+                        amount: 232, status: 'completed', checkout_request_id: 'CHK-002',
+                        date: '2026-06-15T15:10:00' },
+                    { id: 3, receipt_number: 'MPESA-003', phone_number: '254734567890',
+                        amount: 1160, status: 'pending', checkout_request_id: 'CHK-003',
+                        date: '2026-06-15T13:55:00' }
+                ]);
+                this.set('payments', [
+                    { id: 1, order_number: 'ORD-20260717152839', supplier_name: 'Tech Distributors Ltd',
+                        amount: 36200, paid: 36200, balance: 0, date: '2026-07-17' },
+                    { id: 2, order_number: 'ORD-20260717152108', supplier_name: 'Fashion Hub',
+                        amount: 232, paid: 232, balance: 0, date: '2026-07-17' },
+                    { id: 3, order_number: 'ORD-20260615180955', supplier_name: 'Fresh Foods Co',
+                        amount: 232, paid: 232, balance: 0, date: '2026-06-15' },
+                    { id: 4, order_number: 'ORD-20260615165427', supplier_name: 'Tech Distributors Ltd',
+                        amount: 1160, paid: 1000, balance: 160, date: '2026-06-15' }
+                ]);
+                this.set('settings', {
+                    business_name: 'General Shop',
+                    logo: '',
+                    phone: '+254 700 000 000',
+                    email: 'info@generalshop.com',
+                    address: 'Nairobi, Kenya',
+                    pin: 'A123456789',
+                    currency: 'KES',
+                    tax_rate: 16,
+                    footer: 'Thank you for shopping with us!',
+                    default_commission: 0,
+                    timezone: 'Africa/Nairobi'
+                });
+                this.set('initialized', true);
+            }
+        },
+        nextId(key) { const items = this.get(key, []); const maxId = items.reduce((max, i) => i.id > max ? i.id : max, 0); return maxId + 1; },
+        add(key, item) { const items = this.get(key, []); item.id = this.nextId(key); items.push(item); this.set(key, items); return item; },
+        update(key, id, data) { const items = this.get(key, []); const idx = items.findIndex(i => i.id === id); if (idx === -1) return null; items[idx] = { ...items[idx], ...data }; this.set(key, items); return items[idx]; },
+        delete(key, id) { const items = this.get(key, []); const filtered = items.filter(i => i.id !== id); this.set(key, filtered); return filtered; },
+        find(key, id) { const items = this.get(key, []); return items.find(i => i.id === id) || null; },
+        all(key) { return this.get(key, []); }
+    };
 
-        // ==================== UTILITY FUNCTIONS ====================
-        function formatKsh(amount) {
-            return `Ksh ${Number(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    // ==================== GLOBAL STATE ====================
+    let cart = [];
+    let currentCategory = null;
+    let modalCallback = null;
+    let currentShopId = null;
+    let currentShopName = '';
+    let mpesaPollInterval = null;
+    let currentTab = 'home';
+    let isProcessing = false;
+    let mpesaCheckoutId = null;
+    let currentUser = null;
+    let mpesaManualConfirm = false; // flag to allow manual confirmation
+
+    // ==================== UTILITY FUNCTIONS ====================
+    function formatKsh(amount) {
+        return `Ksh ${Number(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            return m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;';
+        });
+    }
+
+    function showLoading(msg) {
+        $('#loadingMessage').text(msg || 'Processing...');
+        $('#loadingOverlay').addClass('active');
+    }
+
+    function hideLoading() {
+        $('#loadingOverlay').removeClass('active');
+    }
+
+    function showModal(title, msg, onConfirm) {
+        $('#modalTitle').html(`<i class="fas fa-info-circle me-2"></i> ${title}`);
+        $('#modalMessage').text(msg);
+        modalCallback = onConfirm;
+        $('#customModal').addClass('active');
+    }
+
+    function closeModal() {
+        $('#customModal').removeClass('active');
+        modalCallback = null;
+    }
+
+    function confirmModalAction() {
+        if (modalCallback) {
+            const cb = modalCallback;
+            modalCallback = null;
+            cb();
         }
+        closeModal();
+    }
 
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                return m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;';
+    function showSuccess(msg) {
+        $('#successMessage').text(msg);
+        $('#successModal').addClass('active');
+        setTimeout(() => closeSuccessModal(), 3000);
+    }
+
+    function closeSuccessModal() {
+        $('#successModal').removeClass('active');
+    }
+
+    function showError(msg) {
+        $('#errorMessage').text(msg);
+        $('#errorModal').addClass('active');
+    }
+
+    function closeErrorModal() {
+        $('#errorModal').removeClass('active');
+    }
+
+    function showToast(msg, type) {
+        type = type || 'info';
+        const icons = {
+            success: 'fa-check-circle',
+            error: 'fa-exclamation-circle',
+            info: 'fa-info-circle'
+        };
+        const el = $(`
+            <div class="toast-item ${type}">
+                <i class="fas ${icons[type] || icons.info}"></i>
+                <span>${msg}</span>
+                <button class="close-toast">&times;</button>
+            </div>
+        `);
+        el.find('.close-toast').on('click', () => el.remove());
+        $('#toastContainer').append(el);
+        setTimeout(() => el.fadeOut(300, () => el.remove()), 3000);
+    }
+
+    function updateDateTime() {
+        const now = new Date();
+        $('#datetime').text(now.toLocaleString('en-KE', {
+            hour12: true,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        }));
+    }
+
+    // ==================== API HELPER ====================
+    async function apiRequest(url, method, body) {
+        const options = {
+            method: method || 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        };
+        if (body) {
+            options.body = JSON.stringify(body);
+        }
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `HTTP error ${response.status}`);
+        }
+        return response.json();
+    }
+
+    // ==================== BOTTOM NAV, HISTORY, CART DRAWER ====================
+    // (Keep all these functions unchanged – they are the same as before)
+    function switchTab(tab) {
+        currentTab = tab;
+        $('.bottom-nav .nav-item').removeClass('active');
+        $(`.bottom-nav .nav-item[data-page="${tab}"]`).addClass('active');
+
+        if (tab === 'home') {
+            $('#mainContent').show();
+            $('#desktopCart').hide();
+            closeCartDrawer();
+            loadCategories();
+            loadProducts();
+        } else if (tab === 'history') {
+            $('#mainContent').show();
+            $('#desktopCart').hide();
+            closeCartDrawer();
+            showHistory();
+        } else if (tab === 'cart') {
+            $('#mainContent').show();
+            $('#desktopCart').hide();
+            if (cart.length > 0) {
+                openCartDrawer();
+            } else {
+                showToast('Cart is empty. Add some products!', 'info');
+            }
+        } else if (tab === 'more') {
+            showModal('More Options', '🔄 Switch Shop\n\n🚪 Logout', () => {
+                window.location.href = '/admin';
+            });
+            $('.bottom-nav .nav-item').removeClass('active');
+            $(`.bottom-nav .nav-item[data-page="home"]`).addClass('active');
+            currentTab = 'home';
+        }
+    }
+
+    function showHistory() {
+        const sales = DB.all('sales');
+        let html = `
+            <div class="history-container">
+                <div class="history-header-title">
+                    <i class="fas fa-clock"></i> Recent Sales
+                    <span class="badge-count">${sales ? sales.length : 0}</span>
+                </div>
+                <div style="max-height:65vh;overflow-y:auto;padding:0 0.25rem;">
+        `;
+
+        if (!sales || sales.length === 0) {
+            html += `
+                <div class="history-empty">
+                    <i class="fas fa-receipt"></i>
+                    <p>No sales recorded yet</p>
+                    <small>Complete your first sale to see it here</small>
+                </div>
+            `;
+        } else {
+            const sorted = [...sales].sort((a, b) => new Date(b.date) - new Date(a.date));
+            sorted.forEach((s) => {
+                const cls = s.payment_method === 'mpesa' ? 'mpesa' : 'cash';
+                const barCls = s.payment_method === 'mpesa' ? 'mpesa-bar' : 'cash-bar';
+                const icon = s.payment_method === 'mpesa' ? 'fa-mobile-alt' : 'fa-money-bill-wave';
+                const dateObj = new Date(s.date);
+                const timeStr = dateObj.toLocaleString('en-KE', {
+                    hour12: true,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
+
+                html += `
+                    <div class="history-item">
+                        <div class="accent-bar ${barCls}"></div>
+                        <div class="left">
+                            <div class="order">
+                                <span class="order-icon"><i class="fas fa-hashtag"></i></span>
+                                ${escapeHtml(s.order_number || 'ORD-' + String(s.id).padStart(4, '0'))}
+                            </div>
+                            <div class="date">
+                                <i class="far fa-calendar-alt"></i> ${timeStr}
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="amount">${formatKsh(s.total)}</div>
+                            <span class="method ${cls}">
+                                <i class="fas ${icon}"></i> ${s.payment_method}
+                            </span>
+                        </div>
+                    </div>
+                `;
             });
         }
 
-        function showLoading(msg) {
-            $('#loadingMessage').text(msg || 'Processing...');
-            $('#loadingOverlay').addClass('active');
+        html += `</div></div>`;
+        $('#productsGrid').html(html);
+        $('#categoriesList').html('');
+        $('#productSectionTitle').text('📋 History');
+        $('#productCount').text('');
+    }
+
+    function openCartDrawer() {
+        updateCartDrawerUI();
+        $('#cartDrawerOverlay').addClass('active');
+        $('#cartDrawer').addClass('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeCartDrawer() {
+        $('#cartDrawerOverlay').removeClass('active');
+        $('#cartDrawer').removeClass('active');
+        document.body.style.overflow = '';
+        if (currentTab === 'cart') {
+            $('.bottom-nav .nav-item').removeClass('active');
+            $(`.bottom-nav .nav-item[data-page="home"]`).addClass('active');
+            currentTab = 'home';
+        }
+    }
+
+    // ==================== SHOP CONTEXT ====================
+    function getCurrentShop() {
+        const shops = DB.all('shops');
+        const activeShop = shops.find(s => s.is_active === 1);
+        if (activeShop) {
+            currentShopId = activeShop.id;
+            currentShopName = activeShop.name;
+            $('#shopName').text(activeShop.name);
+            $('#shopBadge').show();
+            $('#noShopWarning').hide();
+            loadCategories();
+            loadProducts();
+        } else {
+            $('#shopName').text('No Shop');
+            $('#shopBadge').show();
+            $('#noShopWarning').show();
+            $('#productsGrid').html(
+                '<div class="empty-state"><i class="fas fa-store-alt-slash"></i><p>Please select a shop from the admin dashboard</p></div>'
+            );
+            showToast('No active shop found. Please set up a shop in the admin dashboard.', 'warning');
+        }
+    }
+
+    // ==================== CATEGORIES ====================
+    function loadCategories() {
+        if (!currentShopId) {
+            $('#categoriesList').html('');
+            return;
+        }
+        const categories = DB.all('categories');
+        let html = `<div class="category-chip active" data-category="">✨ All</div>`;
+        categories.forEach(function(cat) {
+            html += `
+                <div class="category-chip" data-category="${escapeHtml(cat.name)}" style="${cat.color ? 'border-color:'+cat.color : ''}">
+                    <i class="${cat.icon || 'fas fa-tag'}"></i> ${escapeHtml(cat.name)}
+                </div>
+            `;
+        });
+        $('#categoriesList').html(html);
+    }
+
+    // ==================== PRODUCTS ====================
+    function loadProducts() {
+        if (!currentShopId) {
+            $('#productsGrid').html(
+                '<div class="empty-state"><i class="fas fa-store-alt-slash"></i><p>Please select a shop</p></div>'
+            );
+            return;
         }
 
-        function hideLoading() {
-            $('#loadingOverlay').removeClass('active');
+        let skel = '';
+        for (let i = 0; i < 6; i++) {
+            skel += `<div class="skeleton-card skeleton"></div>`;
         }
+        $('#productsGrid').html(skel);
 
-        function showModal(title, msg, onConfirm) {
-            $('#modalTitle').html(`<i class="fas fa-info-circle me-2"></i> ${title}`);
-            $('#modalMessage').text(msg);
-            modalCallback = onConfirm;
-            $('#customModal').addClass('active');
-        }
+        let products = DB.all('products');
+        const search = $('#searchInput').val().trim();
 
-        function closeModal() {
-            $('#customModal').removeClass('active');
-            modalCallback = null;
-        }
-
-        function confirmModalAction() {
-            if (modalCallback) {
-                const cb = modalCallback;
-                modalCallback = null;
-                cb();
+        if (currentCategory) {
+            const cat = DB.all('categories').find(c => c.name === currentCategory);
+            if (cat) {
+                products = products.filter(p => p.category_id === cat.id);
             }
-            closeModal();
         }
 
-        function showSuccess(msg) {
-            $('#successMessage').text(msg);
-            $('#successModal').addClass('active');
-            setTimeout(() => closeSuccessModal(), 3000);
+        if (search) {
+            const s = search.toLowerCase();
+            products = products.filter(p =>
+                p.name.toLowerCase().includes(s) ||
+                (p.sku && p.sku.toLowerCase().includes(s)) ||
+                (p.barcode && p.barcode.includes(s))
+            );
         }
 
-        function closeSuccessModal() {
-            $('#successModal').removeClass('active');
-        }
-
-        function showError(msg) {
-            $('#errorMessage').text(msg);
-            $('#errorModal').addClass('active');
-        }
-
-        function closeErrorModal() {
-            $('#errorModal').removeClass('active');
-        }
-
-        function showToast(msg, type) {
-            type = type || 'info';
-            const icons = {
-                success: 'fa-check-circle',
-                error: 'fa-exclamation-circle',
-                info: 'fa-info-circle'
-            };
-            const el = $(`
-                <div class="toast-item ${type}">
-                    <i class="fas ${icons[type] || icons.info}"></i>
-                    <span>${msg}</span>
-                    <button class="close-toast">&times;</button>
+        if (!products || products.length === 0) {
+            $('#productsGrid').html(`
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <i class="fas fa-box-open"></i>
+                    <p>No products found</p>
+                    <small>Try adjusting your search or add products from the admin dashboard</small>
                 </div>
             `);
-            el.find('.close-toast').on('click', () => el.remove());
-            $('#toastContainer').append(el);
-            setTimeout(() => el.fadeOut(300, () => el.remove()), 3000);
+            $('#productCount').text('0 items');
+            return;
         }
 
-        function updateDateTime() {
-            const now = new Date();
-            $('#datetime').text(now.toLocaleString('en-KE', {
-                hour12: true,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            }));
+        let html = '';
+        const categories = DB.all('categories');
+        products.forEach(function(p) {
+            const stock = p.stock_quantity || 0;
+            let badge = '';
+            if (stock <= 0) badge = `<span class="badge-stock out">Out</span>`;
+            else if (stock <= 5) badge = `<span class="badge-stock low">Low</span>`;
+            else badge = `<span class="badge-stock">In Stock</span>`;
+
+            const img = p.image_url && p.image_url !== 'https://via.placeholder.com/150?text=Product' ?
+                p.image_url : null;
+
+            const cat = categories.find(c => c.id === p.category_id);
+
+            html += `
+                <div class="product-card" data-id="${p.id}" data-name="${escapeHtml(p.name)}" data-price="${p.selling_price}" data-stock="${stock}" ${stock <= 0 ? 'style="opacity:0.6;"' : ''}>
+                    <div class="img-wrap">
+                        ${img ? `<img src="${img}" alt="${escapeHtml(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ''}
+                        <div class="icon-placeholder" style="${img ? 'display:none;' : 'display:flex;'}">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        ${badge}
+                    </div>
+                    <div class="info">
+                        <div class="name">${escapeHtml(p.name)}</div>
+                        <div class="price">${formatKsh(p.selling_price)}</div>
+                        <div class="stock-info">
+                            <i class="fas fa-circle" style="color:${stock <= 0 ? 'var(--danger)' : stock <= 5 ? 'var(--warning)' : 'var(--success)'};font-size:0.4rem;"></i>
+                            ${stock} left
+                        </div>
+                        ${cat ? `<div style="font-size:0.55rem;color:var(--gray-400);margin-top:2px;">${escapeHtml(cat.name)}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+
+        $('#productsGrid').html(html);
+        $('#productCount').text(`${products.length} items`);
+        $('#productSectionTitle').text(currentCategory || 'All Products');
+    }
+
+    // ==================== CART ====================
+    function addToCart(id, name, price, stock) {
+        if (stock <= 0) {
+            showError('Out of stock!');
+            return;
         }
-
-        // ==================== BOTTOM NAV ====================
-        function switchTab(tab) {
-            currentTab = tab;
-            $('.bottom-nav .nav-item').removeClass('active');
-            $(`.bottom-nav .nav-item[data-page="${tab}"]`).addClass('active');
-
-            if (tab === 'home') {
-                $('#mainContent').show();
-                $('#desktopCart').hide();
-                closeCartDrawer();
-                loadCategories();
-                loadProducts();
-            } else if (tab === 'history') {
-                $('#mainContent').show();
-                $('#desktopCart').hide();
-                closeCartDrawer();
-                showHistory();
-            } else if (tab === 'cart') {
-                $('#mainContent').show();
-                $('#desktopCart').hide();
-                if (cart.length > 0) {
-                    openCartDrawer();
-                } else {
-                    showToast('Cart is empty. Add some products!', 'info');
-                }
-            } else if (tab === 'more') {
-                showModal('More Options', '🔄 Switch Shop\n\n🚪 Logout', () => {
-                    window.location.href = '/select-shop';
-                });
-                $('.bottom-nav .nav-item').removeClass('active');
-                $(`.bottom-nav .nav-item[data-page="home"]`).addClass('active');
-                currentTab = 'home';
-            }
-        }
-
-        // ==================== HISTORY (Enhanced) ====================
-        function showHistory() {
-            showLoading('Loading history...');
-            $.get('/api/recent/sales')
-                .done((sales) => {
-                    hideLoading();
-
-                    let html = `
-                        <div class="history-container">
-                            <div class="history-header-title">
-                                <i class="fas fa-clock"></i> Recent Sales
-                                <span class="badge-count">${sales ? sales.length : 0}</span>
-                            </div>
-                            <div style="max-height:65vh;overflow-y:auto;padding:0 0.25rem;">
-                    `;
-
-                    if (!sales || sales.length === 0) {
-                        html += `
-                            <div class="history-empty">
-                                <i class="fas fa-receipt"></i>
-                                <p>No sales recorded yet</p>
-                                <small>Complete your first sale to see it here</small>
-                            </div>
-                        `;
-                    } else {
-                        sales.forEach((s) => {
-                            const cls = s.payment_method === 'mpesa' ? 'mpesa' : 'cash';
-                            const barCls = s.payment_method === 'mpesa' ? 'mpesa-bar' : 'cash-bar';
-                            const icon = s.payment_method === 'mpesa' ? 'fa-mobile-alt' : 'fa-money-bill-wave';
-                            const dateObj = new Date(s.date);
-                            const timeStr = dateObj.toLocaleString('en-KE', {
-                                hour12: true,
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                day: '2-digit',
-                                month: 'short',
-                                year: 'numeric'
-                            });
-
-                            html += `
-                                <div class="history-item">
-                                    <div class="accent-bar ${barCls}"></div>
-                                    <div class="left">
-                                        <div class="order">
-                                            <span class="order-icon"><i class="fas fa-hashtag"></i></span>
-                                            ${escapeHtml(s.order_number || 'ORD-' + String(s.id).padStart(4, '0'))}
-                                        </div>
-                                        <div class="date">
-                                            <i class="far fa-calendar-alt"></i> ${timeStr}
-                                        </div>
-                                    </div>
-                                    <div class="right">
-                                        <div class="amount">${formatKsh(s.total)}</div>
-                                        <span class="method ${cls}">
-                                            <i class="fas ${icon}"></i> ${s.payment_method}
-                                        </span>
-                                    </div>
-                                </div>
-                            `;
-                        });
-                    }
-
-                    html += `</div></div>`;
-                    $('#productsGrid').html(html);
-                    $('#categoriesList').html('');
-                    $('#productSectionTitle').text('📋 History');
-                    $('#productCount').text('');
-                })
-                .fail(() => {
-                    hideLoading();
-                    showError('Failed to load history');
-                });
-        }
-
-        // ==================== CART DRAWER ====================
-        function openCartDrawer() {
-            updateCartDrawerUI();
-            $('#cartDrawerOverlay').addClass('active');
-            $('#cartDrawer').addClass('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeCartDrawer() {
-            $('#cartDrawerOverlay').removeClass('active');
-            $('#cartDrawer').removeClass('active');
-            document.body.style.overflow = '';
-            if (currentTab === 'cart') {
-                $('.bottom-nav .nav-item').removeClass('active');
-                $(`.bottom-nav .nav-item[data-page="home"]`).addClass('active');
-                currentTab = 'home';
-            }
-        }
-
-        // ==================== SHOP CONTEXT ====================
-        function getCurrentShop() {
-            $.ajax({
-                url: '/api/current-user',
-                method: 'GET',
-                success: function(user) {
-                    if (user.shop_id) {
-                        currentShopId = user.shop_id;
-                        $.get('/api/shops', function(shops) {
-                            const shop = shops.find(s => s.id === user.shop_id);
-                            if (shop) {
-                                currentShopName = shop.name;
-                                $('#shopName').text(shop.name);
-                                $('#shopBadge').show();
-                                $('#noShopWarning').hide();
-                                loadCategories();
-                                loadProducts();
-                            } else {
-                                $('#shopName').text('Unknown Shop');
-                                $('#noShopWarning').show();
-                                $('#categoriesList').html('');
-                                $('#productsGrid').html(
-                                    '<div class="empty-state"><i class="fas fa-store-alt-slash"></i><p>Please select a shop</p></div>'
-                                );
-                            }
-                        });
-                    } else {
-                        $('#shopName').text('No Shop');
-                        $('#shopBadge').show();
-                        $('#noShopWarning').show();
-                        $('#productsGrid').html(
-                            '<div class="empty-state"><i class="fas fa-store-alt-slash"></i><p>Please select a shop</p></div>'
-                        );
-                        showError('No shop selected. Please select a shop.');
-                    }
-                },
-                error: function() {
-                    window.location.href = '/';
-                }
-            });
-        }
-
-        // ==================== CATEGORIES ====================
-        function loadCategories() {
-            if (!currentShopId) {
-                $('#categoriesList').html('');
-                return;
-            }
-            $.get('/api/categories')
-                .done(function(categories) {
-                    let html = `<div class="category-chip active" data-category="">✨ All</div>`;
-                    categories.forEach(function(cat) {
-                        html += `
-                            <div class="category-chip" data-category="${escapeHtml(cat.name)}" style="${cat.color ? 'border-color:'+cat.color : ''}">
-                                <i class="${cat.icon || 'fas fa-tag'}"></i> ${escapeHtml(cat.name)}
-                            </div>
-                        `;
-                    });
-                    $('#categoriesList').html(html);
-                })
-                .fail(function() {
-                    showError('Failed to load categories.');
-                });
-        }
-
-        // ==================== PRODUCTS ====================
-        function loadProducts() {
-            if (!currentShopId) {
-                $('#productsGrid').html(
-                    '<div class="empty-state"><i class="fas fa-store-alt-slash"></i><p>Please select a shop</p></div>'
-                );
-                return;
-            }
-
-            let skel = '';
-            for (let i = 0; i < 6; i++) {
-                skel += `<div class="skeleton-card skeleton"></div>`;
-            }
-            $('#productsGrid').html(skel);
-
-            let url = '/api/products';
-            const params = new URLSearchParams();
-            if (currentCategory) params.append('category', currentCategory);
-            const search = $('#searchInput').val().trim();
-            if (search) params.append('search', search);
-            const qs = params.toString();
-            if (qs) url += '?' + qs;
-
-            $.get(url)
-                .done(function(products) {
-                    if (!products || products.length === 0) {
-                        $('#productsGrid').html(`
-                            <div class="empty-state" style="grid-column:1/-1;">
-                                <i class="fas fa-box-open"></i>
-                                <p>No products found</p>
-                                <small>Try adjusting your search</small>
-                            </div>
-                        `);
-                        $('#productCount').text('0 items');
-                        return;
-                    }
-
-                    let html = '';
-                    products.forEach(function(p) {
-                        const stock = p.stock_quantity || 0;
-                        let badge = '';
-                        if (stock <= 0) badge = `<span class="badge-stock out">Out</span>`;
-                        else if (stock <= 5) badge = `<span class="badge-stock low">Low</span>`;
-                        else badge = `<span class="badge-stock">In Stock</span>`;
-
-                        const img = p.image_url && p.image_url !==
-                            'https://via.placeholder.com/150?text=Product' ?
-                            p.image_url : null;
-
-                        html += `
-                            <div class="product-card" data-id="${p.id}" data-name="${escapeHtml(p.name)}" data-price="${p.selling_price}" data-stock="${stock}" ${stock <= 0 ? 'style="opacity:0.6;"' : ''}>
-                                <div class="img-wrap">
-                                    ${img ? `<img src="${img}" alt="${escapeHtml(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ''}
-                                    <div class="icon-placeholder" style="${img ? 'display:none;' : 'display:flex;'}">
-                                        <i class="fas fa-box"></i>
-                                    </div>
-                                    ${badge}
-                                </div>
-                                <div class="info">
-                                    <div class="name">${escapeHtml(p.name)}</div>
-                                    <div class="price">${formatKsh(p.selling_price)}</div>
-                                    <div class="stock-info">
-                                        <i class="fas fa-circle" style="color:${stock <= 0 ? 'var(--danger)' : stock <= 5 ? 'var(--warning)' : 'var(--success)'};font-size:0.4rem;"></i>
-                                        ${stock} left
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    });
-
-                    $('#productsGrid').html(html);
-                    $('#productCount').text(`${products.length} items`);
-                    $('#productSectionTitle').text(currentCategory || 'All Products');
-                })
-                .fail(function() {
-                    $('#productsGrid').html(
-                        '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-exclamation-triangle"></i><p>Failed to load products</p></div>'
-                    );
-                    showError('Failed to load products.');
-                });
-        }
-
-        // ==================== CART ====================
-        function addToCart(id, name, price, stock) {
-            if (stock <= 0) {
-                showError('Out of stock!');
-                return;
-            }
-            const existing = cart.find(i => i.id === id);
-            if (existing) {
-                if (existing.qty < existing.stock) {
-                    existing.qty++;
-                    showToast(`${name} × ${existing.qty}`, 'success');
-                } else {
-                    showError(`Only ${existing.stock} available.`);
-                    return;
-                }
+        const existing = cart.find(i => i.id === id);
+        if (existing) {
+            if (existing.qty < existing.stock) {
+                existing.qty++;
+                showToast(`${name} × ${existing.qty}`, 'success');
             } else {
-                cart.push({ id, name, price, qty: 1, stock });
-                showToast(`${name} added!`, 'success');
+                showError(`Only ${existing.stock} available.`);
+                return;
+            }
+        } else {
+            cart.push({ id, name, price, qty: 1, stock });
+            showToast(`${name} added!`, 'success');
+        }
+        updateAllCartUI();
+    }
+
+    function removeFromCart(index) {
+        if (cart[index]) {
+            if (cart[index].qty > 1) {
+                cart[index].qty--;
+            } else {
+                cart.splice(index, 1);
             }
             updateAllCartUI();
         }
+    }
 
-        function removeFromCart(index) {
-            if (cart[index]) {
-                if (cart[index].qty > 1) {
-                    cart[index].qty--;
-                } else {
-                    cart.splice(index, 1);
-                }
-                updateAllCartUI();
-            }
+    function clearCart() {
+        if (cart.length === 0) {
+            showToast('Cart is empty', 'info');
+            return;
         }
+        showModal('Clear Cart', 'Remove all items from your cart?', function() {
+            cart = [];
+            updateAllCartUI();
+            showSuccess('Cart cleared!');
+        });
+    }
 
-        function clearCart() {
-            if (cart.length === 0) {
-                showToast('Cart is empty', 'info');
-                return;
-            }
-            showModal('Clear Cart', 'Remove all items from your cart?', function() {
-                cart = [];
-                updateAllCartUI();
-                showSuccess('Cart cleared!');
-            });
-        }
+    function updateAllCartUI() {
+        updateDesktopCart();
+        updateCartDrawerUI();
+        updateFloatingCart();
+        updateNavBadge();
+    }
 
-        function updateAllCartUI() {
-            updateDesktopCart();
-            updateCartDrawerUI();
-            updateFloatingCart();
-            updateNavBadge();
-        }
-
-        function updateDesktopCart() {
-            let subtotal = 0;
-            let html = '';
-            if (cart.length === 0) {
-                html =
-                    `<div class="empty-state"><i class="fas fa-shopping-bag"></i><p>Cart is empty</p><small>Tap products to add</small></div>`;
-            } else {
-                cart.forEach(function(item, idx) {
-                    const total = item.price * item.qty;
-                    subtotal += total;
-                    html += `
-                        <div class="cart-item">
-                            <div class="item-main">
-                                <div class="details">
-                                    <div class="name">${escapeHtml(item.name)}</div>
-                                    <div class="price">${formatKsh(item.price)} each</div>
-                                </div>
-                                <div class="item-total">${formatKsh(total)}</div>
-                            </div>
-                            <div class="controls">
-                                <button class="btn-minus" onclick="removeFromCart(${idx})"><i class="fas fa-minus"></i></button>
-                                <span class="qty">${item.qty}</span>
-                                <button class="btn-plus" onclick="addToCart(${item.id}, '${escapeHtml(item.name)}', ${item.price}, ${item.stock})"><i class="fas fa-plus"></i></button>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-            $('#cartItemsDesktop').html(html);
-            $('#cartCountDesktop').text(cart.reduce((s, i) => s + i.qty, 0));
-
-            const tax = subtotal * 0.16;
-            const total = subtotal + tax;
-            $('#subtotalDesktop').text(formatKsh(subtotal));
-            $('#taxDesktop').text(formatKsh(tax));
-            $('#totalDesktop').text(formatKsh(total));
-        }
-
-        function updateCartDrawerUI() {
-            let subtotal = 0;
-            let html = '';
-            if (cart.length === 0) {
-                html =
-                    `<div class="empty-state"><i class="fas fa-shopping-bag"></i><p>Your cart is empty</p><small>Tap products to add</small></div>`;
-            } else {
-                cart.forEach(function(item, idx) {
-                    const total = item.price * item.qty;
-                    subtotal += total;
-                    html += `
-                        <div class="cart-item-drawer">
-                            <div class="info">
+    function updateDesktopCart() {
+        let subtotal = 0;
+        let html = '';
+        if (cart.length === 0) {
+            html =
+                `<div class="empty-state"><i class="fas fa-shopping-bag"></i><p>Cart is empty</p><small>Tap products to add</small></div>`;
+        } else {
+            cart.forEach(function(item, idx) {
+                const total = item.price * item.qty;
+                subtotal += total;
+                html += `
+                    <div class="cart-item">
+                        <div class="item-main">
+                            <div class="details">
                                 <div class="name">${escapeHtml(item.name)}</div>
                                 <div class="price">${formatKsh(item.price)} each</div>
                             </div>
-                            <div class="controls">
-                                <button class="btn-minus" onclick="removeFromCart(${idx})"><i class="fas fa-minus"></i></button>
-                                <span class="qty">${item.qty}</span>
-                                <button class="btn-plus" onclick="addToCart(${item.id}, '${escapeHtml(item.name)}', ${item.price}, ${item.stock})"><i class="fas fa-plus"></i></button>
-                            </div>
-                            <div class="total">${formatKsh(total)}</div>
+                            <div class="item-total">${formatKsh(total)}</div>
                         </div>
-                    `;
-                });
-            }
-            $('#cartDrawerBody').html(html);
-
-            const tax = subtotal * 0.16;
-            const total = subtotal + tax;
-            $('#subtotalDrawer').text(formatKsh(subtotal));
-            $('#taxDrawer').text(formatKsh(tax));
-            $('#totalDrawer').text(formatKsh(total));
-        }
-
-        function updateFloatingCart() {
-            const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-            const count = cart.reduce((s, i) => s + i.qty, 0);
-            $('#floatingCartTotal').text(formatKsh(total));
-            $('#floatingCartBadge').text(count);
-        }
-
-        function updateNavBadge() {
-            const count = cart.reduce((s, i) => s + i.qty, 0);
-            $('#navCartBadge').text(count);
-        }
-
-        // ==================== PRINT TWO RECEIPTS ====================
-        function printTwoReceipts(receiptData, orderNumber) {
-            const customerData = { ...receiptData, copy_type: 'CUSTOMER COPY' };
-            const storeData = { ...receiptData, copy_type: 'STORE COPY' };
-
-            $.ajax({
-                url: '/api/print/receipt',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ receipt_data: customerData }),
-                success: function(html) {
-                    const win = window.open('', '_blank');
-                    if (win) {
-                        win.document.write(html);
-                        win.document.close();
-                        setTimeout(function() {
-                            $.ajax({
-                                url: '/api/print/receipt',
-                                method: 'POST',
-                                contentType: 'application/json',
-                                data: JSON.stringify({ receipt_data: storeData }),
-                                success: function(html2) {
-                                    const win2 = window.open('', '_blank');
-                                    if (win2) {
-                                        win2.document.write(html2);
-                                        win2.document.close();
-                                        showToast('✅ Both receipts printed!', 'success');
-                                    } else {
-                                        const w = window.open('', '_blank');
-                                        w.document.write(html2);
-                                        w.document.close();
-                                        showToast('⚠️ Store copy opened. Please print manually.', 'warning');
-                                    }
-                                },
-                                error: function() {
-                                    showToast('⚠️ Store receipt failed. Customer copy printed.', 'warning');
-                                }
-                            });
-                        }, 800);
-                    } else {
-                        const w = window.open('', '_blank');
-                        if (w) {
-                            w.document.write(html);
-                            w.document.close();
-                            setTimeout(function() {
-                                $.ajax({
-                                    url: '/api/print/receipt',
-                                    method: 'POST',
-                                    contentType: 'application/json',
-                                    data: JSON.stringify({ receipt_data: storeData }),
-                                    success: function(h2) {
-                                        const w2 = window.open('', '_blank');
-                                        if (w2) {
-                                            w2.document.write(h2);
-                                            w2.document.close();
-                                        }
-                                    }
-                                });
-                            }, 1000);
-                        }
-                    }
-                },
-                error: function() {
-                    showToast('⚠️ Failed to print customer receipt.', 'error');
-                }
+                        <div class="controls">
+                            <button class="btn-minus" onclick="removeFromCart(${idx})"><i class="fas fa-minus"></i></button>
+                            <span class="qty">${item.qty}</span>
+                            <button class="btn-plus" onclick="addToCart(${item.id}, '${escapeHtml(item.name)}', ${item.price}, ${item.stock})"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                `;
             });
         }
+        $('#cartItemsDesktop').html(html);
+        $('#cartCountDesktop').text(cart.reduce((s, i) => s + i.qty, 0));
 
-        // ==================== PAYMENT ====================
-        function processSale(method, txId) {
-            if (cart.length === 0) {
-                showError('Cart is empty!');
-                return false;
-            }
-            if (!currentShopId) {
-                showError('No shop selected!');
-                return false;
-            }
-            if (isProcessing) {
-                showToast('Please wait...', 'info');
-                return false;
-            }
+        const tax = subtotal * 0.16;
+        const total = subtotal + tax;
+        $('#subtotalDesktop').text(formatKsh(subtotal));
+        $('#taxDesktop').text(formatKsh(tax));
+        $('#totalDesktop').text(formatKsh(total));
+    }
 
-            isProcessing = true;
-            showLoading('Processing sale...');
-
-            const payload = {
-                items: cart.map(function(i) {
-                    return { id: i.id, name: i.name, price: i.price, quantity: i.qty };
-                }),
-                payment_method: method,
-                mpesa_transaction_id: txId || null,
-                shop_id: currentShopId
-            };
-
-            $.ajax({
-                url: '/api/sale',
-                method: 'POST',
-                contentType: 'application/json',
-                dataType: 'json',
-                data: JSON.stringify(payload),
-                success: function(resp) {
-                    isProcessing = false;
-                    hideLoading();
-                    const totalText = $('#totalDesktop').text();
-                    showSuccess(`✅ Sale complete!\nOrder: ${resp.order_number}\nTotal: ${totalText}`);
-                    cart = [];
-                    updateAllCartUI();
-                    loadProducts();
-                    closeCartDrawer();
-
-                    if (resp.receipt_data) {
-                        printTwoReceipts(resp.receipt_data, resp.order_number);
-                    }
-                },
-                error: function(xhr) {
-                    isProcessing = false;
-                    hideLoading();
-                    let msg = 'Sale failed. Please try again.';
-                    try {
-                        const j = JSON.parse(xhr.responseText);
-                        msg = j.error || j.message || msg;
-                    } catch (e) {}
-                    showError(msg);
-                }
+    function updateCartDrawerUI() {
+        let subtotal = 0;
+        let html = '';
+        if (cart.length === 0) {
+            html =
+                `<div class="empty-state"><i class="fas fa-shopping-bag"></i><p>Your cart is empty</p><small>Tap products to add</small></div>`;
+        } else {
+            cart.forEach(function(item, idx) {
+                const total = item.price * item.qty;
+                subtotal += total;
+                html += `
+                    <div class="cart-item-drawer">
+                        <div class="info">
+                            <div class="name">${escapeHtml(item.name)}</div>
+                            <div class="price">${formatKsh(item.price)} each</div>
+                        </div>
+                        <div class="controls">
+                            <button class="btn-minus" onclick="removeFromCart(${idx})"><i class="fas fa-minus"></i></button>
+                            <span class="qty">${item.qty}</span>
+                            <button class="btn-plus" onclick="addToCart(${item.id}, '${escapeHtml(item.name)}', ${item.price}, ${item.stock})"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <div class="total">${formatKsh(total)}</div>
+                    </div>
+                `;
             });
-            return true;
+        }
+        $('#cartDrawerBody').html(html);
+
+        const tax = subtotal * 0.16;
+        const total = subtotal + tax;
+        $('#subtotalDrawer').text(formatKsh(subtotal));
+        $('#taxDrawer').text(formatKsh(tax));
+        $('#totalDrawer').text(formatKsh(total));
+    }
+
+    function updateFloatingCart() {
+        const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+        const count = cart.reduce((s, i) => s + i.qty, 0);
+        $('#floatingCartTotal').text(formatKsh(total));
+        $('#floatingCartBadge').text(count);
+    }
+
+    function updateNavBadge() {
+        const count = cart.reduce((s, i) => s + i.qty, 0);
+        $('#navCartBadge').text(count);
+    }
+
+    // ==================== PRINT TWO RECEIPTS ====================
+    function printTwoReceipts(receiptData, orderNumber) {
+        const customerHtml = generateReceiptHtml(receiptData, 'CUSTOMER COPY');
+        const storeHtml = generateReceiptHtml(receiptData, 'STORE COPY');
+
+        const win1 = window.open('', '_blank');
+        if (win1) {
+            win1.document.write(customerHtml);
+            win1.document.close();
+            setTimeout(() => { win1.print(); }, 400);
         }
 
-        // ==================== M-PESA CUSTOM MODAL ====================
-        function openMpesaModal(amount) {
-            $('#mpesaAmountDisplay').text(formatKsh(amount));
-            $('#mpesaPhoneInput').val('');
-            const statusBox = $('#mpesaStatusBox');
-            statusBox.removeClass('success error warning').addClass('info');
-            statusBox.html('<i class="fas fa-info-circle"></i> Enter a valid M-Pesa number (e.g. 254712345678)');
-            $('#mpesaCustomModal').addClass('active');
-            $('#mpesaPhoneInput').focus();
-            const footer = $('#mpesaModalFooter');
-            footer.html(`
-                <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
-                <button class="btn btn-success" id="confirmMpesaCustomBtn">
-                    <i class="fas fa-paper-plane me-1"></i> Send
-                </button>
-            `);
-            $('#confirmMpesaCustomBtn').off('click').on('click', function() {
+        setTimeout(() => {
+            const win2 = window.open('', '_blank');
+            if (win2) {
+                win2.document.write(storeHtml);
+                win2.document.close();
+                setTimeout(() => { win2.print(); }, 400);
+            }
+        }, 600);
+
+        showToast('✅ Both receipts printed!', 'success');
+    }
+
+    function generateReceiptHtml(data, copyType) {
+        const items = data.items || [];
+        const subtotal = data.subtotal || 0;
+        const tax = data.tax || 0;
+        const total = data.total || 0;
+        const method = data.payment_method || 'N/A';
+        const orderNum = data.order_number || 'ORD-' + Date.now();
+        const shopName = data.shop_name || 'General Shop';
+        const footer = data.footer || 'Thank you for shopping with us!';
+
+        return `
+            <html>
+            <head><title>Receipt ${orderNum}</title>
+            <style>
+                body { font-family: 'Courier New', monospace; padding: 16px; max-width: 320px; margin: 0 auto; background: #fff; color: #222; }
+                .header { text-align: center; border-bottom: 2px dashed #333; padding-bottom: 8px; margin-bottom: 8px; }
+                .header h2 { margin: 0; font-size: 20px; font-weight: 700; }
+                .header p { margin: 2px 0; font-size: 11px; color: #555; }
+                .copy { text-align: center; font-weight: bold; font-size: 14px; margin: 8px 0; text-transform: uppercase; letter-spacing: 1px; color: #6c5ce7; }
+                .items { margin: 8px 0; }
+                .item { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dotted #ccc; font-size: 12px; }
+                .total { border-top: 2px solid #333; padding-top: 8px; margin-top: 8px; }
+                .total-row { display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; }
+                .total-row.small { font-weight: normal; font-size: 12px; color: #555; }
+                .grand-total { font-size: 18px; border-top: 2px solid #333; padding-top: 6px; margin-top: 4px; }
+                .footer-text { text-align: center; margin-top: 16px; font-size: 11px; color: #888; border-top: 2px dashed #333; padding-top: 10px; }
+                .date-time { font-size: 10px; color: #888; text-align: center; margin-top: 4px; }
+                .payment-method { font-size: 11px; text-align: right; margin-top: 4px; }
+            </style>
+            </head>
+            <body>
+                <div class="header">
+                    <h2>${shopName}</h2>
+                    <p>${data.address || ''}</p>
+                    <p>Tel: ${data.phone || ''}</p>
+                    <p>${orderNum}</p>
+                </div>
+                <div class="copy">${copyType}</div>
+                <div class="items">
+                    ${items.map(i => `<div class="item"><span>${i.name} × ${i.quantity}</span><span>${formatKsh(i.price * i.quantity)}</span></div>`).join('')}
+                </div>
+                <div class="total">
+                    <div class="total-row small"><span>Subtotal</span><span>${formatKsh(subtotal)}</span></div>
+                    <div class="total-row small"><span>VAT (16%)</span><span>${formatKsh(tax)}</span></div>
+                    <div class="total-row grand-total"><span>TOTAL</span><span>${formatKsh(total)}</span></div>
+                    <div class="payment-method">Payment: ${method}</div>
+                </div>
+                <div class="date-time">${new Date().toLocaleString()}</div>
+                <div class="footer-text">${footer}</div>
+            </body>
+            </html>
+        `;
+    }
+
+    // ==================== REAL M-PESA STK PUSH WITH MANUAL FALLBACK ====================
+    function openMpesaModal(amount) {
+        $('#mpesaAmountDisplay').text(formatKsh(amount));
+        $('#mpesaPhoneInput').val('');
+        const statusBox = $('#mpesaStatusBox');
+        statusBox.removeClass('success error warning pulse').addClass('info');
+        statusBox.html('<i class="fas fa-info-circle"></i> Enter a valid M-Pesa number (e.g. 254712345678)');
+        $('#mpesaCustomModal').addClass('active');
+        $('#mpesaPhoneInput').focus();
+        const footer = $('#mpesaModalFooter');
+        footer.html(`
+            <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
+            <button class="btn btn-success" id="confirmMpesaCustomBtn">
+                <i class="fas fa-paper-plane me-1"></i> Send
+            </button>
+        `);
+        $('#confirmMpesaCustomBtn').off('click').on('click', function() {
+            initiateMpesaPayment();
+        });
+        $('#mpesaPhoneInput').off('keydown').on('keydown', function(e) {
+            if (e.key === 'Enter') {
                 initiateMpesaPayment();
-            });
-            $('#mpesaPhoneInput').off('keydown').on('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    initiateMpesaPayment();
-                }
-            });
-        }
-
-        function closeMpesaModal() {
-            $('#mpesaCustomModal').removeClass('active');
-            if (mpesaPollInterval) {
-                clearInterval(mpesaPollInterval);
-                mpesaPollInterval = null;
             }
-            const footer = $('#mpesaModalFooter');
-            footer.html(`
-                <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
-                <button class="btn btn-success" id="confirmMpesaCustomBtn">
-                    <i class="fas fa-paper-plane me-1"></i> Send
-                </button>
-            `);
-            $('#confirmMpesaCustomBtn').off('click').on('click', function() {
-                initiateMpesaPayment();
-            });
+        });
+        mpesaManualConfirm = false;
+    }
+
+    function closeMpesaModal() {
+        $('#mpesaCustomModal').removeClass('active');
+        if (mpesaPollInterval) {
+            clearInterval(mpesaPollInterval);
+            mpesaPollInterval = null;
         }
+        // Reset footer to initial state
+        const footer = $('#mpesaModalFooter');
+        footer.html(`
+            <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
+            <button class="btn btn-success" id="confirmMpesaCustomBtn">
+                <i class="fas fa-paper-plane me-1"></i> Send
+            </button>
+        `);
+        $('#confirmMpesaCustomBtn').off('click').on('click', function() {
+            initiateMpesaPayment();
+        });
+        mpesaManualConfirm = false;
+    }
 
-        function initiateMpesaPayment() {
-            const phone = $('#mpesaPhoneInput').val().trim();
-            if (!phone.match(/^254[17][0-9]{8}$/)) {
-                const statusBox = $('#mpesaStatusBox');
-                statusBox.removeClass('info success').addClass('error');
-                statusBox.html('<i class="fas fa-exclamation-circle"></i> Valid format: 2547XXXXXXXX');
-                return;
-            }
-            const amountText = $('#mpesaAmountDisplay').text().replace(/[^0-9.]/g, '');
-            const amount = parseFloat(amountText);
-            if (isNaN(amount) || amount <= 0) return;
-
-            const footer = $('#mpesaModalFooter');
-            footer.html(`
-                <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
-                <button class="btn btn-success" disabled>
-                    <i class="fas fa-spinner fa-pulse me-1"></i> Sending...
-                </button>
-            `);
-
+    async function initiateMpesaPayment() {
+        const phone = $('#mpesaPhoneInput').val().trim();
+        if (!phone.match(/^254[17][0-9]{8}$/)) {
             const statusBox = $('#mpesaStatusBox');
-            statusBox.removeClass('info error success').addClass('warning');
-            statusBox.html('<i class="fas fa-spinner fa-pulse"></i> Initiating STK Push...');
+            statusBox.removeClass('info success warning pulse').addClass('error');
+            statusBox.html('<i class="fas fa-exclamation-circle"></i> Valid format: 2547XXXXXXXX');
+            return;
+        }
+        const amountText = $('#mpesaAmountDisplay').text().replace(/[^0-9.]/g, '');
+        const amount = parseFloat(amountText);
+        if (isNaN(amount) || amount <= 0) return;
 
-            $.ajax({
-                url: '/api/mpesa/pay',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ phone_number: phone, amount: amount }),
-                success: function(resp) {
-                    const id = resp.checkout_request_id;
-                    mpesaCheckoutId = id;
-                    statusBox.removeClass('warning').addClass('info');
-                    statusBox.html('<i class="fas fa-clock"></i> Check your phone & enter PIN...');
+        const footer = $('#mpesaModalFooter');
+        footer.html(`
+            <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
+            <button class="btn btn-success" disabled>
+                <i class="fas fa-spinner fa-pulse me-1"></i> Processing...
+            </button>
+        `);
 
-                    if (mpesaPollInterval) clearInterval(mpesaPollInterval);
-                    mpesaPollInterval = setInterval(function() {
-                        $.get(`/api/mpesa/status/${id}`)
-                            .done(function(data) {
-                                if (data.status === 'completed') {
-                                    clearInterval(mpesaPollInterval);
-                                    mpesaPollInterval = null;
-                                    statusBox.removeClass('info warning').addClass('success');
-                                    statusBox.html('<i class="fas fa-check-circle"></i> Payment confirmed!');
-                                    footer.html(`
-                                        <button class="btn btn-secondary" onclick="closeMpesaModal()">Close</button>
-                                        <button class="btn btn-success" disabled>
-                                            <i class="fas fa-check me-1"></i> Completed
-                                        </button>
-                                    `);
-                                    setTimeout(function() {
-                                        closeMpesaModal();
-                                        const totalVal = parseFloat(amountText);
-                                        processSale('mpesa', id);
-                                    }, 600);
-                                } else if (data.status === 'failed') {
-                                    clearInterval(mpesaPollInterval);
-                                    mpesaPollInterval = null;
-                                    statusBox.removeClass('info warning').addClass('error');
-                                    statusBox.html('❌ Payment failed. Please retry.');
-                                    footer.html(`
-                                        <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
-                                        <button class="btn btn-success" id="retryMpesaBtn">
-                                            <i class="fas fa-redo me-1"></i> Retry
-                                        </button>
-                                    `);
-                                    $('#retryMpesaBtn').off('click').on('click', function() {
-                                        initiateMpesaPayment();
-                                    });
-                                }
-                            })
-                            .fail(function() {});
-                    }, 3500);
+        const statusBox = $('#mpesaStatusBox');
+        statusBox.removeClass('info error success').addClass('warning pulse');
+        statusBox.html('<i class="fas fa-spinner fa-pulse"></i> Initiating STK Push...');
 
-                    setTimeout(function() {
-                        if (mpesaPollInterval) {
+        try {
+            const result = await apiRequest('/api/mpesa/pay', 'POST', {
+                phone_number: phone,
+                amount: amount
+            });
+
+            if (!result.success) {
+                throw new Error(result.error || 'STK push initiation failed');
+            }
+
+            const checkoutRequestId = result.checkout_request_id;
+            mpesaCheckoutId = checkoutRequestId;
+
+            statusBox.removeClass('warning pulse').addClass('info');
+            statusBox.html('<i class="fas fa-clock"></i> Check your phone & enter PIN...');
+
+            // Start polling
+            let attempts = 0;
+            const maxAttempts = 15; // 15 * 2s = 30s
+            const manualConfirmAfter = 8; // after 16 seconds, offer manual confirm
+
+            if (mpesaPollInterval) clearInterval(mpesaPollInterval);
+
+            mpesaPollInterval = setInterval(async () => {
+                attempts++;
+                try {
+                    const statusResult = await apiRequest(`/api/mpesa/status/${checkoutRequestId}`, 'GET');
+                    const status = statusResult.status;
+
+                    if (status === 'completed') {
+                        clearInterval(mpesaPollInterval);
+                        mpesaPollInterval = null;
+                        statusBox.removeClass('info').addClass('success');
+                        statusBox.html('<i class="fas fa-check-circle"></i> Payment confirmed!');
+                        footer.html(`
+                            <button class="btn btn-secondary" onclick="closeMpesaModal()">Close</button>
+                            <button class="btn btn-success" disabled>
+                                <i class="fas fa-check me-1"></i> Completed
+                            </button>
+                        `);
+                        setTimeout(() => {
+                            closeMpesaModal();
+                            processSale('mpesa', checkoutRequestId);
+                        }, 600);
+                        return;
+                    } else if (status === 'failed' || status === 'not_found') {
+                        clearInterval(mpesaPollInterval);
+                        mpesaPollInterval = null;
+                        statusBox.removeClass('info').addClass('error');
+                        statusBox.html('<i class="fas fa-exclamation-circle"></i> Payment failed. Please try again.');
+                        footer.html(`
+                            <button class="btn btn-secondary" onclick="closeMpesaModal()">Close</button>
+                            <button class="btn btn-danger" onclick="initiateMpesaPayment()">Retry</button>
+                        `);
+                        return;
+                    }
+
+                    // If still pending after several attempts, show manual confirmation option
+                    if (attempts >= manualConfirmAfter && !mpesaManualConfirm) {
+                        mpesaManualConfirm = true;
+                        statusBox.removeClass('info').addClass('warning');
+                        statusBox.html(`
+                            <i class="fas fa-clock"></i> Still waiting for confirmation.<br>
+                            If you have received the M-Pesa message, click "Confirm Payment".
+                        `);
+                        footer.html(`
+                            <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
+                            <button class="btn btn-success" id="manualConfirmBtn">
+                                <i class="fas fa-check me-1"></i> Confirm Payment
+                            </button>
+                            <button class="btn btn-warning" onclick="initiateMpesaPayment()">Retry</button>
+                        `);
+                        $('#manualConfirmBtn').off('click').on('click', function() {
                             clearInterval(mpesaPollInterval);
                             mpesaPollInterval = null;
-                            if ($('#mpesaCustomModal').hasClass('active')) {
-                                statusBox.removeClass('info warning success').addClass('error');
-                                statusBox.html('⏰ Timeout. Please try again.');
+                            statusBox.removeClass('warning').addClass('success');
+                            statusBox.html('<i class="fas fa-check-circle"></i> Payment confirmed manually.');
+                            footer.html(`
+                                <button class="btn btn-secondary" onclick="closeMpesaModal()">Close</button>
+                                <button class="btn btn-success" disabled>
+                                    <i class="fas fa-check me-1"></i> Completed
+                                </button>
+                            `);
+                            setTimeout(() => {
+                                closeMpesaModal();
+                                processSale('mpesa', checkoutRequestId);
+                            }, 600);
+                        });
+                    }
+
+                    if (attempts >= maxAttempts) {
+                        clearInterval(mpesaPollInterval);
+                        mpesaPollInterval = null;
+                        if (!mpesaManualConfirm) {
+                            statusBox.removeClass('info').addClass('warning');
+                            statusBox.html(`
+                                <i class="fas fa-clock"></i> Payment timeout.<br>
+                                If you have received the M-Pesa confirmation, click "Confirm Payment".
+                            `);
+                            footer.html(`
+                                <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
+                                <button class="btn btn-success" id="manualConfirmBtn">
+                                    <i class="fas fa-check me-1"></i> Confirm Payment
+                                </button>
+                                <button class="btn btn-warning" onclick="initiateMpesaPayment()">Retry</button>
+                            `);
+                            $('#manualConfirmBtn').off('click').on('click', function() {
+                                statusBox.removeClass('warning').addClass('success');
+                                statusBox.html('<i class="fas fa-check-circle"></i> Payment confirmed manually.');
                                 footer.html(`
-                                    <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
-                                    <button class="btn btn-success" id="retryMpesaBtn">
-                                        <i class="fas fa-redo me-1"></i> Retry
+                                    <button class="btn btn-secondary" onclick="closeMpesaModal()">Close</button>
+                                    <button class="btn btn-success" disabled>
+                                        <i class="fas fa-check me-1"></i> Completed
                                     </button>
                                 `);
-                                $('#retryMpesaBtn').off('click').on('click', function() {
-                                    initiateMpesaPayment();
-                                });
-                            }
+                                setTimeout(() => {
+                                    closeMpesaModal();
+                                    processSale('mpesa', checkoutRequestId);
+                                }, 600);
+                            });
                         }
-                    }, 65000);
-                },
-                error: function(xhr) {
-                    statusBox.removeClass('info warning success').addClass('error');
-                    let msg = 'Failed to initiate M-Pesa.';
-                    try {
-                        const j = JSON.parse(xhr.responseText);
-                        msg = j.error || j.message || msg;
-                    } catch (e) {}
-                    statusBox.html(`<i class="fas fa-exclamation-circle"></i> ${msg}`);
-                    footer.html(`
-                        <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
-                        <button class="btn btn-success" id="retryMpesaBtn">
-                            <i class="fas fa-redo me-1"></i> Retry
-                        </button>
-                    `);
-                    $('#retryMpesaBtn').off('click').on('click', function() {
-                        initiateMpesaPayment();
-                    });
+                    }
+                } catch (error) {
+                    console.error('Polling error:', error);
                 }
-            });
+            }, 2000);
+
+        } catch (error) {
+            statusBox.removeClass('warning pulse').addClass('error');
+            statusBox.html(`<i class="fas fa-exclamation-circle"></i> ${error.message || 'STK push failed'}`);
+            footer.html(`
+                <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
+                <button class="btn btn-danger" onclick="initiateMpesaPayment()">Retry</button>
+            `);
+        }
+    }
+
+    // ==================== PROCESS SALE (USING BACKEND API) ====================
+    async function processSale(method, mpesaTransactionId) {
+        if (cart.length === 0) {
+            showError('Cart is empty!');
+            return false;
+        }
+        if (!currentShopId) {
+            showError('No shop selected!');
+            return false;
+        }
+        if (isProcessing) {
+            showToast('Please wait...', 'info');
+            return false;
         }
 
-        // ==================== PAYMENT HANDLERS ====================
-        function setupPaymentHandlers() {
-            $('#payCashBtn').on('click', function() {
-                if (cart.length === 0) { showError('Cart is empty'); return; }
-                showModal('Cash Payment', `Process ${$('#totalDesktop').text()} in cash?`, function() {
-                    processSale('cash');
-                });
-            });
+        isProcessing = true;
+        showLoading('Processing sale...');
 
-            $('#payMpesaBtn').on('click', function() {
-                if (cart.length === 0) { showError('Cart is empty'); return; }
-                const val = parseFloat($('#totalDesktop').text().replace(/[^0-9.-]+/g, ''));
-                if (isNaN(val) || val <= 0) return;
-                openMpesaModal(val);
-            });
+        const items = cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.qty
+        }));
 
-            $('#cancelSaleBtn').on('click', function() {
-                if (cart.length === 0) { showError('Cart is empty'); return; }
-                showModal('Cancel Sale', 'Clear cart and cancel?', function() {
-                    cart = [];
-                    updateAllCartUI();
-                    showSuccess('Sale cancelled!');
-                });
-            });
+        const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+        const taxRate = 16;
+        const tax = subtotal * (taxRate / 100);
+        const total = subtotal + tax;
 
-            $('#payCashBtnDrawer').on('click', function(e) {
-                e.stopPropagation();
-                if (cart.length === 0) { showError('Cart is empty'); return; }
-                showModal('Cash Payment', `Process ${$('#totalDrawer').text()} in cash?`, function() {
-                    processSale('cash');
-                    closeCartDrawer();
-                });
-            });
-
-            $('#payMpesaBtnDrawer').on('click', function(e) {
-                e.stopPropagation();
-                if (cart.length === 0) { showError('Cart is empty'); return; }
-                const val = parseFloat($('#totalDrawer').text().replace(/[^0-9.-]+/g, ''));
-                if (isNaN(val) || val <= 0) return;
-                openMpesaModal(val);
-            });
-
-            $('#cancelSaleBtnDrawer').on('click', function(e) {
-                e.stopPropagation();
-                if (cart.length === 0) { showError('Cart is empty'); return; }
-                showModal('Cancel Sale', 'Clear cart and cancel?', function() {
-                    cart = [];
-                    updateAllCartUI();
-                    closeCartDrawer();
-                    showSuccess('Sale cancelled!');
-                });
-            });
-        }
-
-        // ==================== EVENT HANDLERS ====================
-        $(document).on('click', '.product-card', function() {
-            const id = $(this).data('id');
-            const name = $(this).data('name');
-            const price = parseFloat($(this).data('price'));
-            const stock = parseInt($(this).data('stock'));
-            addToCart(id, name, price, stock);
-        });
-
-        $(document).on('click', '.category-chip', function() {
-            $('.category-chip').removeClass('active');
-            $(this).addClass('active');
-            currentCategory = $(this).data('category') || null;
-            loadProducts();
-        });
-
-        $('#floatingCartBtn').on('click', function() {
-            if (cart.length === 0) {
-                showToast('Cart is empty. Add products!', 'info');
-                return;
-            }
-            openCartDrawer();
-        });
-
-        $('#cartDrawerOverlay').on('click', function() {
-            closeCartDrawer();
-        });
-
-        let searchTimeout;
-        $('#searchInput').on('keyup', function(e) {
-            if (e.key === 'Enter') {
-                loadProducts();
-            } else {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(function() {
-                    loadProducts();
-                }, 400);
-            }
-        });
-
-        // ==================== LOGOUT ====================
-        window.logout = function() {
-            showModal('Logout', 'Are you sure you want to logout?', function() {
-                window.location.href = '/logout';
-            });
+        const payload = {
+            items: items,
+            customer_name: 'Walk-in',
+            customer_phone: '',
+            payment_method: method,
+            tax_rate: taxRate,
+            mpesa_transaction_id: method === 'mpesa' ? mpesaTransactionId : null
         };
 
-        // ==================== INIT ====================
-        $(document).ready(function() {
-            setupPaymentHandlers();
-            getCurrentShop();
-            updateAllCartUI();
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
+        try {
+            const result = await apiRequest('/api/sale', 'POST', payload);
 
-            $(window).on('scroll', function() {
-                $('#topBar').toggleClass('scrolled', $(this).scrollTop() > 10);
+            if (!result.success) {
+                throw new Error(result.error || 'Sale creation failed');
+            }
+
+            const orderNumber = result.order_number;
+            const receiptData = result.receipt_data || {
+                order_number: orderNumber,
+                receipt_number: result.receipt_number || orderNumber,
+                date: new Date().toLocaleString(),
+                customer_name: 'Walk-in',
+                items: items,
+                subtotal: subtotal,
+                tax: tax,
+                total: total,
+                payment_method: method === 'mpesa' ? 'M-Pesa' : 'Cash',
+                shop_name: currentShopName || 'General Shop',
+                footer: 'Thank you for shopping with us!'
+            };
+
+            // Update local stock
+            cart.forEach(item => {
+                const product = DB.find('products', item.id);
+                if (product) {
+                    const newStock = Math.max(0, product.stock_quantity - item.qty);
+                    DB.update('products', item.id, { stock_quantity: newStock });
+                }
             });
 
-            setInterval(function() {
-                $.ajax({
-                    url: '/api/current-user',
-                    method: 'GET',
-                    error: function() {
-                        window.location.href = '/';
-                    }
-                });
-            }, 60000);
+            // Save sale locally (optional, but keeps history)
+            DB.add('sales', {
+                order_number: orderNumber,
+                customer_name: 'Walk-in',
+                item_count: cart.reduce((s, i) => s + i.qty, 0),
+                total: total,
+                paid: total,
+                balance: 0,
+                payment_method: method,
+                status: 'completed',
+                date: new Date().toISOString(),
+                cashier_name: currentUser?.username || 'Admin'
+            });
+
+            const savedCart = [...cart];
+            cart = [];
+            updateAllCartUI();
+            loadProducts();
+            closeCartDrawer();
+
+            hideLoading();
+            isProcessing = false;
+            showSuccess(`✅ Sale complete!\nOrder: ${orderNumber}\nTotal: ${formatKsh(total)}`);
+
+            printTwoReceipts(receiptData, orderNumber);
+            return true;
+
+        } catch (error) {
+            hideLoading();
+            isProcessing = false;
+            showError(`Sale failed: ${error.message}`);
+            return false;
+        }
+    }
+
+    // ==================== PAYMENT HANDLERS ====================
+    function setupPaymentHandlers() {
+        $('#payCashBtn').on('click', function() {
+            if (cart.length === 0) { showError('Cart is empty'); return; }
+            showModal('Cash Payment', `Process ${$('#totalDesktop').text()} in cash?`, function() {
+                processSale('cash');
+            });
         });
-    </script>
+
+        $('#payMpesaBtn').on('click', function() {
+            if (cart.length === 0) { showError('Cart is empty'); return; }
+            const val = parseFloat($('#totalDesktop').text().replace(/[^0-9.-]+/g, ''));
+            if (isNaN(val) || val <= 0) return;
+            openMpesaModal(val);
+        });
+
+        $('#cancelSaleBtn').on('click', function() {
+            if (cart.length === 0) { showError('Cart is empty'); return; }
+            showModal('Cancel Sale', 'Clear cart and cancel?', function() {
+                cart = [];
+                updateAllCartUI();
+                showSuccess('Sale cancelled!');
+            });
+        });
+
+        $('#payCashBtnDrawer').on('click', function(e) {
+            e.stopPropagation();
+            if (cart.length === 0) { showError('Cart is empty'); return; }
+            showModal('Cash Payment', `Process ${$('#totalDrawer').text()} in cash?`, function() {
+                processSale('cash');
+                closeCartDrawer();
+            });
+        });
+
+        $('#payMpesaBtnDrawer').on('click', function(e) {
+            e.stopPropagation();
+            if (cart.length === 0) { showError('Cart is empty'); return; }
+            const val = parseFloat($('#totalDrawer').text().replace(/[^0-9.-]+/g, ''));
+            if (isNaN(val) || val <= 0) return;
+            openMpesaModal(val);
+        });
+
+        $('#cancelSaleBtnDrawer').on('click', function(e) {
+            e.stopPropagation();
+            if (cart.length === 0) { showError('Cart is empty'); return; }
+            showModal('Cancel Sale', 'Clear cart and cancel?', function() {
+                cart = [];
+                updateAllCartUI();
+                closeCartDrawer();
+                showSuccess('Sale cancelled!');
+            });
+        });
+    }
+
+    // ==================== EVENT HANDLERS ====================
+    $(document).on('click', '.product-card', function() {
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+        const price = parseFloat($(this).data('price'));
+        const stock = parseInt($(this).data('stock'));
+        addToCart(id, name, price, stock);
+    });
+
+    $(document).on('click', '.category-chip', function() {
+        $('.category-chip').removeClass('active');
+        $(this).addClass('active');
+        currentCategory = $(this).data('category') || null;
+        loadProducts();
+    });
+
+    $('#floatingCartBtn').on('click', function() {
+        if (cart.length === 0) {
+            showToast('Cart is empty. Add products!', 'info');
+            return;
+        }
+        openCartDrawer();
+    });
+
+    $('#cartDrawerOverlay').on('click', function() {
+        closeCartDrawer();
+    });
+
+    let searchTimeout;
+    $('#searchInput').on('keyup', function(e) {
+        if (e.key === 'Enter') {
+            loadProducts();
+        } else {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(function() {
+                loadProducts();
+            }, 400);
+        }
+    });
+
+    // ==================== LOGOUT ====================
+    window.logout = function() {
+        showModal('Logout', 'Are you sure you want to logout?', function() {
+            window.location.href = '/logout';
+        });
+    };
+
+    // ==================== PWA INSTALL PROMPT ====================
+    $(function() {
+        let deferredPrompt = null;
+        const installBtn = document.getElementById('installAppBtn');
+
+        if (!installBtn) return;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Show button only if not already installed
+            if (!window.matchMedia('(display-mode: standalone)').matches) {
+                installBtn.style.display = 'inline-flex';
+            }
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) {
+                if (window.matchMedia('(display-mode: standalone)').matches) {
+                    installBtn.style.display = 'none';
+                    return;
+                }
+                showToast('Installation not available. Use browser menu.', 'info');
+                return;
+            }
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                showToast('App installed successfully! 🎉', 'success');
+                installBtn.style.display = 'none';
+            } else {
+                showToast('Installation cancelled.', 'info');
+            }
+            deferredPrompt = null;
+        });
+
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            installBtn.style.display = 'none';
+        }
+
+        window.addEventListener('appinstalled', () => {
+            showToast('App installed successfully! 🎉', 'success');
+            installBtn.style.display = 'none';
+        });
+    });
+
+    // ==================== INIT ====================
+    $(document).ready(function() {
+        DB.init();
+
+        // Load user info from session
+        fetch('/api/current-user', { credentials: 'include' })
+            .then(res => res.json())
+            .then(user => {
+                if (user.id) {
+                    currentUser = user;
+                    if (user.shop_id) {
+                        currentShopId = user.shop_id;
+                        currentShopName = user.shop_name || 'Shop';
+                        $('#shopName').text(currentShopName);
+                        loadCategories();
+                        loadProducts();
+                    } else {
+                        fetch('/api/shops', { credentials: 'include' })
+                            .then(res => res.json())
+                            .then(shops => {
+                                if (shops && shops.length > 0) {
+                                    const shop = shops[0];
+                                    fetch(`/api/shops/${shop.id}/select`, {
+                                        method: 'POST',
+                                        credentials: 'include',
+                                        headers: { 'Content-Type': 'application/json' }
+                                    }).then(() => {
+                                        currentShopId = shop.id;
+                                        currentShopName = shop.name;
+                                        $('#shopName').text(shop.name);
+                                        loadCategories();
+                                        loadProducts();
+                                    });
+                                } else {
+                                    $('#noShopWarning').show();
+                                    $('#productsGrid').html('<div class="empty-state"><i class="fas fa-store-alt-slash"></i><p>No shops available. Please create a shop in admin.</p></div>');
+                                }
+                            });
+                    }
+                }
+            })
+            .catch(() => {
+                window.location.href = '/';
+            });
+
+        setupPaymentHandlers();
+        updateAllCartUI();
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
+        $(window).on('scroll', function() {
+            $('#topBar').toggleClass('scrolled', $(this).scrollTop() > 10);
+        });
+
+        $('#backToAdminBtn').on('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/admin';
+        });
+
+        setInterval(function() {
+            loadProducts();
+        }, 10000);
+    });
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('✅ SW registered:', reg))
+      .catch(err => console.error('❌ SW registration failed:', err));
+  }
+</script>
 </body>
 </html>

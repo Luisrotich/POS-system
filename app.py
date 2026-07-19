@@ -3200,7 +3200,69 @@ def uploaded_file(filename):
     if not os.path.exists(filepath):
         return '', 404
     return send_file(filepath)
+# ==================== PWA ROUTES ====================
 
+@app.route('/manifest.json')
+def serve_manifest():
+    manifest = {
+        "name": "POS Cashier",
+        "short_name": "Cashier",
+        "description": "Point of Sale system for cashiers",
+        "start_url": "/pos",
+        "display": "standalone",
+        "background_color": "#0f1724",
+        "theme_color": "#0f1724",
+        "orientation": "portrait",
+        "icons": [
+            {
+                "src": "/static/logo.jpeg",
+                "sizes": "192x192",
+                "type": "image/jpeg"
+            },
+            {
+                "src": "/static/logo.jpeg",
+                "sizes": "512x512",
+                "type": "image/jpeg"
+            }
+        ]
+    }
+    return jsonify(manifest)
+
+
+@app.route('/sw.js')
+def serve_sw():
+    sw_js = """
+const CACHE_NAME = 'pos-cache-v1';
+const urlsToCache = ['/pos'];
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+      .then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.filter(name => name !== CACHE_NAME)
+          .map(name => caches.delete(name))
+      );
+    }).then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+      .catch(() => new Response('Offline – please connect to the internet', { status: 503 }))
+  );
+});
+"""
+    return app.response_class(sw_js, mimetype='application/javascript')
 # ==================== RUN SERVER ====================
 if __name__ == '__main__':
     print("\n" + "="*60)

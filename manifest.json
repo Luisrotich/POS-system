@@ -1,11 +1,11 @@
 {
-  "name": "Multi-Shop POS Admin",
-  "short_name": "POS Admin",
-  "description": "Manage multiple shops from one dashboard",
-  "start_url": "/admin",
+  "name": "POS Cashier",
+  "short_name": "Cashier",
+  "description": "Point of Sale system for cashiers",
+  "start_url": "/pos",
   "display": "standalone",
-  "background_color": "#1e3c72",
-  "theme_color": "#1e3c72",
+  "background_color": "#0f1724",
+  "theme_color": "#0f1724",
   "orientation": "portrait",
   "icons": [
     {
