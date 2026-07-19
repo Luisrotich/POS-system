@@ -3215,12 +3215,12 @@ def serve_manifest():
         "orientation": "portrait",
         "icons": [
             {
-                "src": "/static/logo.jpeg",
+                "src": "/templates/logo.jpeg",
                 "sizes": "192x192",
                 "type": "image/jpeg"
             },
             {
-                "src": "/static/logo.jpeg",
+                "src": "/templates/logo.jpeg",
                 "sizes": "512x512",
                 "type": "image/jpeg"
             }
