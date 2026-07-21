@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* ===== ROOT VARIABLES ===== */
+        /* ===== ROOT VARIABLES (unchanged) ===== */
         :root {
             --primary: #0f1724;
             --accent: #6c5ce7;
@@ -48,7 +48,7 @@
         ::-webkit-scrollbar-track { background:transparent; }
         ::-webkit-scrollbar-thumb { background:var(--gray-300); border-radius:20px; }
 
-        /* ===== SIDEBAR ===== */
+        /* ===== SIDEBAR (unchanged) ===== */
         .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:999; backdrop-filter:blur(4px); }
         .sidebar-overlay.active { display:block; }
         .sidebar {
@@ -126,7 +126,7 @@
         .sidebar .nav-link .badge-nav.accent { background:var(--accent); }
         .sidebar-divider { border-top:1px solid rgba(255,255,255,0.06); margin:6px 20px; }
 
-        /* ===== TOP BAR ===== */
+        /* ===== TOP BAR (unchanged) ===== */
         .top-bar {
             background: rgba(255,255,255,0.92);
             backdrop-filter: blur(20px);
@@ -158,13 +158,13 @@
         .top-bar .top-right .user-btn .chevron { font-size:0.6rem; opacity:0.5; }
         .top-bar .top-right .shop-badge-top { background:var(--success); color:white; padding:3px 14px; border-radius:50px; font-size:0.65rem; font-weight:600; white-space:nowrap; display:inline-block; }
 
-        /* ===== MAIN CONTENT ===== */
+        /* ===== MAIN CONTENT (unchanged) ===== */
         .main-content { margin-left:var(--sidebar-width); min-height:100vh; transition:margin-left var(--transition); padding:0; }
         .main-content.sidebar-closed { margin-left:0; }
         .main-content.sidebar-collapsed { margin-left:var(--sidebar-collapsed); }
         .content-wrapper { padding:20px 24px 40px; }
 
-        /* ===== STAT CARDS ===== */
+        /* ===== STAT CARDS (unchanged) ===== */
         .stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:24px; }
         .stat-card { background:white; border-radius:var(--radius-md); padding:18px 20px; border:1px solid var(--gray-200); transition:all 0.3s; cursor:default; position:relative; overflow:hidden; }
         .stat-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:var(--gray-300); }
@@ -173,14 +173,14 @@
         .stat-card .stat-label { color:var(--gray-400); font-size:0.75rem; font-weight:500; margin-top:2px; }
         .stat-card .stat-bg { position:absolute; right:-20px; bottom:-20px; font-size:5rem; opacity:0.04; color:var(--primary); }
 
-        /* ===== CARDS ===== */
+        /* ===== CARDS (unchanged) ===== */
         .card-custom { background:white; border-radius:var(--radius-md); padding:18px 20px; border:1px solid var(--gray-200); margin-bottom:20px; transition:var(--transition); }
         .card-custom:hover { border-color:var(--gray-300); }
         .card-custom .card-header-custom { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--gray-100); flex-wrap:wrap; gap:8px; }
         .card-custom .card-header-custom h6 { font-weight:600; margin:0; color:var(--primary); font-size:0.9rem; display:flex; align-items:center; gap:8px; }
         .card-custom .card-header-custom h6 i { color:var(--accent); }
 
-        /* ===== BUTTONS ===== */
+        /* ===== BUTTONS (unchanged) ===== */
         .btn-primary-custom { background:var(--accent-gradient); border:none; border-radius:var(--radius-sm); padding:6px 18px; font-weight:600; font-size:0.8rem; color:white; transition:all 0.3s; white-space:nowrap; cursor:pointer; }
         .btn-primary-custom:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(108,92,231,0.35); color:white; }
         .btn-success-custom { background:linear-gradient(135deg,var(--success),#00a381); border:none; border-radius:var(--radius-sm); padding:6px 18px; font-weight:600; font-size:0.8rem; color:white; transition:all 0.3s; cursor:pointer; }
@@ -200,7 +200,7 @@
         .btn-sm-custom.neutral { background:var(--gray-100); color:var(--gray-500); }
         .btn-sm-custom.neutral:hover { background:var(--gray-200); }
 
-        /* ===== TABLES ===== */
+        /* ===== TABLES (unchanged) ===== */
         .table-custom { font-size:0.8rem; border-radius:var(--radius-sm); overflow:hidden; }
         .table-custom thead th { background:var(--gray-50); border-bottom:2px solid var(--gray-200); font-weight:600; color:var(--gray-600); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.4px; padding:10px 12px; white-space:nowrap; }
         .table-custom tbody td { padding:10px 12px; vertical-align:middle; font-size:0.8rem; border-bottom:1px solid var(--gray-100); word-break:break-word; }
@@ -208,7 +208,7 @@
         .table-custom tbody tr:last-child td { border-bottom:none; }
         .table-responsive { -webkit-overflow-scrolling:touch; }
 
-        /* ===== BADGES ===== */
+        /* ===== BADGES (unchanged) ===== */
         .badge-status { padding:3px 12px; border-radius:50px; font-weight:500; font-size:0.65rem; display:inline-block; white-space:nowrap; }
         .badge-status.success { background:#d1fae5; color:#059669; }
         .badge-status.warning { background:#fef3c7; color:#d97706; }
@@ -224,12 +224,12 @@
         .role-badge.storekeeper { background:#fce4ec; color:#dc2626; }
         .role-badge.custom { background:#e0e7ff; color:#4338ca; }
 
-        /* ===== IMAGE CELL ===== */
+        /* ===== IMAGE CELL (unchanged) ===== */
         .img-cell { width:36px; height:36px; border-radius:var(--radius-sm); object-fit:cover; border:1px solid var(--gray-200); background:var(--gray-50); }
         .image-preview { width:120px; height:120px; border-radius:var(--radius-md); object-fit:cover; border:2px dashed var(--gray-300); cursor:pointer; transition:all 0.3s; }
         .image-preview:hover { border-color:var(--accent); transform:scale(1.02); }
 
-        /* ===== MODALS ===== */
+        /* ===== MODALS (unchanged) ===== */
         .modal-content-custom { border-radius:var(--radius-lg); border:none; box-shadow:var(--shadow-lg); overflow:hidden; }
         .modal-header-custom { background:var(--primary); color:white; padding:16px 24px; border-bottom:none; }
         .modal-header-custom .btn-close { background:rgba(255,255,255,0.2); border-radius:50%; opacity:1; padding:6px; transition:var(--transition); }
@@ -241,7 +241,7 @@
         .form-control-custom:focus, .form-select-custom:focus { border-color:var(--accent); box-shadow:0 0 0 4px rgba(108,92,231,0.08); }
         .form-label { font-size:0.8rem; font-weight:600; color:var(--gray-600); margin-bottom:4px; }
 
-        /* ===== PERMISSION GRID ===== */
+        /* ===== PERMISSION GRID (unchanged) ===== */
         .permission-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px 16px; padding:8px 0; }
         .permission-grid .perm-item { display:flex; align-items:center; gap:6px; font-size:0.8rem; padding:4px 0; }
         .permission-grid .perm-item input[type="checkbox"] { width:16px; height:16px; accent-color:var(--accent); cursor:pointer; flex-shrink:0; }
@@ -254,7 +254,7 @@
         .permission-grid .perm-item .perm-badge.delete { background:#fee2e2; color:#dc2626; }
         .permission-section-title { font-weight:600; font-size:0.75rem; color:var(--gray-500); margin-top:8px; padding:4px 0 2px; border-bottom:1px solid var(--gray-100); }
 
-        /* ===== TOASTS ===== */
+        /* ===== TOASTS (unchanged) ===== */
         .toast-container-custom { position:fixed; top:76px; right:16px; z-index:9999; display:flex; flex-direction:column; gap:8px; max-width:380px; width:90%; }
         .toast-item { padding:14px 18px; border-radius:var(--radius-sm); background:white; box-shadow:var(--shadow-lg); display:flex; align-items:center; gap:10px; font-size:0.85rem; animation:slideInRight 0.4s cubic-bezier(0.32,0.72,0,1); border:1px solid var(--gray-200); border-left:4px solid var(--accent); }
         @keyframes slideInRight { from { transform:translateX(120%); opacity:0; } to { transform:translateX(0); opacity:1; } }
@@ -264,20 +264,20 @@
         .toast-item.warning { border-left-color:var(--warning); }
         .toast-item .toast-close { background:none; border:none; font-size:1.1rem; color:var(--gray-400); cursor:pointer; margin-left:auto; padding:0 4px; }
 
-        /* ===== LOADING ===== */
+        /* ===== LOADING (unchanged) ===== */
         .loading-overlay { position:fixed; inset:0; background:rgba(255,255,255,0.85); backdrop-filter:blur(8px); z-index:9999; display:flex; align-items:center; justify-content:center; opacity:0; visibility:hidden; transition:all 0.3s ease; }
         .loading-overlay.active { opacity:1; visibility:visible; }
         .loading-content { text-align:center; }
         .loading-spinner { width:44px; height:44px; border:3px solid var(--gray-200); border-top-color:var(--accent); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 16px; }
         @keyframes spin { to { transform:rotate(360deg); } }
 
-        /* ===== EMPTY STATE ===== */
+        /* ===== EMPTY STATE (unchanged) ===== */
         .empty-state { text-align:center; padding:48px 20px; color:var(--gray-400); }
         .empty-state i { font-size:3rem; color:var(--gray-200); margin-bottom:12px; }
         .empty-state p { font-weight:500; color:var(--gray-500); }
         .empty-state small { font-size:0.8rem; }
 
-        /* ===== PAYMENT SUMMARY ===== */
+        /* ===== PAYMENT SUMMARY (unchanged) ===== */
         .payment-summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-bottom:16px; }
         .payment-summary-grid .ps-card { background:var(--gray-50); border-radius:var(--radius-sm); padding:14px 16px; border:1px solid var(--gray-200); text-align:center; }
         .payment-summary-grid .ps-card .ps-value { font-size:1.2rem; font-weight:700; color:var(--primary); }
@@ -317,7 +317,7 @@
         .shop-card-item .shop-status-badge.active { background:#d1fae5; color:#059669; }
         .shop-card-item .shop-status-badge.inactive { background:#fee2e2; color:#dc2626; }
 
-        /* ===== RESPONSIVE ===== */
+        /* ===== RESPONSIVE (unchanged) ===== */
         @media (max-width:992px) {
             :root { --sidebar-width:280px; }
             .sidebar { transform:translateX(-100%); }
@@ -463,7 +463,9 @@
             <div class="sidebar-divider"></div>
             <div class="nav-section">
                 <div class="nav-section-title">Payments</div>
+                <!--
                 <a class="nav-link" href="#" data-page="payments"><i class="fas fa-money-bill-wave"></i> <span>Payment Summary</span></a>
+                -->
                 <a class="nav-link" href="#" data-page="mpesa-logs"><i class="fas fa-mobile-alt"></i> <span>M-Pesa Logs</span></a>
             </div>
             <div class="sidebar-divider"></div>
@@ -519,7 +521,7 @@
         <div class="content-wrapper" id="mainContent"><div class="text-center py-5"><div class="loading-spinner" style="margin:0 auto 16px;"></div><p class="text-muted">Loading dashboard...</p></div></div>
     </div>
 
-    <!-- ===== MODALS ===== -->
+    <!-- ===== MODALS (unchanged) ===== -->
     <!-- Shop Modal -->
     <div class="modal fade" id="shopModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -795,199 +797,62 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // ==================== DATA LAYER (localStorage) ====================
-        const DB = {
-            get(key, def) { try { const d = localStorage.getItem('pos_' + key); return d ? JSON.parse(d) : def; } catch (
-                    e) { return def; } },
-            set(key, val) { localStorage.setItem('pos_' + key, JSON.stringify(val)); },
-            init() {
-                if (!this.get('initialized', false)) {
-                    this.set('shops', [
-                        { id: 1, name: 'Main Store', address: 'Nairobi, Kenya', phone: '+254 700 000 001',
-                            email: 'main@store.com', currency: 'KES', tax_rate: 16, is_active: 1, slug: 'main-store' },
-                        { id: 2, name: 'Branch A', address: 'Mombasa, Kenya', phone: '+254 700 000 002',
-                            email: 'brancha@store.com', currency: 'KES', tax_rate: 16, is_active: 1, slug: 'branch-a' }
-                    ]);
-                    this.set('categories', [
-                        { id: 1, name: 'Electronics', color: '#6c5ce7', icon: '📱' },
-                        { id: 2, name: 'Clothing', color: '#00b894', icon: '👕' },
-                        { id: 3, name: 'Food', color: '#fdcb6e', icon: '🍔' },
-                        { id: 4, name: 'Books', color: '#74b9ff', icon: '📚' },
-                        { id: 5, name: 'Tools', color: '#ff6b6b', icon: '🔧' }
-                    ]);
-                    this.set('brands', [
-                        { id: 1, name: 'Samsung', description: 'Electronics giant' },
-                        { id: 2, name: 'Nike', description: 'Sportswear' },
-                        { id: 3, name: 'Kenya Tea', description: 'Local tea brand' },
-                        { id: 4, name: 'Penguin', description: 'Publishing house' }
-                    ]);
-                    this.set('units', [
-                        { id: 1, name: 'Piece', code: 'pc' },
-                        { id: 2, name: 'Kilogram', code: 'kg' },
-                        { id: 3, name: 'Litre', code: 'l' },
-                        { id: 4, name: 'Pack', code: 'pk' },
-                        { id: 5, name: 'Carton', code: 'ctn' }
-                    ]);
-                    this.set('suppliers', [
-                        { id: 1, name: 'Tech Distributors Ltd', phone: '+254 700 100 001',
-                            email: 'info@techdist.co.ke', address: 'Nairobi, Kenya', notes: 'Main electronics supplier' },
-                        { id: 2, name: 'Fashion Hub', phone: '+254 700 100 002', email: 'sales@fashionhub.co.ke',
-                            address: 'Mombasa, Kenya', notes: 'Clothing and accessories' },
-                        { id: 3, name: 'Fresh Foods Co', phone: '+254 700 100 003', email: 'orders@freshfoods.co.ke',
-                            address: 'Nairobi, Kenya', notes: 'Perishable goods' }
-                    ]);
-                    this.set('customers', [
-                        { id: 1, name: 'John Doe', phone: '+254 712 345 678', email: 'john@example.com',
-                            address: 'Nairobi', loyalty_points: 120, credit_limit: 5000, customer_group: 'vip' },
-                        { id: 2, name: 'Jane Smith', phone: '+254 723 456 789', email: 'jane@example.com',
-                            address: 'Mombasa', loyalty_points: 45, credit_limit: 2000, customer_group: 'regular' },
-                        { id: 3, name: 'Peter Mwangi', phone: '+254 734 567 890', email: 'peter@example.com',
-                            address: 'Kisumu', loyalty_points: 200, credit_limit: 10000, customer_group: 'wholesale' }
-                    ]);
-                    this.set('products', [
-                        { id: 1, name: 'Smartphone X', sku: 'PH-001', barcode: '8901234567890',
-                            category_id: 1, brand_id: 1, buying_price: 25000, selling_price: 35000,
-                            stock_quantity: 15, low_stock_threshold: 5, tax_rate: 16, discount: 0,
-                            supplier: 'Tech Distributors Ltd', expiry_date: '', unit: 'piece',
-                            description: 'Latest model with 6.5" display', image_url: '' },
-                        { id: 2, name: 'Running Shoes', sku: 'SH-002', barcode: '8901234567891',
-                            category_id: 2, brand_id: 2, buying_price: 3000, selling_price: 5500,
-                            stock_quantity: 20, low_stock_threshold: 5, tax_rate: 16, discount: 10,
-                            supplier: 'Fashion Hub', expiry_date: '', unit: 'piece',
-                            description: 'Comfortable running shoes', image_url: '' },
-                        { id: 3, name: 'Tea Bags 100ct', sku: 'FD-003', barcode: '8901234567892',
-                            category_id: 3, brand_id: 3, buying_price: 150, selling_price: 250,
-                            stock_quantity: 50, low_stock_threshold: 10, tax_rate: 16, discount: 0,
-                            supplier: 'Fresh Foods Co', expiry_date: '2027-12-31', unit: 'pack',
-                            description: 'Premium Kenyan tea', image_url: '' },
-                        { id: 4, name: 'Novel - The Journey', sku: 'BK-004', barcode: '8901234567893',
-                            category_id: 4, brand_id: 4, buying_price: 400, selling_price: 800,
-                            stock_quantity: 30, low_stock_threshold: 5, tax_rate: 16, discount: 5,
-                            supplier: 'Tech Distributors Ltd', expiry_date: '', unit: 'piece',
-                            description: 'Bestselling novel', image_url: '' },
-                        { id: 5, name: 'Cordless Drill', sku: 'TL-005', barcode: '8901234567894',
-                            category_id: 5, brand_id: 1, buying_price: 4500, selling_price: 7500,
-                            stock_quantity: 8, low_stock_threshold: 3, tax_rate: 16, discount: 0,
-                            supplier: 'Tech Distributors Ltd', expiry_date: '', unit: 'piece',
-                            description: '18V cordless drill', image_url: '' },
-                        { id: 6, name: 'T-shirt (White)', sku: 'AP-006', barcode: '8901234567895',
-                            category_id: 2, brand_id: 2, buying_price: 500, selling_price: 1200,
-                            stock_quantity: 25, low_stock_threshold: 5, tax_rate: 16, discount: 0,
-                            supplier: 'Fashion Hub', expiry_date: '', unit: 'piece',
-                            description: 'Cotton t-shirt', image_url: '' }
-                    ]);
-                    this.set('sales', [
-                        { id: 1, order_number: 'ORD-20260717152839', customer_name: 'John Doe',
-                            item_count: 2, total: 36200, paid: 36200, balance: 0, payment_method: 'mpesa',
-                            status: 'completed', date: '2026-07-17T12:28:39', cashier_name: 'Admin' },
-                        { id: 2, order_number: 'ORD-20260717152108', customer_name: 'Jane Smith',
-                            item_count: 1, total: 232, paid: 232, balance: 0, payment_method: 'cash',
-                            status: 'completed', date: '2026-07-17T12:21:08', cashier_name: 'Admin' },
-                        { id: 3, order_number: 'ORD-20260615180955', customer_name: 'Peter Mwangi',
-                            item_count: 1, total: 232, paid: 232, balance: 0, payment_method: 'mpesa',
-                            status: 'completed', date: '2026-06-15T15:09:55', cashier_name: 'Admin' },
-                        { id: 4, order_number: 'ORD-20260615165427', customer_name: 'John Doe',
-                            item_count: 3, total: 1160, paid: 1000, balance: 160, payment_method: 'cash',
-                            status: 'pending', date: '2026-06-15T13:54:27', cashier_name: 'Admin' },
-                        { id: 5, order_number: 'ORD-20260615165334', customer_name: 'Jane Smith',
-                            item_count: 2, total: 1160, paid: 1160, balance: 0, payment_method: 'mpesa',
-                            status: 'completed', date: '2026-06-15T13:53:34', cashier_name: 'Admin' }
-                    ]);
-                    this.set('users', [
-                        { id: 1, username: 'admin', full_name: 'System Admin', email: 'admin@pos.com',
-                            password: 'admin123', role: 'admin', shop_id: null, commission_rate: 0,
-                            is_admin: true, permissions: {} },
-                        { id: 2, username: 'cashier1', full_name: 'Cashier One', email: 'cashier@pos.com',
-                            password: 'cashier123', role: 'cashier', shop_id: 1, commission_rate: 2,
-                            is_admin: false, permissions: { products: { view: true, add: true, edit: true,
-                                    delete: false }, categories: { view: true, add: false, edit: false,
-                                    delete: false }, shops: { view: false, add: false, edit: false,
-                                    delete: false }, sales: { view: true, add: true, edit: false,
-                                    delete: false }, payments: { view: true, add: false, edit: false,
-                                    delete: false }, users: { view: false, add: false, edit: false,
-                                    delete: false } } }
-                    ]);
-                    this.set('expenses', [
-                        { id: 1, description: 'Office Rent', amount: 50000, category: 'rent',
-                            date: '2026-07-01', notes: 'Monthly rent' },
-                        { id: 2, description: 'Electricity Bill', amount: 8500, category: 'utilities',
-                            date: '2026-07-05', notes: 'KPLC bill' },
-                        { id: 3, description: 'Staff Salaries', amount: 120000, category: 'salaries',
-                            date: '2026-07-25', notes: 'Monthly payroll' }
-                    ]);
-                    this.set('mpesa_transactions', [
-                        { id: 1, receipt_number: 'MPESA-001', phone_number: '254712345678',
-                            amount: 36200, status: 'completed', checkout_request_id: 'CHK-001',
-                            date: '2026-07-17T12:30:00' },
-                        { id: 2, receipt_number: 'MPESA-002', phone_number: '254723456789',
-                            amount: 232, status: 'completed', checkout_request_id: 'CHK-002',
-                            date: '2026-06-15T15:10:00' },
-                        { id: 3, receipt_number: 'MPESA-003', phone_number: '254734567890',
-                            amount: 1160, status: 'pending', checkout_request_id: 'CHK-003',
-                            date: '2026-06-15T13:55:00' }
-                    ]);
-                    this.set('payments', [
-                        { id: 1, order_number: 'ORD-20260717152839', supplier_name: 'Tech Distributors Ltd',
-                            amount: 36200, paid: 36200, balance: 0, date: '2026-07-17' },
-                        { id: 2, order_number: 'ORD-20260717152108', supplier_name: 'Fashion Hub',
-                            amount: 232, paid: 232, balance: 0, date: '2026-07-17' },
-                        { id: 3, order_number: 'ORD-20260615180955', supplier_name: 'Fresh Foods Co',
-                            amount: 232, paid: 232, balance: 0, date: '2026-06-15' },
-                        { id: 4, order_number: 'ORD-20260615165427', supplier_name: 'Tech Distributors Ltd',
-                            amount: 1160, paid: 1000, balance: 160, date: '2026-06-15' }
-                    ]);
-                    this.set('settings', {
-                        business_name: 'General Shop',
-                        logo: '',
-                        phone: '+254 700 000 000',
-                        email: 'info@generalshop.com',
-                        address: 'Nairobi, Kenya',
-                        pin: 'A123456789',
-                        currency: 'KES',
-                        tax_rate: 16,
-                        footer: 'Thank you for shopping with us!',
-                        default_commission: 0,
-                        timezone: 'Africa/Nairobi'
-                    });
-                    this.set('initialized', true);
+        // ==================== BACKEND API HELPER ====================
+        const API = {
+            async request(url, method = 'GET', body = null, formData = false) {
+                const options = {
+                    method,
+                    credentials: 'include'
+                };
+                if (formData) {
+                    // For multipart/form-data (product images)
+                    options.body = body;
+                } else {
+                    options.headers = { 'Content-Type': 'application/json' };
+                    if (body) options.body = JSON.stringify(body);
                 }
+                const res = await fetch(url, options);
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    throw new Error(err.error || `HTTP ${res.status}`);
+                }
+                return res.json();
             },
-            nextId(key) { const items = this.get(key, []); const maxId = items.reduce((max, i) => i.id > max ? i.id : max,
-                    0); return maxId + 1; },
-            add(key, item) { const items = this.get(key, []); item.id = this.nextId(key); items.push(item); this.set(key,
-                    items); return item; },
-            update(key, id, data) { const items = this.get(key, []); const idx = items.findIndex(i => i.id === id); if (
-                    idx === -1) return null; items[idx] = { ...items[idx], ...data }; this.set(key, items); return items[
-                    idx]; },
-            delete(key, id) { const items = this.get(key, []); const filtered = items.filter(i => i.id !== id); this.set(
-                    key, filtered); return filtered; },
-            find(key, id) { const items = this.get(key, []); return items.find(i => i.id === id) || null; },
-            all(key) { return this.get(key, []); }
+            get(url) { return this.request(url); },
+            post(url, data) { return this.request(url, 'POST', data); },
+            put(url, data) { return this.request(url, 'PUT', data); },
+            delete(url) { return this.request(url, 'DELETE'); },
+            postForm(url, data) { return this.request(url, 'POST', data, true); },
+            putForm(url, data) { return this.request(url, 'PUT', data, true); }
         };
 
         // ==================== GLOBALS ====================
         let salesChart = null;
         let confirmCallback = null;
-        let currentShopId = 1;
+        let currentShopId = null;
 
         // ==================== UTILITIES ====================
         function formatKsh(amount) { return 'Ksh ' + parseFloat(amount || 0).toFixed(2); }
 
-        function escapeHtml(str) { if (!str) return ''; return String(str).replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;',
-                '>': '&gt;' })[m] || m); }
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m] || m);
+        }
 
-        function showToast(msg, type) {
-            type = type || 'info';
+        function showToast(msg, type = 'info') {
             const colors = { success: '#00b894', error: '#ff6b6b', warning: '#fdcb6e', info: '#6c5ce7' };
-            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', warning: 'fa-exclamation-triangle',
-                info: 'fa-info-circle' };
+            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
             const toast = document.createElement('div');
             toast.className = 'toast-item ' + type;
             toast.innerHTML =
                 `<i class="fas ${icons[type]||'fa-info-circle'}" style="color:${colors[type]||'#6c5ce7'};font-size:1.1rem;flex-shrink:0;"></i><span style="flex:1;">${msg}</span><button class="toast-close" onclick="this.parentElement.remove()">&times;</button>`;
             document.getElementById('toastContainer').appendChild(toast);
-            setTimeout(() => { if (toast.parentElement) { toast.style.animation = 'slideOutRight 0.4s ease forwards';
-                    setTimeout(() => toast.remove(), 400); } }, 4000);
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.style.animation = 'slideOutRight 0.4s ease forwards';
+                    setTimeout(() => toast.remove(), 400);
+                }
+            }, 4000);
         }
 
         function showConfirm(msg, cb) {
@@ -995,17 +860,24 @@
             confirmCallback = cb;
             new bootstrap.Modal(document.getElementById('confirmModal')).show();
         }
+
         document.getElementById('confirmOkBtn').addEventListener('click', function() {
-            if (confirmCallback) { const cb = confirmCallback;
+            if (confirmCallback) {
+                const cb = confirmCallback;
                 confirmCallback = null;
-                cb(); }
+                cb();
+            }
             bootstrap.Modal.getInstance(document.getElementById('confirmModal')).hide();
         });
 
-        function showLoading(msg) { document.getElementById('loadingMessage').textContent = msg || 'Processing...';
-            document.getElementById('loadingOverlay').classList.add('active'); }
+        function showLoading(msg) {
+            document.getElementById('loadingMessage').textContent = msg || 'Processing...';
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
 
-        function hideLoading() { document.getElementById('loadingOverlay').classList.remove('active'); }
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
 
         function previewImage(input) {
             if (input.files && input.files[0]) {
@@ -1016,24 +888,28 @@
         }
 
         function getStatusBadge(status) {
-            const map = { completed: 'success', pending: 'warning', processing: 'info', cancelled: 'danger',
-                failed: 'danger', paid: 'success', unpaid: 'warning', active: 'success', inactive: 'danger',
-                refunded: 'info', voided: 'neutral' };
+            const map = {
+                completed: 'success', pending: 'warning', processing: 'info',
+                cancelled: 'danger', failed: 'danger', paid: 'success',
+                unpaid: 'warning', active: 'success', inactive: 'danger',
+                refunded: 'info', voided: 'neutral'
+            };
             const cls = map[status] || 'info';
             return `<span class="badge-status ${cls}">${String(status).charAt(0).toUpperCase()+String(status).slice(1)}</span>`;
         }
 
         function getRoleBadge(role) {
-            const map = { admin: 'admin', cashier: 'cashier', manager: 'manager', accountant: 'accountant',
-                storekeeper: 'storekeeper', custom: 'custom' };
+            const map = { admin: 'admin', cashier: 'cashier', manager: 'manager', accountant: 'accountant', storekeeper: 'storekeeper', custom: 'custom' };
             const cls = map[role] || 'cashier';
             return `<span class="role-badge ${cls}">${String(role).charAt(0).toUpperCase()+String(role).slice(1)}</span>`;
         }
 
         function updateDateTime() {
             const now = new Date();
-            document.getElementById('datetime').textContent = now.toLocaleString('en-KE', { year: 'numeric', month: 'short',
-                day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            document.getElementById('datetime').textContent = now.toLocaleString('en-KE', {
+                year: 'numeric', month: 'short', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
         }
         setInterval(updateDateTime, 1000);
         updateDateTime();
@@ -1042,14 +918,20 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            if (window.innerWidth <= 992) { sidebar.classList.toggle('open');
-                overlay.classList.toggle('active'); } else { sidebar.classList.toggle('closed');
-                document.getElementById('mainContentWrapper').classList.toggle('sidebar-closed'); }
+            if (window.innerWidth <= 992) {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            } else {
+                sidebar.classList.toggle('closed');
+                document.getElementById('mainContentWrapper').classList.toggle('sidebar-closed');
+            }
         }
 
         function closeSidebar() {
-            if (window.innerWidth <= 992) { document.getElementById('sidebar').classList.remove('open');
-                document.getElementById('sidebarOverlay').classList.remove('active'); }
+            if (window.innerWidth <= 992) {
+                document.getElementById('sidebar').classList.remove('open');
+                document.getElementById('sidebarOverlay').classList.remove('active');
+            }
         }
 
         function toggleSidebarCollapse() {
@@ -1066,7 +948,8 @@
         // ==================== NAVIGATION ====================
         function navigateTo(page) {
             const link = document.querySelector(`.sidebar .nav-link[data-page="${page}"]`);
-            if (link) { link.click(); } else { showToast('Page not found', 'error'); }
+            if (link) link.click();
+            else showToast('Page not found', 'error');
         }
 
         document.querySelector('.sidebar-nav').addEventListener('click', function(e) {
@@ -1082,23 +965,12 @@
             document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
             link.classList.add('active');
             const titles = {
-                dashboard: 'Dashboard',
-                pos: 'POS Terminal',
-                products: 'Products',
-                categories: 'Categories',
-                brands: 'Brands',
-                units: 'Units',
-                shops: 'Shops',
-                inventory: 'Stock',
-                suppliers: 'Suppliers',
-                sales: 'Sales',
-                customers: 'Customers',
-                payments: 'Payment Summary',
-                'mpesa-logs': 'M-Pesa Logs',
-                expenses: 'Expenses',
-                reports: 'Reports',
-                users: 'Users',
-                settings: 'Settings'
+                dashboard: 'Dashboard', pos: 'POS Terminal', products: 'Products',
+                categories: 'Categories', brands: 'Brands', units: 'Units',
+                shops: 'Shops', inventory: 'Stock', suppliers: 'Suppliers',
+                sales: 'Sales', customers: 'Customers', payments: 'Payment Summary',
+                'mpesa-logs': 'M-Pesa Logs', expenses: 'Expenses', reports: 'Reports',
+                users: 'Users', settings: 'Settings'
             };
             document.getElementById('pageTitle').innerHTML =
                 `${titles[page]||page} <small>Manage your store</small>`;
@@ -1111,7 +983,7 @@
                 brands: loadBrands,
                 units: loadUnits,
                 shops: loadShops,
-                inventory: loadInventory,
+                inventory: loadProducts, // stock page reuses products
                 suppliers: loadSuppliers,
                 sales: loadSales,
                 customers: loadCustomers,
@@ -1128,180 +1000,180 @@
 
         function refreshPage() {
             const active = document.querySelector('.sidebar .nav-link.active');
-            if (active && active.dataset.page) { active.click(); } else { loadDashboard(); }
+            if (active && active.dataset.page) active.click();
+            else loadDashboard();
         }
 
         // ==================== SHOP SELECTOR ====================
-        function loadShopSelector() {
-            const shops = DB.all('shops');
-            const selector = document.getElementById('shopSelector');
-            selector.innerHTML = '';
-            shops.forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.id;
-                opt.textContent = s.name;
-                if (s.id === currentShopId) opt.selected = true;
-                selector.appendChild(opt);
-            });
-            const current = shops.find(s => s.id === currentShopId);
-            if (current) document.getElementById('currentShopBadge').textContent = '🏪 ' + current.name;
-            document.getElementById('shopCount').textContent = shops.length;
+        async function loadShopSelector() {
+            try {
+                const shops = await API.get('/api/shops');
+                const selector = document.getElementById('shopSelector');
+                selector.innerHTML = '';
+                shops.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    if (s.id === currentShopId) opt.selected = true;
+                    selector.appendChild(opt);
+                });
+                const current = shops.find(s => s.id === currentShopId);
+                if (current) {
+                    document.getElementById('currentShopBadge').textContent = '🏪 ' + current.name;
+                }
+                document.getElementById('shopCount').textContent = shops.length;
+            } catch (e) {
+                showToast('Failed to load shops', 'error');
+            }
         }
 
-        function switchShop(shopId) {
+        async function switchShop(shopId) {
             if (!shopId) return;
-            currentShopId = parseInt(shopId);
-            showToast('Switched to ' + (DB.find('shops', currentShopId)?.name || 'Shop'), 'success');
-            refreshPage();
-            loadShopSelector();
+            try {
+                await API.post(`/api/shops/${shopId}/select`);
+                currentShopId = parseInt(shopId);
+                showToast('Switched to shop', 'success');
+                refreshPage();
+                await loadShopSelector();
+            } catch (e) {
+                showToast('Failed to switch shop', 'error');
+            }
         }
 
         // ==================== PAGE LOADERS ====================
-        function loadDashboard() {
+        async function loadDashboard() {
             const content = document.getElementById('mainContent');
-            const products = DB.all('products');
-            const sales = DB.all('sales');
-            const customers = DB.all('customers');
-            const lowStock = products.filter(p => p.stock_quantity <= p.low_stock_threshold);
-            const totalRev = sales.reduce((s, sale) => s + sale.total, 0);
-            const today = new Date().toDateString();
-            const todaySales = sales.filter(s => new Date(s.date).toDateString() === today);
-            const weekAgo = new Date();
-            weekAgo.setDate(weekAgo.getDate() - 7);
-            const weekSales = sales.filter(s => new Date(s.date) >= weekAgo);
-            const monthAgo = new Date();
-            monthAgo.setMonth(monthAgo.getMonth() - 1);
-            const monthSales = sales.filter(s => new Date(s.date) >= monthAgo);
+            try {
+                const stats = await API.get('/api/dashboard/stats');
+                const products = await API.get('/api/products');
+                const sales = await API.get('/api/sales/report');
+                const customers = await API.get('/api/customers');
+                const lowStock = products.filter(p => p.stock_quantity <= p.low_stock_threshold);
 
-            const stats = [
-                { label: "Today's Sales", value: formatKsh(todaySales.reduce((s, i) => s + i.total, 0)),
-                    sub: todaySales.length + ' transactions', icon: 'fa-calendar-day', color: '#6c5ce7' },
-                { label: 'Weekly Sales', value: formatKsh(weekSales.reduce((s, i) => s + i.total, 0)),
-                    sub: weekSales.length + ' transactions', icon: 'fa-chart-line', color: '#00b894' },
-                { label: 'Monthly Sales', value: formatKsh(monthSales.reduce((s, i) => s + i.total, 0)),
-                    sub: monthSales.length + ' transactions', icon: 'fa-chart-bar', color: '#fdcb6e' },
-                { label: 'Total Revenue', value: formatKsh(totalRev), sub: products.length + ' products',
-                    icon: 'fa-coins', color: '#a29bfe' },
-                { label: 'Low Stock Items', value: lowStock.length, sub: 'Need attention',
-                    icon: 'fa-exclamation-triangle', color: '#ff6b6b' },
-                { label: 'Total Customers', value: customers.length, sub: 'Registered', icon: 'fa-users',
-                    color: '#74b9ff' }
-            ];
+                const todaySales = stats.today_sales || { amount: 0, count: 0 };
+                const weeklySales = stats.weekly_sales || { amount: 0, count: 0 };
+                const monthlySales = stats.monthly_sales || { amount: 0, count: 0 };
+                const totalRevenue = stats.total_revenue || 0;
 
-            content.innerHTML = `
-                <div class="stat-grid" id="statsRow">${stats.map((s,i) => `<div class="stat-card" style="cursor:pointer" onclick="${i===4?'navigateTo(\'inventory\')':i===5?'navigateTo(\'customers\')':'navigateTo(\'sales\')'}">
-                    <div class="d-flex justify-content-between align-items-center"><div><div class="stat-label">${s.label}</div><div class="stat-number">${s.value}</div><small class="text-muted">${s.sub}</small></div><div class="stat-icon" style="background:${s.color}20;color:${s.color};"><i class="fas ${s.icon}"></i></div></div></div>`).join('')}</div>
-                <div class="row g-2 g-md-3">
-                    <div class="col-lg-8"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-chart-line me-2"></i>Sales Overview</h6><div><button class="btn-sm-custom info" onclick="loadSalesChart('week')">Week</button><button class="btn-sm-custom success" onclick="loadSalesChart('month')">Month</button><button class="btn-sm-custom warning" onclick="loadSalesChart('year')">Year</button></div></div><canvas id="salesChart"></canvas></div></div>
-                    <div class="col-lg-4"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-fire me-2"></i>Best Sellers</h6></div><div id="bestSellers">${products.slice(0,5).map(p => `<div class="d-flex justify-content-between align-items-center py-2 border-bottom"><div><strong>${escapeHtml(p.name)}</strong><small class="text-muted d-block">${p.stock_quantity} in stock</small></div><span class="fw-semibold">${formatKsh(p.selling_price)}</span></div>`).join('') || '<div class="empty-state"><i class="fas fa-fire"></i><p>No products</p></div>'}</div></div>
-                        <div class="card-custom mt-2"><div class="card-header-custom"><h6><i class="fas fa-coins me-2"></i>Commission Summary</h6></div><div class="commission-summary"><span class="label"><i class="fas fa-percent me-1"></i>Total Commission</span><span class="amount">${formatKsh(sales.reduce((s,i) => s + (i.total * 0.02), 0))}</span></div></div></div>
-                </div>
-                <div class="row g-2 g-md-3">
-                    <div class="col-lg-6"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-clock me-2"></i>Recent Transactions</h6><button class="btn-sm-custom info" onclick="navigateTo('sales')">View All</button></div><div class="table-responsive"><table class="table table-custom"><thead><tr><th>Order</th><th>Amount</th><th>Method</th><th>Date</th></tr></thead><tbody>${sales.slice(0,6).map(s => `<tr><td><strong>${s.order_number}</strong></td><td>${formatKsh(s.total)}</td><td>${getStatusBadge(s.payment_method)}</td><td><small>${new Date(s.date).toLocaleString()}</small></td></tr>`).join('') || '<tr><td colspan="4" class="text-center py-4 text-muted">No transactions</td></tr>'}</tbody></table></div></div></div>
-                    <div class="col-lg-6"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-exclamation-triangle me-2"></i>Low Stock Alerts</h6><button class="btn-sm-custom warning" onclick="navigateTo('inventory')">View All</button></div><div>${lowStock.slice(0,6).map(p => `<div class="d-flex justify-content-between align-items-center py-2 border-bottom"><div><strong>${escapeHtml(p.name)}</strong><small class="text-muted d-block">SKU: ${p.sku||'N/A'}</small></div><span class="badge-status danger">${p.stock_quantity} left</span></div>`).join('') || '<div class="empty-state"><i class="fas fa-check-circle" style="color:var(--success);"></i><p>All products have sufficient stock</p></div>'}</div></div></div>
-                </div>
-                <div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-bolt me-2"></i>Quick Actions</h6></div><div class="quick-actions">
-                    <button class="qa-btn" onclick="showAddProductModal()"><i class="fas fa-plus-circle text-success"></i> Add Product</button>
-                    <button class="qa-btn" onclick="showAddCustomerModal()"><i class="fas fa-user-plus text-info"></i> Add Customer</button>
-                    <button class="qa-btn" onclick="navigateTo('sales')"><i class="fas fa-shopping-bag text-primary"></i> View Sales</button>
-                    <button class="qa-btn" onclick="navigateTo('inventory')"><i class="fas fa-warehouse text-warning"></i> Manage Stock</button>
-                    <button class="qa-btn" onclick="navigateTo('expenses')"><i class="fas fa-wallet text-danger"></i> Add Expense</button>
-                    <button class="qa-btn" onclick="navigateTo('payments')"><i class="fas fa-file-invoice text-accent"></i> Payment Summary</button>
-                </div></div>
-            `;
-            document.getElementById('productBadge').textContent = products.length;
-            document.getElementById('salesBadge').textContent = sales.length;
-            document.getElementById('customerBadge').textContent = customers.length;
-            document.getElementById('lowStockBadge').textContent = lowStock.length;
-            loadSalesChart('week');
+                const statsData = [
+                    { label: "Today's Sales", value: formatKsh(todaySales.amount), sub: todaySales.count + ' transactions', icon: 'fa-calendar-day', color: '#6c5ce7' },
+                    { label: 'Weekly Sales', value: formatKsh(weeklySales.amount), sub: weeklySales.count + ' transactions', icon: 'fa-chart-line', color: '#00b894' },
+                    { label: 'Monthly Sales', value: formatKsh(monthlySales.amount), sub: monthlySales.count + ' transactions', icon: 'fa-chart-bar', color: '#fdcb6e' },
+                    { label: 'Total Revenue', value: formatKsh(totalRevenue), sub: products.length + ' products', icon: 'fa-coins', color: '#a29bfe' },
+                    { label: 'Low Stock Items', value: lowStock.length, sub: 'Need attention', icon: 'fa-exclamation-triangle', color: '#ff6b6b' },
+                    { label: 'Total Customers', value: customers.length, sub: 'Registered', icon: 'fa-users', color: '#74b9ff' }
+                ];
+
+                content.innerHTML = `
+                    <div class="stat-grid" id="statsRow">${statsData.map((s,i) => `<div class="stat-card" style="cursor:pointer" onclick="${i===4?'navigateTo(\'inventory\')':i===5?'navigateTo(\'customers\')':'navigateTo(\'sales\')'}">
+                        <div class="d-flex justify-content-between align-items-center"><div><div class="stat-label">${s.label}</div><div class="stat-number">${s.value}</div><small class="text-muted">${s.sub}</small></div><div class="stat-icon" style="background:${s.color}20;color:${s.color};"><i class="fas ${s.icon}"></i></div></div></div>`).join('')}</div>
+                    <div class="row g-2 g-md-3">
+                        <div class="col-lg-8"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-chart-line me-2"></i>Sales Overview</h6><div><button class="btn-sm-custom info" onclick="loadSalesChart('week')">Week</button><button class="btn-sm-custom success" onclick="loadSalesChart('month')">Month</button><button class="btn-sm-custom warning" onclick="loadSalesChart('year')">Year</button></div></div><canvas id="salesChart"></canvas></div></div>
+                        <div class="col-lg-4"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-fire me-2"></i>Best Sellers</h6></div><div id="bestSellers">${products.slice(0,5).map(p => `<div class="d-flex justify-content-between align-items-center py-2 border-bottom"><div><strong>${escapeHtml(p.name)}</strong><small class="text-muted d-block">${p.stock_quantity} in stock</small></div><span class="fw-semibold">${formatKsh(p.selling_price)}</span></div>`).join('') || '<div class="empty-state"><i class="fas fa-fire"></i><p>No products</p></div>'}</div></div>
+                            <div class="card-custom mt-2"><div class="card-header-custom"><h6><i class="fas fa-coins me-2"></i>Commission Summary</h6></div><div class="commission-summary"><span class="label"><i class="fas fa-percent me-1"></i>Total Commission</span><span class="amount">${formatKsh((sales.sales||[]).reduce((s,i) => s + (i.total * 0.02), 0))}</span></div></div></div>
+                    </div>
+                    <div class="row g-2 g-md-3">
+                        <div class="col-lg-6"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-clock me-2"></i>Recent Transactions</h6><button class="btn-sm-custom info" onclick="navigateTo('sales')">View All</button></div><div class="table-responsive"><table class="table table-custom"><thead><tr><th>Order</th><th>Amount</th><th>Method</th><th>Date</th></tr></thead><tbody>${(sales.sales||[]).slice(0,6).map(s => `<tr><td><strong>${s.order_number}</strong></td><td>${formatKsh(s.total)}</td><td>${getStatusBadge(s.payment_method)}</td><td><small>${new Date(s.date).toLocaleString()}</small></td></tr>`).join('') || '<tr><td colspan="4" class="text-center py-4 text-muted">No transactions</td></tr>'}</tbody></table></div></div></div>
+                        <div class="col-lg-6"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-exclamation-triangle me-2"></i>Low Stock Alerts</h6><button class="btn-sm-custom warning" onclick="navigateTo('inventory')">View All</button></div><div>${lowStock.slice(0,6).map(p => `<div class="d-flex justify-content-between align-items-center py-2 border-bottom"><div><strong>${escapeHtml(p.name)}</strong><small class="text-muted d-block">SKU: ${p.sku||'N/A'}</small></div><span class="badge-status danger">${p.stock_quantity} left</span></div>`).join('') || '<div class="empty-state"><i class="fas fa-check-circle" style="color:var(--success);"></i><p>All products have sufficient stock</p></div>'}</div></div></div>
+                    </div>
+                    <div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-bolt me-2"></i>Quick Actions</h6></div><div class="quick-actions">
+                        <button class="qa-btn" onclick="showAddProductModal()"><i class="fas fa-plus-circle text-success"></i> Add Product</button>
+                        <button class="qa-btn" onclick="showAddCustomerModal()"><i class="fas fa-user-plus text-info"></i> Add Customer</button>
+                        <button class="qa-btn" onclick="navigateTo('sales')"><i class="fas fa-shopping-bag text-primary"></i> View Sales</button>
+                        <button class="qa-btn" onclick="navigateTo('inventory')"><i class="fas fa-warehouse text-warning"></i> Manage Stock</button>
+                        <button class="qa-btn" onclick="navigateTo('expenses')"><i class="fas fa-wallet text-danger"></i> Add Expense</button>
+                        <button class="qa-btn" onclick="navigateTo('payments')"><i class="fas fa-file-invoice text-accent"></i> Payment Summary</button>
+                    </div></div>
+                `;
+                document.getElementById('productBadge').textContent = products.length;
+                document.getElementById('salesBadge').textContent = (sales.sales||[]).length;
+                document.getElementById('customerBadge').textContent = customers.length;
+                document.getElementById('lowStockBadge').textContent = lowStock.length;
+                loadSalesChart('week');
+            } catch (e) {
+                content.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Failed to load dashboard</p></div>`;
+                showToast('Error loading dashboard', 'error');
+            }
         }
 
-        function loadSalesChart(period) {
+        async function loadSalesChart(period) {
             const ctx = document.getElementById('salesChart');
             if (!ctx) return;
-            const sales = DB.all('sales');
-            const labels = [];
-            const values = [];
-            if (period === 'week') {
-                for (let i = 6; i >= 0; i--) {
-                    const d = new Date();
-                    d.setDate(d.getDate() - i);
-                    const key = d.toDateString();
-                    labels.push(d.toLocaleDateString('en', { weekday: 'short' }));
-                    values.push(sales.filter(s => new Date(s.date).toDateString() === key).reduce((sum, s) => sum + s
-                        .total, 0));
-                }
-            } else if (period === 'month') {
-                for (let i = 29; i >= 0; i--) {
-                    const d = new Date();
-                    d.setDate(d.getDate() - i);
-                    const key = d.toDateString();
-                    labels.push(d.getDate());
-                    values.push(sales.filter(s => new Date(s.date).toDateString() === key).reduce((sum, s) => sum + s
-                        .total, 0));
-                }
-            } else {
-                for (let i = 11; i >= 0; i--) {
-                    const d = new Date();
-                    d.setMonth(d.getMonth() - i);
-                    const month = d.getMonth();
-                    const year = d.getFullYear();
-                    labels.push(d.toLocaleDateString('en', { month: 'short' }));
-                    values.push(sales.filter(s => { const sd = new Date(s.date); return sd.getMonth() === month &&
-                            sd.getFullYear() === year; }).reduce((sum, s) => sum + s.total, 0));
-                }
+            try {
+                const data = await API.get(`/api/sales-chart?period=${period}`);
+                if (salesChart) salesChart.destroy();
+                salesChart = new Chart(ctx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Sales (KES)',
+                            data: data.values,
+                            borderColor: '#6c5ce7',
+                            backgroundColor: 'rgba(108,92,231,0.08)',
+                            tension: 0.4,
+                            fill: true,
+                            borderWidth: 2.5,
+                            pointRadius: window.innerWidth <= 768 ? 2 : 4,
+                            pointBackgroundColor: '#6c5ce7',
+                            pointBorderColor: 'white',
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        aspectRatio: window.innerWidth <= 768 ? 1.6 : 2.5,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { ticks: { font: { size: window.innerWidth <= 768 ? 8 : 10 }, maxTicksLimit: window.innerWidth <= 768 ? 7 : 10 } },
+                            y: { beginAtZero: true, ticks: { font: { size: window.innerWidth <= 768 ? 8 : 10 }, callback: function(v) { return window.innerWidth <= 768 ? 'Ksh ' + (v/1000).toFixed(0) + 'k' : 'Ksh ' + v.toLocaleString(); } } }
+                        },
+                        interaction: { intersect: false, mode: 'index' }
+                    }
+                });
+            } catch (e) {
+                showToast('Error loading chart', 'error');
             }
-            if (salesChart) salesChart.destroy();
-            salesChart = new Chart(ctx.getContext('2d'), {
-                type: 'line',
-                data: { labels, datasets: [{ label: 'Sales (KES)', data: values, borderColor: '#6c5ce7',
-                        backgroundColor: 'rgba(108,92,231,0.08)', tension: 0.4, fill: true, borderWidth: 2.5,
-                        pointRadius: window.innerWidth <= 768 ? 2 : 4, pointBackgroundColor: '#6c5ce7',
-                        pointBorderColor: 'white', pointBorderWidth: 2 }] },
-                options: { responsive: true, maintainAspectRatio: true,
-                    aspectRatio: window.innerWidth <= 768 ? 1.6 : 2.5, plugins: { legend: { display: false } },
-                    scales: { x: { ticks: { font: { size: window.innerWidth <= 768 ? 8 : 10 },
-                                maxTicksLimit: window.innerWidth <= 768 ? 7 : 10 } }, y: { beginAtZero: true,
-                            ticks: { font: { size: window.innerWidth <= 768 ? 8 : 10 }, callback: function(
-                                v) { return window.innerWidth <= 768 ? 'Ksh ' + (v / 1000).toFixed(
-                                    0) + 'k' : 'Ksh ' + v.toLocaleString(); } } } },
-                    interaction: { intersect: false, mode: 'index' } }
-            });
         }
 
         // ===== PRODUCTS =====
-        function loadProducts() {
+        async function loadProducts() {
             const content = document.getElementById('mainContent');
-            const products = DB.all('products');
-            const categories = DB.all('categories');
-            content.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchProducts" placeholder="Search products..." onkeyup="loadProductsData()"></div>
-                    <button class="btn btn-primary-custom btn-sm" onclick="showAddProductModal()"><i class="fas fa-plus me-1"></i> Add Product</button>
-                </div>
-                <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>Image</th><th>Name</th><th>SKU</th><th>Price</th><th>Stock</th><th>Category</th><th>Actions</th></tr></thead><tbody id="productsBody">${products.map(p => {
-                    const cat = categories.find(c => c.id === p.category_id);
-                    return `<tr><td><img src="${p.image_url||'https://via.placeholder.com/45?text=No+Img'}" class="img-cell" onerror="this.src='https://via.placeholder.com/45?text=No+Img'"></td><td><strong>${escapeHtml(p.name)}</strong></td><td>${p.sku||'-'}</td><td>${formatKsh(p.selling_price)}</td><td class="${p.stock_quantity<=p.low_stock_threshold?'text-danger fw-bold':''}">${p.stock_quantity}</td><td>${cat?escapeHtml(cat.name):'Uncategorized'}</td><td><button class="btn-sm-custom info" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom warning" onclick="manageInventory(${p.id})"><i class="fas fa-warehouse"></i></button><button class="btn-sm-custom danger" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></td></tr>`;
-                }).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No products found</td></tr>'}</tbody></table></div></div>
-            `;
-            document.getElementById('productBadge').textContent = products.length;
-            loadCategoriesForSelect('prodCategory');
-            loadBrandsForSelect('prodBrand');
+            try {
+                const products = await API.get('/api/products');
+                const categories = await API.get('/api/categories');
+                content.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchProducts" placeholder="Search products..." onkeyup="loadProductsData()"></div>
+                        <button class="btn btn-primary-custom btn-sm" onclick="showAddProductModal()"><i class="fas fa-plus me-1"></i> Add Product</button>
+                    </div>
+                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>Image</th><th>Name</th><th>SKU</th><th>Price</th><th>Stock</th><th>Category</th><th>Actions</th></tr></thead><tbody id="productsBody">${products.map(p => {
+                        const cat = categories.find(c => c.id === p.category_id);
+                        return `<tr><td><img src="${p.image_url||'https://via.placeholder.com/45?text=No+Img'}" class="img-cell" onerror="this.src='https://via.placeholder.com/45?text=No+Img'"></td><td><strong>${escapeHtml(p.name)}</strong></td><td>${p.sku||'-'}</td><td>${formatKsh(p.selling_price)}</td><td class="${p.stock_quantity<=p.low_stock_threshold?'text-danger fw-bold':''}">${p.stock_quantity}</td><td>${cat?escapeHtml(cat.name):'Uncategorized'}</td><td><button class="btn-sm-custom info" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom warning" onclick="manageInventory(${p.id})"><i class="fas fa-warehouse"></i></button><button class="btn-sm-custom danger" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></td></tr>`;
+                    }).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No products found</td></tr>'}</tbody></table></div></div>
+                `;
+                document.getElementById('productBadge').textContent = products.length;
+                loadCategoriesForSelect('prodCategory');
+                loadBrandsForSelect('prodBrand');
+            } catch (e) {
+                showToast('Error loading products', 'error');
+            }
         }
 
-        function loadProductsData() {
+        async function loadProductsData() {
             const search = document.getElementById('searchProducts').value.toLowerCase();
-            const products = DB.all('products');
-            const categories = DB.all('categories');
-            const filtered = search ? products.filter(p => p.name.toLowerCase().includes(search) || (p.sku && p.sku
-                .toLowerCase().includes(search))) : products;
-            const tbody = document.getElementById('productsBody');
-            if (!filtered.length) { tbody.innerHTML =
-                    '<tr><td colspan="7" class="text-center py-4 text-muted">No products found</td></tr>'; return; }
-            tbody.innerHTML = filtered.map(p => {
-                const cat = categories.find(c => c.id === p.category_id);
-                return `<tr><td><img src="${p.image_url||'https://via.placeholder.com/45?text=No+Img'}" class="img-cell" onerror="this.src='https://via.placeholder.com/45?text=No+Img'"></td><td><strong>${escapeHtml(p.name)}</strong></td><td>${p.sku||'-'}</td><td>${formatKsh(p.selling_price)}</td><td class="${p.stock_quantity<=p.low_stock_threshold?'text-danger fw-bold':''}">${p.stock_quantity}</td><td>${cat?escapeHtml(cat.name):'Uncategorized'}</td><td><button class="btn-sm-custom info" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom warning" onclick="manageInventory(${p.id})"><i class="fas fa-warehouse"></i></button><button class="btn-sm-custom danger" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></td></tr>`;
-            }).join('');
+            try {
+                const products = await API.get('/api/products');
+                const categories = await API.get('/api/categories');
+                const filtered = search ? products.filter(p => p.name.toLowerCase().includes(search) || (p.sku && p.sku.toLowerCase().includes(search))) : products;
+                const tbody = document.getElementById('productsBody');
+                if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No products found</td></tr>'; return; }
+                tbody.innerHTML = filtered.map(p => {
+                    const cat = categories.find(c => c.id === p.category_id);
+                    return `<tr><td><img src="${p.image_url||'https://via.placeholder.com/45?text=No+Img'}" class="img-cell" onerror="this.src='https://via.placeholder.com/45?text=No+Img'"></td><td><strong>${escapeHtml(p.name)}</strong></td><td>${p.sku||'-'}</td><td>${formatKsh(p.selling_price)}</td><td class="${p.stock_quantity<=p.low_stock_threshold?'text-danger fw-bold':''}">${p.stock_quantity}</td><td>${cat?escapeHtml(cat.name):'Uncategorized'}</td><td><button class="btn-sm-custom info" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom warning" onclick="manageInventory(${p.id})"><i class="fas fa-warehouse"></i></button><button class="btn-sm-custom danger" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></td></tr>`;
+                }).join('');
+            } catch (e) { showToast('Error searching products', 'error'); }
         }
 
         function showAddProductModal() {
@@ -1314,127 +1186,136 @@
             new bootstrap.Modal(document.getElementById('productModal')).show();
         }
 
-        function editProduct(id) {
-            const p = DB.find('products', id);
-            if (!p) { showToast('Product not found', 'error'); return; }
-            document.getElementById('productModalTitle').textContent = 'Edit Product';
-            document.getElementById('editProductId').value = p.id;
-            document.getElementById('prodName').value = p.name;
-            document.getElementById('prodSKU').value = p.sku || '';
-            document.getElementById('prodBarcode').value = p.barcode || '';
-            document.getElementById('prodBuyingPrice').value = p.buying_price || 0;
-            document.getElementById('prodSellingPrice').value = p.selling_price;
-            document.getElementById('prodStock').value = p.stock_quantity;
-            document.getElementById('prodThreshold').value = p.low_stock_threshold || 5;
-            document.getElementById('prodTaxRate').value = p.tax_rate || 16;
-            document.getElementById('prodDiscount').value = p.discount || 0;
-            document.getElementById('prodSupplier').value = p.supplier || '';
-            document.getElementById('prodExpiry').value = p.expiry_date || '';
-            document.getElementById('prodUnit').value = p.unit || 'piece';
-            document.getElementById('prodDescription').value = p.description || '';
-            document.getElementById('imagePreview').src = p.image_url || 'https://via.placeholder.com/150?text=No+Image';
-            loadCategoriesForSelect('prodCategory', p.category_id);
-            loadBrandsForSelect('prodBrand', p.brand_id);
-            new bootstrap.Modal(document.getElementById('productModal')).show();
+        async function editProduct(id) {
+            try {
+                const p = await API.get(`/api/products/${id}`);
+                if (!p) { showToast('Product not found', 'error'); return; }
+                document.getElementById('productModalTitle').textContent = 'Edit Product';
+                document.getElementById('editProductId').value = p.id;
+                document.getElementById('prodName').value = p.name;
+                document.getElementById('prodSKU').value = p.sku || '';
+                document.getElementById('prodBarcode').value = p.barcode || '';
+                document.getElementById('prodBuyingPrice').value = p.buying_price || 0;
+                document.getElementById('prodSellingPrice').value = p.selling_price;
+                document.getElementById('prodStock').value = p.stock_quantity;
+                document.getElementById('prodThreshold').value = p.low_stock_threshold || 5;
+                document.getElementById('prodTaxRate').value = p.tax_rate || 16;
+                document.getElementById('prodDiscount').value = p.discount || 0;
+                document.getElementById('prodSupplier').value = p.supplier || '';
+                document.getElementById('prodExpiry').value = p.expiry_date || '';
+                document.getElementById('prodUnit').value = p.unit || 'piece';
+                document.getElementById('prodDescription').value = p.description || '';
+                document.getElementById('imagePreview').src = p.image_url || 'https://via.placeholder.com/150?text=No+Image';
+                await loadCategoriesForSelect('prodCategory', p.category_id);
+                await loadBrandsForSelect('prodBrand', p.brand_id);
+                new bootstrap.Modal(document.getElementById('productModal')).show();
+            } catch (e) { showToast('Error loading product', 'error'); }
         }
 
-        function saveProduct() {
+        async function saveProduct() {
             const id = document.getElementById('editProductId').value;
-            const name = document.getElementById('prodName').value.trim();
-            if (!name) { showToast('Product name is required', 'error'); return; }
-            const data = {
-                name,
-                sku: document.getElementById('prodSKU').value.trim() || 'SKU-' + Date.now().toString().slice(-6),
-                barcode: document.getElementById('prodBarcode').value.trim() || '',
-                category_id: parseInt(document.getElementById('prodCategory').value) || null,
-                brand_id: parseInt(document.getElementById('prodBrand').value) || null,
-                buying_price: parseFloat(document.getElementById('prodBuyingPrice').value) || 0,
-                selling_price: parseFloat(document.getElementById('prodSellingPrice').value) || 0,
-                stock_quantity: parseInt(document.getElementById('prodStock').value) || 0,
-                low_stock_threshold: parseInt(document.getElementById('prodThreshold').value) || 5,
-                tax_rate: parseFloat(document.getElementById('prodTaxRate').value) || 16,
-                discount: parseFloat(document.getElementById('prodDiscount').value) || 0,
-                supplier: document.getElementById('prodSupplier').value.trim() || '',
-                expiry_date: document.getElementById('prodExpiry').value || '',
-                unit: document.getElementById('prodUnit').value || 'piece',
-                description: document.getElementById('prodDescription').value.trim() || '',
-                image_url: document.getElementById('imagePreview').src.includes('placeholder') ? '' : document
-                    .getElementById('imagePreview').src
-            };
-            if (id) { DB.update('products', parseInt(id), data);
-                showToast('Product updated!', 'success'); } else { DB.add('products', data);
-                showToast('Product added!', 'success'); }
-            bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
-            loadProducts();
+            const form = document.getElementById('productForm');
+            const formData = new FormData(form);
+            // Ensure all fields are included, even if empty
+            if (!formData.get('name')) { showToast('Product name is required', 'error'); return; }
+            if (!formData.get('selling_price') || parseFloat(formData.get('selling_price')) <= 0) {
+                showToast('Valid selling price required', 'error');
+                return;
+            }
+            // If no image file selected, don't send empty file
+            const fileInput = document.getElementById('productImage');
+            if (!fileInput.files || !fileInput.files[0]) {
+                formData.delete('image');
+            }
+            try {
+                if (id) {
+                    await API.putForm(`/api/products/${id}`, formData);
+                    showToast('Product updated!', 'success');
+                } else {
+                    await API.postForm('/api/products', formData);
+                    showToast('Product added!', 'success');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
+                loadProducts();
+            } catch (e) {
+                showToast('Error saving product: ' + e.message, 'error');
+            }
         }
 
-        function deleteProduct(id) {
-            showConfirm('Delete this product? This cannot be undone.', function() {
-                DB.delete('products', id);
-                loadProducts();
-                showToast('Product deleted', 'success');
+        async function deleteProduct(id) {
+            showConfirm('Delete this product? This cannot be undone.', async function() {
+                try {
+                    await API.delete(`/api/products/${id}`);
+                    loadProducts();
+                    showToast('Product deleted', 'success');
+                } catch (e) {
+                    showToast('Error deleting product', 'error');
+                }
             });
         }
 
-        function manageInventory(id) {
-            const p = DB.find('products', id);
-            if (!p) { showToast('Product not found', 'error'); return; }
-            document.getElementById('invProductId').value = p.id;
-            document.getElementById('invProductName').value = p.name;
-            document.getElementById('invCurrentStock').value = p.stock_quantity;
-            document.getElementById('invQuantity').value = 1;
-            document.getElementById('invNote').value = '';
-            document.getElementById('invType').value = 'in';
-            document.getElementById('inventoryModalTitle').textContent = 'Stock Adjustment - ' + p.name;
-            new bootstrap.Modal(document.getElementById('inventoryModal')).show();
+        async function manageInventory(id) {
+            try {
+                const p = await API.get(`/api/products/${id}`);
+                if (!p) { showToast('Product not found', 'error'); return; }
+                document.getElementById('invProductId').value = p.id;
+                document.getElementById('invProductName').value = p.name;
+                document.getElementById('invCurrentStock').value = p.stock_quantity;
+                document.getElementById('invQuantity').value = 1;
+                document.getElementById('invNote').value = '';
+                document.getElementById('invType').value = 'in';
+                document.getElementById('inventoryModalTitle').textContent = 'Stock Adjustment - ' + p.name;
+                new bootstrap.Modal(document.getElementById('inventoryModal')).show();
+            } catch (e) { showToast('Error loading product', 'error'); }
         }
 
-        function saveInventory() {
+        async function saveInventory() {
             const productId = parseInt(document.getElementById('invProductId').value);
             const type = document.getElementById('invType').value;
             const quantity = parseInt(document.getElementById('invQuantity').value);
             const note = document.getElementById('invNote').value;
             if (!quantity || quantity < 1) { showToast('Enter a valid quantity', 'error'); return; }
-            const p = DB.find('products', productId);
-            if (!p) { showToast('Product not found', 'error'); return; }
-            let newStock = p.stock_quantity;
-            if (type === 'in' || type === 'returned') newStock += quantity;
-            else if (type === 'out' || type === 'damaged') newStock -= quantity;
-            else if (type === 'adjust') newStock = quantity;
-            if (newStock < 0) newStock = 0;
-            DB.update('products', productId, { stock_quantity: newStock });
-            bootstrap.Modal.getInstance(document.getElementById('inventoryModal')).hide();
-            loadProducts();
-            showToast('Stock updated! New stock: ' + newStock, 'success');
+            try {
+                await API.post(`/api/inventory/${productId}`, { type, quantity, note });
+                bootstrap.Modal.getInstance(document.getElementById('inventoryModal')).hide();
+                loadProducts();
+                showToast('Stock updated!', 'success');
+            } catch (e) {
+                showToast('Error updating stock: ' + e.message, 'error');
+            }
         }
 
-        function loadCategoriesForSelect(selectId, selectedId) {
-            const categories = DB.all('categories');
-            let html = '<option value="">Select Category</option>';
-            categories.forEach(c => html +=
-                `<option value="${c.id}" ${selectedId==c.id?'selected':''}>${escapeHtml(c.name)}</option>`);
-            document.getElementById(selectId).innerHTML = html;
+        async function loadCategoriesForSelect(selectId, selectedId) {
+            try {
+                const categories = await API.get('/api/categories');
+                let html = '<option value="">Select Category</option>';
+                categories.forEach(c => html += `<option value="${c.id}" ${selectedId==c.id?'selected':''}>${escapeHtml(c.name)}</option>`);
+                document.getElementById(selectId).innerHTML = html;
+            } catch (e) { /* silently fail */ }
         }
 
-        function loadBrandsForSelect(selectId, selectedId) {
-            const brands = DB.all('brands');
-            let html = '<option value="">Select Brand</option>';
-            brands.forEach(b => html +=
-                `<option value="${b.id}" ${selectedId==b.id?'selected':''}>${escapeHtml(b.name)}</option>`);
-            document.getElementById(selectId).innerHTML = html;
+        async function loadBrandsForSelect(selectId, selectedId) {
+            try {
+                const brands = await API.get('/api/brands');
+                let html = '<option value="">Select Brand</option>';
+                brands.forEach(b => html += `<option value="${b.id}" ${selectedId==b.id?'selected':''}>${escapeHtml(b.name)}</option>`);
+                document.getElementById(selectId).innerHTML = html;
+            } catch (e) { /* silently fail */ }
         }
 
         // ===== CATEGORIES =====
-        function loadCategories() {
+        async function loadCategories() {
             const content = document.getElementById('mainContent');
-            const categories = DB.all('categories');
-            content.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchCategory" placeholder="Search categories..." onkeyup="filterCategories()"></div>
-                    <button class="btn btn-primary-custom btn-sm" onclick="showAddCategoryModal()"><i class="fas fa-plus me-1"></i> Add</button>
-                </div>
-                <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Icon</th><th>Name</th><th>Color</th><th>Products</th><th>Actions</th></tr></thead><tbody id="categoriesBody">${categories.map((c,i) => `<tr><td>${i+1}</td><td><span style="font-size:24px;">${c.icon||'📦'}</span></td><td><strong>${escapeHtml(c.name)}</strong></td><td><div style="width:32px;height:32px;border-radius:8px;background:${c.color||'#6c5ce7'};border:1px solid var(--gray-200);"></div></td><td>${DB.all('products').filter(p=>p.category_id===c.id).length}</td><td><button class="btn-sm-custom info" onclick="editCategory(${c.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteCategory(${c.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No categories found</td></tr>'}</tbody></table></div></div>
-            `;
+            try {
+                const categories = await API.get('/api/categories');
+                content.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchCategory" placeholder="Search categories..." onkeyup="filterCategories()"></div>
+                        <button class="btn btn-primary-custom btn-sm" onclick="showAddCategoryModal()"><i class="fas fa-plus me-1"></i> Add</button>
+                    </div>
+                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Icon</th><th>Name</th><th>Color</th><th>Products</th><th>Actions</th></tr></thead><tbody id="categoriesBody">${categories.map((c,i) => `<tr><td>${i+1}</td><td><span style="font-size:24px;">${c.icon||'📦'}</span></td><td><strong>${escapeHtml(c.name)}</strong></td><td><div style="width:32px;height:32px;border-radius:8px;background:${c.color||'#6c5ce7'};border:1px solid var(--gray-200);"></div></td><td>${c.product_count||0}</td><td><button class="btn-sm-custom info" onclick="editCategory(${c.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteCategory(${c.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No categories found</td></tr>'}</tbody></table></div></div>
+                `;
+            } catch (e) { showToast('Error loading categories', 'error'); }
         }
 
         function filterCategories() {
@@ -1454,18 +1335,21 @@
             new bootstrap.Modal(document.getElementById('categoryModal')).show();
         }
 
-        function editCategory(id) {
-            const c = DB.find('categories', id);
-            if (!c) { showToast('Category not found', 'error'); return; }
-            document.getElementById('categoryModalTitle').textContent = 'Edit Category';
-            document.getElementById('editCategoryId').value = c.id;
-            document.getElementById('catName').value = c.name;
-            document.getElementById('catColor').value = c.color || '#6c5ce7';
-            document.getElementById('catIcon').value = c.icon || '📦';
-            new bootstrap.Modal(document.getElementById('categoryModal')).show();
+        async function editCategory(id) {
+            try {
+                const c = await API.get(`/api/categories`); // we don't have a single get, so fetch all
+                const cat = c.find(item => item.id === id);
+                if (!cat) { showToast('Category not found', 'error'); return; }
+                document.getElementById('categoryModalTitle').textContent = 'Edit Category';
+                document.getElementById('editCategoryId').value = cat.id;
+                document.getElementById('catName').value = cat.name;
+                document.getElementById('catColor').value = cat.color || '#6c5ce7';
+                document.getElementById('catIcon').value = cat.icon || '📦';
+                new bootstrap.Modal(document.getElementById('categoryModal')).show();
+            } catch (e) { showToast('Error loading category', 'error'); }
         }
 
-        function saveCategory() {
+        async function saveCategory() {
             const id = document.getElementById('editCategoryId').value;
             const data = {
                 name: document.getElementById('catName').value.trim(),
@@ -1473,32 +1357,42 @@
                 icon: document.getElementById('catIcon').value || '📦'
             };
             if (!data.name) { showToast('Category name is required', 'error'); return; }
-            if (id) { DB.update('categories', parseInt(id), data);
-                showToast('Category updated!', 'success'); } else { DB.add('categories', data);
-                showToast('Category added!', 'success'); }
-            bootstrap.Modal.getInstance(document.getElementById('categoryModal')).hide();
-            loadCategories();
+            try {
+                if (id) {
+                    await API.put(`/api/categories/${id}`, data);
+                    showToast('Category updated!', 'success');
+                } else {
+                    await API.post('/api/categories', data);
+                    showToast('Category added!', 'success');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('categoryModal')).hide();
+                loadCategories();
+            } catch (e) { showToast('Error saving category', 'error'); }
         }
 
-        function deleteCategory(id) {
-            showConfirm('Delete this category? Products will be uncategorized.', function() {
-                DB.delete('categories', id);
-                loadCategories();
-                showToast('Category deleted', 'success');
+        async function deleteCategory(id) {
+            showConfirm('Delete this category? Products will be uncategorized.', async function() {
+                try {
+                    await API.delete(`/api/categories/${id}`);
+                    loadCategories();
+                    showToast('Category deleted', 'success');
+                } catch (e) { showToast('Error deleting category', 'error'); }
             });
         }
 
         // ===== BRANDS =====
-        function loadBrands() {
+        async function loadBrands() {
             const content = document.getElementById('mainContent');
-            const brands = DB.all('brands');
-            content.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchBrand" placeholder="Search brands..." onkeyup="filterBrands()"></div>
-                    <button class="btn btn-primary-custom btn-sm" onclick="showAddBrandModal()"><i class="fas fa-plus me-1"></i> Add</button>
-                </div>
-                <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Description</th><th>Products</th><th>Actions</th></tr></thead><tbody id="brandsBody">${brands.map((b,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(b.name)}</strong></td><td>${escapeHtml(b.description||'-')}</td><td>${DB.all('products').filter(p=>p.brand_id===b.id).length}</td><td><button class="btn-sm-custom info" onclick="editBrand(${b.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteBrand(${b.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="5" class="text-center py-4 text-muted">No brands found</td></tr>'}</tbody></table></div></div>
-            `;
+            try {
+                const brands = await API.get('/api/brands');
+                content.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchBrand" placeholder="Search brands..." onkeyup="filterBrands()"></div>
+                        <button class="btn btn-primary-custom btn-sm" onclick="showAddBrandModal()"><i class="fas fa-plus me-1"></i> Add</button>
+                    </div>
+                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Description</th><th>Products</th><th>Actions</th></tr></thead><tbody id="brandsBody">${brands.map((b,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(b.name)}</strong></td><td>${escapeHtml(b.description||'-')}</td><td>${b.product_count||0}</td><td><button class="btn-sm-custom info" onclick="editBrand(${b.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteBrand(${b.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="5" class="text-center py-4 text-muted">No brands found</td></tr>'}</tbody></table></div></div>
+                `;
+            } catch (e) { showToast('Error loading brands', 'error'); }
         }
 
         function filterBrands() {
@@ -1516,47 +1410,59 @@
             new bootstrap.Modal(document.getElementById('brandModal')).show();
         }
 
-        function editBrand(id) {
-            const b = DB.find('brands', id);
-            if (!b) { showToast('Brand not found', 'error'); return; }
-            document.getElementById('brandModalTitle').textContent = 'Edit Brand';
-            document.getElementById('editBrandId').value = b.id;
-            document.getElementById('brandName').value = b.name;
-            document.getElementById('brandDesc').value = b.description || '';
-            new bootstrap.Modal(document.getElementById('brandModal')).show();
+        async function editBrand(id) {
+            try {
+                const brands = await API.get('/api/brands');
+                const b = brands.find(item => item.id === id);
+                if (!b) { showToast('Brand not found', 'error'); return; }
+                document.getElementById('brandModalTitle').textContent = 'Edit Brand';
+                document.getElementById('editBrandId').value = b.id;
+                document.getElementById('brandName').value = b.name;
+                document.getElementById('brandDesc').value = b.description || '';
+                new bootstrap.Modal(document.getElementById('brandModal')).show();
+            } catch (e) { showToast('Error loading brand', 'error'); }
         }
 
-        function saveBrand() {
+        async function saveBrand() {
             const id = document.getElementById('editBrandId').value;
-            const data = { name: document.getElementById('brandName').value.trim(),
-            description: document.getElementById('brandDesc').value.trim() };
+            const data = { name: document.getElementById('brandName').value.trim(), description: document.getElementById('brandDesc').value.trim() };
             if (!data.name) { showToast('Brand name is required', 'error'); return; }
-            if (id) { DB.update('brands', parseInt(id), data);
-                showToast('Brand updated!', 'success'); } else { DB.add('brands', data);
-                showToast('Brand added!', 'success'); }
-            bootstrap.Modal.getInstance(document.getElementById('brandModal')).hide();
-            loadBrands();
+            try {
+                if (id) {
+                    await API.put(`/api/brands/${id}`, data);
+                    showToast('Brand updated!', 'success');
+                } else {
+                    await API.post('/api/brands', data);
+                    showToast('Brand added!', 'success');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('brandModal')).hide();
+                loadBrands();
+            } catch (e) { showToast('Error saving brand', 'error'); }
         }
 
-        function deleteBrand(id) {
-            showConfirm('Delete this brand?', function() {
-                DB.delete('brands', id);
-                loadBrands();
-                showToast('Brand deleted', 'success');
+        async function deleteBrand(id) {
+            showConfirm('Delete this brand?', async function() {
+                try {
+                    await API.delete(`/api/brands/${id}`);
+                    loadBrands();
+                    showToast('Brand deleted', 'success');
+                } catch (e) { showToast('Error deleting brand', 'error'); }
             });
         }
 
         // ===== UNITS =====
-        function loadUnits() {
+        async function loadUnits() {
             const content = document.getElementById('mainContent');
-            const units = DB.all('units');
-            content.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchUnit" placeholder="Search units..." onkeyup="filterUnits()"></div>
-                    <button class="btn btn-primary-custom btn-sm" onclick="showAddUnitModal()"><i class="fas fa-plus me-1"></i> Add</button>
-                </div>
-                <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Code</th><th>Actions</th></tr></thead><tbody id="unitsBody">${units.map((u,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(u.name)}</strong></td><td>${escapeHtml(u.code||'-')}</td><td><button class="btn-sm-custom info" onclick="editUnit(${u.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteUnit(${u.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="4" class="text-center py-4 text-muted">No units found</td></tr>'}</tbody></table></div></div>
-            `;
+            try {
+                const units = await API.get('/api/units');
+                content.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchUnit" placeholder="Search units..." onkeyup="filterUnits()"></div>
+                        <button class="btn btn-primary-custom btn-sm" onclick="showAddUnitModal()"><i class="fas fa-plus me-1"></i> Add</button>
+                    </div>
+                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Code</th><th>Actions</th></tr></thead><tbody id="unitsBody">${units.map((u,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(u.name)}</strong></td><td>${escapeHtml(u.code||'-')}</td><td><button class="btn-sm-custom info" onclick="editUnit(${u.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteUnit(${u.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="4" class="text-center py-4 text-muted">No units found</td></tr>'}</tbody></table></div></div>
+                `;
+            } catch (e) { showToast('Error loading units', 'error'); }
         }
 
         function filterUnits() {
@@ -1574,56 +1480,68 @@
             new bootstrap.Modal(document.getElementById('unitModal')).show();
         }
 
-        function editUnit(id) {
-            const u = DB.find('units', id);
-            if (!u) { showToast('Unit not found', 'error'); return; }
-            document.getElementById('unitModalTitle').textContent = 'Edit Unit';
-            document.getElementById('editUnitId').value = u.id;
-            document.getElementById('unitName').value = u.name;
-            document.getElementById('unitCode').value = u.code || '';
-            new bootstrap.Modal(document.getElementById('unitModal')).show();
+        async function editUnit(id) {
+            try {
+                const units = await API.get('/api/units');
+                const u = units.find(item => item.id === id);
+                if (!u) { showToast('Unit not found', 'error'); return; }
+                document.getElementById('unitModalTitle').textContent = 'Edit Unit';
+                document.getElementById('editUnitId').value = u.id;
+                document.getElementById('unitName').value = u.name;
+                document.getElementById('unitCode').value = u.code || '';
+                new bootstrap.Modal(document.getElementById('unitModal')).show();
+            } catch (e) { showToast('Error loading unit', 'error'); }
         }
 
-        function saveUnit() {
+        async function saveUnit() {
             const id = document.getElementById('editUnitId').value;
-            const data = { name: document.getElementById('unitName').value.trim(), code: document.getElementById(
-                    'unitCode').value.trim() };
+            const data = { name: document.getElementById('unitName').value.trim(), code: document.getElementById('unitCode').value.trim() };
             if (!data.name) { showToast('Unit name is required', 'error'); return; }
-            if (id) { DB.update('units', parseInt(id), data);
-                showToast('Unit updated!', 'success'); } else { DB.add('units', data);
-                showToast('Unit added!', 'success'); }
-            bootstrap.Modal.getInstance(document.getElementById('unitModal')).hide();
-            loadUnits();
+            try {
+                if (id) {
+                    await API.put(`/api/units/${id}`, data);
+                    showToast('Unit updated!', 'success');
+                } else {
+                    await API.post('/api/units', data);
+                    showToast('Unit added!', 'success');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('unitModal')).hide();
+                loadUnits();
+            } catch (e) { showToast('Error saving unit', 'error'); }
         }
 
-        function deleteUnit(id) {
-            showConfirm('Delete this unit?', function() {
-                DB.delete('units', id);
-                loadUnits();
-                showToast('Unit deleted', 'success');
+        async function deleteUnit(id) {
+            showConfirm('Delete this unit?', async function() {
+                try {
+                    await API.delete(`/api/units/${id}`);
+                    loadUnits();
+                    showToast('Unit deleted', 'success');
+                } catch (e) { showToast('Error deleting unit', 'error'); }
             });
         }
 
         // ===== SHOPS =====
-        function loadShops() {
+        async function loadShops() {
             const content = document.getElementById('mainContent');
-            const shops = DB.all('shops');
-            content.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchShop" placeholder="Search shops..." onkeyup="filterShops()"></div>
-                    <button class="btn btn-primary-custom btn-sm" onclick="showAddShopModal()"><i class="fas fa-plus me-1"></i> Add Shop</button>
-                </div>
-                <div id="shopsList">${shops.map(shop => `
-                    <div class="shop-card-item" data-shop-name="${escapeHtml(shop.name)}" data-shop-status="${shop.is_active}">
-                        <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
-                            <div><div class="d-flex align-items-center gap-2 flex-wrap"><span class="shop-name">${escapeHtml(shop.name)}</span><span class="shop-status-badge ${shop.is_active?'active':'inactive'}">${shop.is_active?'Active':'Inactive'}</span>${shop.id===currentShopId?'<span class="badge bg-success">Current</span>':''}</div>
-                            <div class="shop-slug">Slug: ${escapeHtml(shop.slug)}</div>
-                            <div class="shop-stats-mini mt-1"><span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(shop.address||'No address')}</span><span><i class="fas fa-phone"></i> ${escapeHtml(shop.phone||'No phone')}</span><span><i class="fas fa-money-bill-wave"></i> ${escapeHtml(shop.currency||'KES')}</span></div></div>
-                            <div class="d-flex gap-1 flex-wrap">${shop.id!==currentShopId?`<button class="btn btn-sm btn-success-custom" onclick="switchShop(${shop.id})"><i class="fas fa-exchange-alt"></i> Switch</button>`:''}<button class="btn btn-sm btn-warning" onclick="editShop(${shop.id})"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleteShop(${shop.id})"><i class="fas fa-trash"></i></button></div>
-                        </div>
-                    </div>`).join('') || '<div class="empty-state"><i class="fas fa-store-alt"></i><p>No shops found</p></div>'}</div>
-            `;
-            document.getElementById('shopCount').textContent = shops.length;
+            try {
+                const shops = await API.get('/api/shops');
+                content.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchShop" placeholder="Search shops..." onkeyup="filterShops()"></div>
+                        <button class="btn btn-primary-custom btn-sm" onclick="showAddShopModal()"><i class="fas fa-plus me-1"></i> Add Shop</button>
+                    </div>
+                    <div id="shopsList">${shops.map(shop => `
+                        <div class="shop-card-item" data-shop-name="${escapeHtml(shop.name)}" data-shop-status="${shop.is_active}">
+                            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+                                <div><div class="d-flex align-items-center gap-2 flex-wrap"><span class="shop-name">${escapeHtml(shop.name)}</span><span class="shop-status-badge ${shop.is_active?'active':'inactive'}">${shop.is_active?'Active':'Inactive'}</span>${shop.id===currentShopId?'<span class="badge bg-success">Current</span>':''}</div>
+                                <div class="shop-slug">Slug: ${escapeHtml(shop.slug)}</div>
+                                <div class="shop-stats-mini mt-1"><span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(shop.address||'No address')}</span><span><i class="fas fa-phone"></i> ${escapeHtml(shop.phone||'No phone')}</span><span><i class="fas fa-money-bill-wave"></i> ${escapeHtml(shop.currency||'KES')}</span></div></div>
+                                <div class="d-flex gap-1 flex-wrap">${shop.id!==currentShopId?`<button class="btn btn-sm btn-success-custom" onclick="switchShop(${shop.id})"><i class="fas fa-exchange-alt"></i> Switch</button>`:''}<button class="btn btn-sm btn-warning" onclick="editShop(${shop.id})"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleteShop(${shop.id})"><i class="fas fa-trash"></i></button></div>
+                            </div>
+                        </div>`).join('') || '<div class="empty-state"><i class="fas fa-store-alt"></i><p>No shops found</p></div>'}</div>
+                `;
+                document.getElementById('shopCount').textContent = shops.length;
+            } catch (e) { showToast('Error loading shops', 'error'); }
         }
 
         function filterShops() {
@@ -1644,22 +1562,25 @@
             new bootstrap.Modal(document.getElementById('shopModal')).show();
         }
 
-        function editShop(id) {
-            const shop = DB.find('shops', id);
-            if (!shop) { showToast('Shop not found', 'error'); return; }
-            document.getElementById('shopModalTitle').textContent = 'Edit Shop';
-            document.getElementById('editShopId').value = shop.id;
-            document.getElementById('shopName').value = shop.name;
-            document.getElementById('shopAddress').value = shop.address || '';
-            document.getElementById('shopPhone').value = shop.phone || '';
-            document.getElementById('shopEmail').value = shop.email || '';
-            document.getElementById('shopCurrency').value = shop.currency || 'KES';
-            document.getElementById('shopTaxRate').value = shop.tax_rate || 16;
-            document.getElementById('shopStatus').value = shop.is_active ? '1' : '0';
-            new bootstrap.Modal(document.getElementById('shopModal')).show();
+        async function editShop(id) {
+            try {
+                const shops = await API.get('/api/shops');
+                const shop = shops.find(s => s.id === id);
+                if (!shop) { showToast('Shop not found', 'error'); return; }
+                document.getElementById('shopModalTitle').textContent = 'Edit Shop';
+                document.getElementById('editShopId').value = shop.id;
+                document.getElementById('shopName').value = shop.name;
+                document.getElementById('shopAddress').value = shop.address || '';
+                document.getElementById('shopPhone').value = shop.phone || '';
+                document.getElementById('shopEmail').value = shop.email || '';
+                document.getElementById('shopCurrency').value = shop.currency || 'KES';
+                document.getElementById('shopTaxRate').value = shop.tax_rate || 16;
+                document.getElementById('shopStatus').value = shop.is_active ? '1' : '0';
+                new bootstrap.Modal(document.getElementById('shopModal')).show();
+            } catch (e) { showToast('Error loading shop', 'error'); }
         }
 
-        function saveShop() {
+        async function saveShop() {
             const id = document.getElementById('editShopId').value;
             const data = {
                 name: document.getElementById('shopName').value.trim(),
@@ -1668,41 +1589,47 @@
                 email: document.getElementById('shopEmail').value.trim(),
                 currency: document.getElementById('shopCurrency').value,
                 tax_rate: parseFloat(document.getElementById('shopTaxRate').value) || 16,
-                is_active: parseInt(document.getElementById('shopStatus').value) || 1,
-                slug: document.getElementById('shopName').value.trim().toLowerCase().replace(/\s+/g, '-')
+                is_active: parseInt(document.getElementById('shopStatus').value) || 1
             };
             if (!data.name) { showToast('Shop name is required', 'error'); return; }
-            if (id) { DB.update('shops', parseInt(id), data);
-                showToast('Shop updated!', 'success'); } else { DB.add('shops', data);
-                showToast('Shop added!', 'success'); }
-            bootstrap.Modal.getInstance(document.getElementById('shopModal')).hide();
-            loadShops();
-            loadShopSelector();
-        }
-
-        function deleteShop(id) {
-            showConfirm('Delete this shop? It will be deactivated.', function() {
-                DB.update('shops', id, { is_active: 0 });
+            try {
+                if (id) {
+                    await API.put(`/api/shops/${id}`, data);
+                    showToast('Shop updated!', 'success');
+                } else {
+                    await API.post('/api/shops', data);
+                    showToast('Shop added!', 'success');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('shopModal')).hide();
                 loadShops();
                 loadShopSelector();
-                showToast('Shop deactivated', 'success');
+            } catch (e) { showToast('Error saving shop: ' + e.message, 'error'); }
+        }
+
+        async function deleteShop(id) {
+            showConfirm('Delete this shop? It will be deactivated.', async function() {
+                try {
+                    await API.delete(`/api/shops/${id}`);
+                    loadShops();
+                    loadShopSelector();
+                    showToast('Shop deactivated', 'success');
+                } catch (e) { showToast('Error deactivating shop', 'error'); }
             });
         }
 
-        // ===== INVENTORY =====
-        function loadInventory() { loadProducts(); }
-
         // ===== SUPPLIERS =====
-        function loadSuppliers() {
+        async function loadSuppliers() {
             const content = document.getElementById('mainContent');
-            const suppliers = DB.all('suppliers');
-            content.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchSupplier" placeholder="Search suppliers..." onkeyup="filterSuppliers()"></div>
-                    <button class="btn btn-primary-custom btn-sm" onclick="showAddSupplierModal()"><i class="fas fa-plus me-1"></i> Add</button>
-                </div>
-                <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Address</th><th>Actions</th></tr></thead><tbody id="suppliersBody">${suppliers.map((s,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(s.name)}</strong></td><td>${escapeHtml(s.phone||'-')}</td><td>${escapeHtml(s.email||'-')}</td><td>${escapeHtml(s.address||'-')}</td><td><button class="btn-sm-custom info" onclick="editSupplier(${s.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteSupplier(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No suppliers found</td></tr>'}</tbody></table></div></div>
-            `;
+            try {
+                const suppliers = await API.get('/api/suppliers');
+                content.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchSupplier" placeholder="Search suppliers..." onkeyup="filterSuppliers()"></div>
+                        <button class="btn btn-primary-custom btn-sm" onclick="showAddSupplierModal()"><i class="fas fa-plus me-1"></i> Add</button>
+                    </div>
+                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Address</th><th>Actions</th></tr></thead><tbody id="suppliersBody">${suppliers.map((s,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(s.name)}</strong></td><td>${escapeHtml(s.phone||'-')}</td><td>${escapeHtml(s.email||'-')}</td><td>${escapeHtml(s.address||'-')}</td><td><button class="btn-sm-custom info" onclick="editSupplier(${s.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteSupplier(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No suppliers found</td></tr>'}</tbody></table></div></div>
+                `;
+            } catch (e) { showToast('Error loading suppliers', 'error'); }
         }
 
         function filterSuppliers() {
@@ -1720,20 +1647,23 @@
             new bootstrap.Modal(document.getElementById('supplierModal')).show();
         }
 
-        function editSupplier(id) {
-            const s = DB.find('suppliers', id);
-            if (!s) { showToast('Supplier not found', 'error'); return; }
-            document.getElementById('supplierModalTitle').textContent = 'Edit Supplier';
-            document.getElementById('editSupplierId').value = s.id;
-            document.getElementById('supplierName').value = s.name;
-            document.getElementById('supplierPhone').value = s.phone || '';
-            document.getElementById('supplierEmail').value = s.email || '';
-            document.getElementById('supplierAddress').value = s.address || '';
-            document.getElementById('supplierNotes').value = s.notes || '';
-            new bootstrap.Modal(document.getElementById('supplierModal')).show();
+        async function editSupplier(id) {
+            try {
+                const suppliers = await API.get('/api/suppliers');
+                const s = suppliers.find(item => item.id === id);
+                if (!s) { showToast('Supplier not found', 'error'); return; }
+                document.getElementById('supplierModalTitle').textContent = 'Edit Supplier';
+                document.getElementById('editSupplierId').value = s.id;
+                document.getElementById('supplierName').value = s.name;
+                document.getElementById('supplierPhone').value = s.phone || '';
+                document.getElementById('supplierEmail').value = s.email || '';
+                document.getElementById('supplierAddress').value = s.address || '';
+                document.getElementById('supplierNotes').value = s.notes || '';
+                new bootstrap.Modal(document.getElementById('supplierModal')).show();
+            } catch (e) { showToast('Error loading supplier', 'error'); }
         }
 
-        function saveSupplier() {
+        async function saveSupplier() {
             const id = document.getElementById('editSupplierId').value;
             const data = {
                 name: document.getElementById('supplierName').value.trim(),
@@ -1743,84 +1673,97 @@
                 notes: document.getElementById('supplierNotes').value.trim()
             };
             if (!data.name) { showToast('Supplier name is required', 'error'); return; }
-            if (id) { DB.update('suppliers', parseInt(id), data);
-                showToast('Supplier updated!', 'success'); } else { DB.add('suppliers', data);
-                showToast('Supplier added!', 'success'); }
-            bootstrap.Modal.getInstance(document.getElementById('supplierModal')).hide();
-            loadSuppliers();
+            try {
+                if (id) {
+                    await API.put(`/api/suppliers/${id}`, data);
+                    showToast('Supplier updated!', 'success');
+                } else {
+                    await API.post('/api/suppliers', data);
+                    showToast('Supplier added!', 'success');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('supplierModal')).hide();
+                loadSuppliers();
+            } catch (e) { showToast('Error saving supplier', 'error'); }
         }
 
-        function deleteSupplier(id) {
-            showConfirm('Delete this supplier?', function() {
-                DB.delete('suppliers', id);
-                loadSuppliers();
-                showToast('Supplier deleted', 'success');
+        async function deleteSupplier(id) {
+            showConfirm('Delete this supplier?', async function() {
+                try {
+                    await API.delete(`/api/suppliers/${id}`);
+                    loadSuppliers();
+                    showToast('Supplier deleted', 'success');
+                } catch (e) { showToast('Error deleting supplier', 'error'); }
             });
         }
 
-        // ===== SALES (with search by order or customer) =====
-        function loadSales() {
+        // ===== SALES =====
+        async function loadSales() {
             const content = document.getElementById('mainContent');
-            const sales = DB.all('sales');
-            content.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <div class="d-flex gap-2 flex-wrap" style="flex:1;min-width:200px;">
-                        <input type="text" class="form-control form-control-custom" id="salesSearch" placeholder="Search by order or customer..." style="flex:1;min-width:150px;" onkeyup="filterSales()">
-                        <button class="btn-sm-custom info" onclick="document.getElementById('salesSearch').value='';filterSales();"><i class="fas fa-times"></i> Clear</button>
+            try {
+                const data = await API.get('/api/sales/report');
+                const sales = data.sales || [];
+                content.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <div class="d-flex gap-2 flex-wrap" style="flex:1;min-width:200px;">
+                            <input type="text" class="form-control form-control-custom" id="salesSearch" placeholder="Search by order or customer..." style="flex:1;min-width:150px;" onkeyup="filterSales()">
+                            <button class="btn-sm-custom info" onclick="document.getElementById('salesSearch').value='';filterSales();"><i class="fas fa-times"></i> Clear</button>
+                        </div>
+                        <button class="btn btn-primary-custom btn-sm" onclick="window.open('/pos','_blank')"><i class="fas fa-plus me-1"></i> New Sale</button>
                     </div>
-                    <button class="btn btn-primary-custom btn-sm" onclick="window.open('/pos','_blank')"><i class="fas fa-plus me-1"></i> New Sale</button>
-                </div>
-                <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover" id="salesTable"><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Method</th><th>Status</th><th>Date</th><th>Cashier</th><th>Actions</th></tr></thead><tbody id="salesBody">${sales.map(s => `<tr data-order="${s.order_number.toLowerCase()}" data-customer="${(s.customer_name||'walk-in').toLowerCase()}"><td><strong>${s.order_number}</strong></td><td>${s.customer_name||'Walk-in'}</td><td>${s.item_count||0}</td><td><strong>${formatKsh(s.total)}</strong></td><td>${getStatusBadge(s.payment_method)}</td><td><span class="badge-status ${s.status==='completed'?'success':s.status==='pending'?'warning':'info'}">${String(s.status).charAt(0).toUpperCase()+String(s.status).slice(1)}</span></td><td><small>${new Date(s.date).toLocaleString()}</small></td><td>${s.cashier_name||'Admin'}</td><td><button class="btn-sm-custom info" onclick="showToast('Receipt #${s.order_number}','info')"><i class="fas fa-receipt"></i></button><button class="btn-sm-custom danger" onclick="deleteSale(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="9" class="text-center py-4 text-muted">No sales found</td></tr>'}</tbody></table></div></div>
-            `;
-            document.getElementById('salesBadge').textContent = sales.length;
+                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover" id="salesTable"><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Method</th><th>Status</th><th>Date</th><th>Cashier</th><th>Actions</th></tr></thead><tbody id="salesBody">${sales.map(s => `<tr data-order="${s.order_number.toLowerCase()}" data-customer="${(s.customer_name||'walk-in').toLowerCase()}"><td><strong>${s.order_number}</strong></td><td>${s.customer_name||'Walk-in'}</td><td>${s.item_count||0}</td><td><strong>${formatKsh(s.total)}</strong></td><td>${getStatusBadge(s.payment_method)}</td><td><span class="badge-status ${s.status==='completed'?'success':s.status==='pending'?'warning':'info'}">${String(s.status).charAt(0).toUpperCase()+String(s.status).slice(1)}</span></td><td><small>${new Date(s.date).toLocaleString()}</small></td><td>${s.cashier_name||'Admin'}</td><td><button class="btn-sm-custom info" onclick="showToast('Receipt #${s.order_number}','info')"><i class="fas fa-receipt"></i></button><button class="btn-sm-custom danger" onclick="deleteSale(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="9" class="text-center py-4 text-muted">No sales found</td></tr>'}</tbody></table></div></div>
+                `;
+                document.getElementById('salesBadge').textContent = sales.length;
+            } catch (e) { showToast('Error loading sales', 'error'); }
         }
 
         function filterSales() {
             const search = document.getElementById('salesSearch').value.toLowerCase();
-            const rows = document.querySelectorAll('#salesBody tr');
-            rows.forEach(row => {
+            document.querySelectorAll('#salesBody tr').forEach(row => {
                 const order = row.dataset.order || '';
                 const customer = row.dataset.customer || '';
                 row.style.display = (order.includes(search) || customer.includes(search)) ? '' : 'none';
             });
         }
 
-        function deleteSale(id) {
-            const sale = DB.find('sales', id);
-            if (!sale) { showToast('Sale not found', 'error'); return; }
-            showConfirm(`Delete sale ${sale.order_number}? This cannot be undone.`, function() {
-                DB.delete('sales', id);
-                loadSales();
-                document.getElementById('salesBadge').textContent = DB.all('sales').length;
-                showToast('Sale deleted', 'success');
+        async function deleteSale(id) {
+            showConfirm(`Delete sale #${id}? This cannot be undone.`, async function() {
+                try {
+                    await API.delete(`/api/sales/${id}`);
+                    loadSales();
+                    showToast('Sale deleted', 'success');
+                } catch (e) {
+                    showToast('Error deleting sale: ' + e.message, 'error');
+                }
             });
         }
 
         // ===== CUSTOMERS =====
-        function loadCustomers() {
+        async function loadCustomers() {
             const content = document.getElementById('mainContent');
-            const customers = DB.all('customers');
-            content.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchCustomer" placeholder="Search customers..." onkeyup="loadCustomersData()"></div>
-                    <button class="btn btn-primary-custom btn-sm" onclick="showAddCustomerModal()"><i class="fas fa-plus me-1"></i> Add</button>
-                </div>
-                <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Points</th><th>Group</th><th>Actions</th></tr></thead><tbody id="customersBody">${customers.map((c,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(c.name)}</strong></td><td>${escapeHtml(c.phone||'-')}</td><td>${escapeHtml(c.email||'-')}</td><td>${c.loyalty_points||0}</td><td><span class="badge-status ${c.customer_group==='vip'?'success':c.customer_group==='wholesale'?'warning':c.customer_group==='credit'?'danger':'info'}">${c.customer_group||'regular'}</span></td><td><button class="btn-sm-custom info" onclick="editCustomer(${c.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteCustomer(${c.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No customers found</td></tr>'}</tbody></table></div></div>
-            `;
-            document.getElementById('customerBadge').textContent = customers.length;
+            try {
+                const customers = await API.get('/api/customers');
+                content.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchCustomer" placeholder="Search customers..." onkeyup="loadCustomersData()"></div>
+                        <button class="btn btn-primary-custom btn-sm" onclick="showAddCustomerModal()"><i class="fas fa-plus me-1"></i> Add</button>
+                    </div>
+                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Points</th><th>Group</th><th>Actions</th></tr></thead><tbody id="customersBody">${customers.map((c,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(c.name)}</strong></td><td>${escapeHtml(c.phone||'-')}</td><td>${escapeHtml(c.email||'-')}</td><td>${c.loyalty_points||0}</td><td><span class="badge-status ${c.customer_group==='vip'?'success':c.customer_group==='wholesale'?'warning':c.customer_group==='credit'?'danger':'info'}">${c.customer_group||'regular'}</span></td><td><button class="btn-sm-custom info" onclick="editCustomer(${c.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteCustomer(${c.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No customers found</td></tr>'}</tbody></table></div></div>
+                `;
+                document.getElementById('customerBadge').textContent = customers.length;
+            } catch (e) { showToast('Error loading customers', 'error'); }
         }
 
-        function loadCustomersData() {
+        async function loadCustomersData() {
             const search = document.getElementById('searchCustomer').value.toLowerCase();
-            const customers = DB.all('customers');
-            const filtered = search ? customers.filter(c => c.name.toLowerCase().includes(search) || (c.phone && c
-                .phone.includes(search))) : customers;
-            const tbody = document.getElementById('customersBody');
-            if (!filtered.length) { tbody.innerHTML =
-                    '<tr><td colspan="7" class="text-center py-4 text-muted">No customers found</td></tr>'; return; }
-            tbody.innerHTML = filtered.map((c, i) =>
-                `<tr><td>${i+1}</td><td><strong>${escapeHtml(c.name)}</strong></td><td>${escapeHtml(c.phone||'-')}</td><td>${escapeHtml(c.email||'-')}</td><td>${c.loyalty_points||0}</td><td><span class="badge-status ${c.customer_group==='vip'?'success':c.customer_group==='wholesale'?'warning':c.customer_group==='credit'?'danger':'info'}">${c.customer_group||'regular'}</span></td><td><button class="btn-sm-custom info" onclick="editCustomer(${c.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteCustomer(${c.id})"><i class="fas fa-trash"></i></button></td></tr>`
-            ).join('');
+            try {
+                const customers = await API.get('/api/customers');
+                const filtered = search ? customers.filter(c => c.name.toLowerCase().includes(search) || (c.phone && c.phone.includes(search))) : customers;
+                const tbody = document.getElementById('customersBody');
+                if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No customers found</td></tr>'; return; }
+                tbody.innerHTML = filtered.map((c, i) =>
+                    `<tr><td>${i+1}</td><td><strong>${escapeHtml(c.name)}</strong></td><td>${escapeHtml(c.phone||'-')}</td><td>${escapeHtml(c.email||'-')}</td><td>${c.loyalty_points||0}</td><td><span class="badge-status ${c.customer_group==='vip'?'success':c.customer_group==='wholesale'?'warning':c.customer_group==='credit'?'danger':'info'}">${c.customer_group||'regular'}</span></td><td><button class="btn-sm-custom info" onclick="editCustomer(${c.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteCustomer(${c.id})"><i class="fas fa-trash"></i></button></td></tr>`
+                ).join('');
+            } catch (e) { showToast('Error searching customers', 'error'); }
         }
 
         function showAddCustomerModal() {
@@ -1833,22 +1776,25 @@
             new bootstrap.Modal(document.getElementById('customerModal')).show();
         }
 
-        function editCustomer(id) {
-            const c = DB.find('customers', id);
-            if (!c) { showToast('Customer not found', 'error'); return; }
-            document.getElementById('customerModalTitle').textContent = 'Edit Customer';
-            document.getElementById('editCustomerId').value = c.id;
-            document.getElementById('customerName').value = c.name;
-            document.getElementById('customerPhone').value = c.phone || '';
-            document.getElementById('customerEmail').value = c.email || '';
-            document.getElementById('customerAddress').value = c.address || '';
-            document.getElementById('customerPoints').value = c.loyalty_points || 0;
-            document.getElementById('customerCreditLimit').value = c.credit_limit || 0;
-            document.getElementById('customerGroup').value = c.customer_group || 'regular';
-            new bootstrap.Modal(document.getElementById('customerModal')).show();
+        async function editCustomer(id) {
+            try {
+                const customers = await API.get('/api/customers');
+                const c = customers.find(item => item.id === id);
+                if (!c) { showToast('Customer not found', 'error'); return; }
+                document.getElementById('customerModalTitle').textContent = 'Edit Customer';
+                document.getElementById('editCustomerId').value = c.id;
+                document.getElementById('customerName').value = c.name;
+                document.getElementById('customerPhone').value = c.phone || '';
+                document.getElementById('customerEmail').value = c.email || '';
+                document.getElementById('customerAddress').value = c.address || '';
+                document.getElementById('customerPoints').value = c.loyalty_points || 0;
+                document.getElementById('customerCreditLimit').value = c.credit_limit || 0;
+                document.getElementById('customerGroup').value = c.customer_group || 'regular';
+                new bootstrap.Modal(document.getElementById('customerModal')).show();
+            } catch (e) { showToast('Error loading customer', 'error'); }
         }
 
-        function saveCustomer() {
+        async function saveCustomer() {
             const id = document.getElementById('editCustomerId').value;
             const data = {
                 name: document.getElementById('customerName').value.trim(),
@@ -1860,163 +1806,121 @@
                 customer_group: document.getElementById('customerGroup').value
             };
             if (!data.name) { showToast('Customer name is required', 'error'); return; }
-            if (id) { DB.update('customers', parseInt(id), data);
-                showToast('Customer updated!', 'success'); } else { DB.add('customers', data);
-                showToast('Customer added!', 'success'); }
-            bootstrap.Modal.getInstance(document.getElementById('customerModal')).hide();
-            loadCustomers();
+            try {
+                if (id) {
+                    await API.put(`/api/customers/${id}`, data);
+                    showToast('Customer updated!', 'success');
+                } else {
+                    await API.post('/api/customers', data);
+                    showToast('Customer added!', 'success');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('customerModal')).hide();
+                loadCustomers();
+            } catch (e) { showToast('Error saving customer', 'error'); }
         }
 
-        function deleteCustomer(id) {
-            showConfirm('Delete this customer?', function() {
-                DB.delete('customers', id);
-                loadCustomers();
-                showToast('Customer deleted', 'success');
+        async function deleteCustomer(id) {
+            showConfirm('Delete this customer?', async function() {
+                try {
+                    await API.delete(`/api/customers/${id}`);
+                    loadCustomers();
+                    showToast('Customer deleted', 'success');
+                } catch (e) { showToast('Error deleting customer', 'error'); }
             });
         }
 
-        // ===== PAYMENTS (with search & delete) =====
-        function loadPayments() {
+        // ===== PAYMENTS =====
+        async function loadPayments() {
             const content = document.getElementById('mainContent');
-            const payments = DB.all('payments');
-            const totalPurchases = payments.reduce((s, p) => s + p.amount, 0);
-            const paidAmount = payments.reduce((s, p) => s + p.paid, 0);
-            const pendingAmount = payments.reduce((s, p) => s + p.balance, 0);
-            const products = DB.all('products');
-            const suppliers = DB.all('suppliers');
+            try {
+                const payments = await API.get('/api/payments'); // Not a standard endpoint; we'll use a combination
+                // For now, we'll use the sales report to get payment data
+                const salesData = await API.get('/api/sales/report');
+                const sales = salesData.sales || [];
+                // Also fetch mpesa logs for mpesa payments
+                const mpesa = await API.get('/api/mpesa/transactions').catch(() => []);
 
-            const supplierData = suppliers.map(s => {
-                const prods = products.filter(p => p.supplier && p.supplier.includes(s.name));
-                return { name: s.name, total: prods.reduce((sum, p) => sum + (p.buying_price || 0) * p
-                        .stock_quantity, 0), item_count: prods.length, purchase_count: payments.filter(p =>
-                        p.supplier_name === s.name).length };
-            }).filter(s => s.total > 0 || s.item_count > 0);
-            const grandTotal = supplierData.reduce((s, d) => s + d.total, 0);
-            const maxVal = Math.max(...supplierData.map(d => d.total), 1);
+                const totalPurchases = sales.reduce((s, p) => s + p.total, 0);
+                const paidAmount = sales.filter(s => s.payment_method !== 'credit').reduce((s, p) => s + p.total, 0);
+                const pendingAmount = sales.filter(s => s.payment_method === 'credit' && s.status !== 'paid').reduce((s, p) => s + p.total, 0);
 
-            content.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <h6 class="mb-0"><i class="fas fa-file-invoice me-2"></i>Payment Summary</h6>
-                </div>
-                <div class="card-custom">
-                    <div class="card-header-custom"><h6><i class="fas fa-shopping-cart me-2"></i>Combined Purchases Payment Summary</h6></div>
-                    <div class="payment-summary-grid">
-                        <div class="ps-card primary"><div class="ps-value">${formatKsh(totalPurchases)}</div><div class="ps-label">Total Purchases</div></div>
-                        <div class="ps-card success"><div class="ps-value">${formatKsh(paidAmount)}</div><div class="ps-label">Paid Amount</div></div>
-                        <div class="ps-card danger"><div class="ps-value">${formatKsh(pendingAmount)}</div><div class="ps-label">Pending Amount</div></div>
-                        <div class="ps-card warning"><div class="ps-value">${payments.length}</div><div class="ps-label">Total Payments</div></div>
+                content.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <h6 class="mb-0"><i class="fas fa-file-invoice me-2"></i>Payment Summary</h6>
                     </div>
-                </div>
-
-                <div class="card-custom">
-                    <div class="card-header-custom">
-                        <h6><i class="fas fa-list me-2"></i>Payment Records</h6>
-                        <div class="d-flex gap-2 flex-wrap">
-                            <input type="text" class="form-control form-control-custom" id="paymentSearch" placeholder="Search supplier..." style="width:200px;padding:4px 10px;font-size:0.8rem;" onkeyup="filterPayments()">
-                            <button class="btn-sm-custom info" onclick="loadPayments()"><i class="fas fa-sync-alt me-1"></i> Refresh</button>
+                    <div class="card-custom">
+                        <div class="card-header-custom"><h6><i class="fas fa-shopping-cart me-2"></i>Combined Purchases Payment Summary</h6></div>
+                        <div class="payment-summary-grid">
+                            <div class="ps-card primary"><div class="ps-value">${formatKsh(totalPurchases)}</div><div class="ps-label">Total Purchases</div></div>
+                            <div class="ps-card success"><div class="ps-value">${formatKsh(paidAmount)}</div><div class="ps-label">Paid Amount</div></div>
+                            <div class="ps-card danger"><div class="ps-value">${formatKsh(pendingAmount)}</div><div class="ps-label">Pending Amount</div></div>
+                            <div class="ps-card warning"><div class="ps-value">${sales.length}</div><div class="ps-label">Total Sales</div></div>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-custom table-hover" id="paymentTable">
-                            <thead><tr><th>#</th><th>Supplier</th><th>Order</th><th>Amount</th><th>Paid</th><th>Balance</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
-                            <tbody id="paymentTableBody">
-                                ${payments.map((p,i) => {
-                                    const status = p.balance <= 0 ? 'success' : (p.balance < p.amount ? 'warning' : 'danger');
-                                    const label = p.balance <= 0 ? 'Paid' : (p.balance < p.amount ? 'Partial' : 'Unpaid');
-                                    return `<tr data-supplier="${escapeHtml(p.supplier_name).toLowerCase()}">
-                                        <td>${i+1}</td>
-                                        <td><strong>${escapeHtml(p.supplier_name)}</strong></td>
-                                        <td>${escapeHtml(p.order_number)}</td>
-                                        <td>${formatKsh(p.amount)}</td>
-                                        <td>${formatKsh(p.paid)}</td>
-                                        <td>${formatKsh(p.balance)}</td>
-                                        <td><span class="badge-status ${status}">${label}</span></td>
-                                        <td><small>${new Date(p.date).toLocaleDateString()}</small></td>
-                                        <td><button class="btn-sm-custom danger" onclick="deletePayment(${p.id})"><i class="fas fa-trash"></i></button></td>
-                                    </tr>`;
-                                }).join('') || '<tr><td colspan="9" class="text-center py-4 text-muted">No payment records found</td></tr>'}
-                            </tbody>
-                        </table>
+                    <div class="card-custom">
+                        <div class="card-header-custom"><h6><i class="fas fa-list me-2"></i>Sales Records</h6></div>
+                        <div class="table-responsive">
+                            <table class="table table-custom table-hover">
+                                <thead><tr><th>Order</th><th>Customer</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead>
+                                <tbody>
+                                    ${sales.slice(0,20).map(s => `
+                                        <tr>
+                                            <td>${s.order_number}</td>
+                                            <td>${s.customer_name||'Walk-in'}</td>
+                                            <td>${formatKsh(s.total)}</td>
+                                            <td>${getStatusBadge(s.payment_method)}</td>
+                                            <td>${getStatusBadge(s.status)}</td>
+                                            <td><small>${new Date(s.date).toLocaleDateString()}</small></td>
+                                        </tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No sales records</td></tr>'}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-
-                <div class="card-custom mt-3">
-                    <div class="card-header-custom"><h6><i class="fas fa-boxes me-2"></i>Stock Report — Purchases by Supplier</h6></div>
-                    <div><div class="d-flex justify-content-between align-items-center mb-2 p-2" style="background:var(--gray-50);border-radius:var(--radius-sm);"><span><strong>Grand Total Purchases</strong></span><span style="font-weight:700;font-size:1.1rem;color:var(--primary);">${formatKsh(grandTotal)}</span></div>
-                    <div style="max-height:400px;overflow-y:auto;">${supplierData.map((s,idx) => {
-                        const pct = maxVal > 0 ? Math.min((s.total / maxVal) * 100, 100) : 0;
-                        const color = idx % 2 === 0 ? 'var(--accent)' : 'var(--success)';
-                        return `<div class="supplier-stock-item"><div style="flex:1;min-width:0;"><div class="supplier-name">${escapeHtml(s.name)}</div><div class="supplier-count">${s.item_count} items • ${s.purchase_count} purchases</div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%;background:${color};"></div></div></div><div style="text-align:right;flex-shrink:0;margin-left:12px;"><div class="supplier-total">${formatKsh(s.total)}</div><div style="font-size:0.6rem;color:var(--gray-400);">${pct.toFixed(0)}%</div></div></div>`;
-                    }).join('') || '<div class="empty-state"><i class="fas fa-truck"></i><p>No supplier data</p></div>'}</div></div>
-                </div>
-            `;
+                `;
+            } catch (e) { showToast('Error loading payments', 'error'); }
         }
 
-        function filterPayments() {
-            const search = document.getElementById('paymentSearch').value.toLowerCase();
-            const rows = document.querySelectorAll('#paymentTableBody tr');
-            rows.forEach(row => {
-                const supplier = row.dataset.supplier || '';
-                row.style.display = supplier.includes(search) ? '' : 'none';
-            });
-        }
-
-        function deletePayment(id) {
-            const payment = DB.find('payments', id);
-            if (!payment) { showToast('Payment not found', 'error'); return; }
-            showConfirm(`Delete payment for ${payment.supplier_name} (${payment.order_number})? This cannot be undone.`, function() {
-                DB.delete('payments', id);
-                loadPayments();
-                showToast('Payment deleted', 'success');
-            });
-        }
-
-        // ===== M-PESA LOGS (with delete) =====
-        function loadMpesaLogs() {
+        // ===== M-PESA LOGS =====
+        async function loadMpesaLogs() {
             const content = document.getElementById('mainContent');
-            const txns = DB.all('mpesa_transactions');
-            content.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <h6 class="mb-0"><i class="fas fa-mobile-alt me-2"></i>M-Pesa Transaction Logs</h6>
-                    <button class="btn-sm-custom info" onclick="loadMpesaLogs()"><i class="fas fa-sync-alt me-1"></i> Refresh</button>
-                </div>
-                <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>Receipt</th><th>Phone</th><th>Amount</th><th>Status</th><th>Checkout ID</th><th>Date</th><th>Actions</th></tr></thead><tbody>${txns.map(t => `<tr><td>${t.receipt_number||'-'}</td><td>${t.phone_number}</td><td><strong>${formatKsh(t.amount)}</strong></td><td>${getStatusBadge(t.status)}</td><td><small>${t.checkout_request_id||'-'}</small></td><td><small>${new Date(t.date).toLocaleString()}</small></td><td><button class="btn-sm-custom danger" onclick="deleteMpesaLog(${t.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No M-Pesa transactions</td></tr>'}</tbody></table></div></div>
-            `;
-        }
-
-        function deleteMpesaLog(id) {
-            const log = DB.find('mpesa_transactions', id);
-            if (!log) { showToast('Log not found', 'error'); return; }
-            showConfirm(`Delete M-Pesa log ${log.receipt_number||'#'+id}? This cannot be undone.`, function() {
-                DB.delete('mpesa_transactions', id);
-                loadMpesaLogs();
-                showToast('M-Pesa log deleted', 'success');
-            });
+            try {
+                const txns = await API.get('/api/mpesa/transactions');
+                content.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <h6 class="mb-0"><i class="fas fa-mobile-alt me-2"></i>M-Pesa Transaction Logs</h6>
+                        <button class="btn-sm-custom info" onclick="loadMpesaLogs()"><i class="fas fa-sync-alt me-1"></i> Refresh</button>
+                    </div>
+                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>Receipt</th><th>Phone</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>${txns.map(t => `<tr><td>${t.receipt_number||'-'}</td><td>${t.phone_number}</td><td><strong>${formatKsh(t.amount)}</strong></td><td>${getStatusBadge(t.status)}</td><td><small>${new Date(t.date).toLocaleString()}</small></td></tr>`).join('') || '<tr><td colspan="5" class="text-center py-4 text-muted">No M-Pesa transactions</td></tr>'}</tbody></table></div></div>
+                `;
+            } catch (e) { showToast('Error loading M-Pesa logs', 'error'); }
         }
 
         // ===== EXPENSES =====
-        function loadExpenses() {
+        async function loadExpenses() {
             const content = document.getElementById('mainContent');
-            const expenses = DB.all('expenses');
-            content.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchExpense" placeholder="Search expenses..." onkeyup="loadExpensesData()"></div>
-                    <button class="btn btn-primary-custom btn-sm" onclick="showAddExpenseModal()"><i class="fas fa-plus me-1"></i> Add</button>
-                </div>
-                <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Description</th><th>Category</th><th>Amount</th><th>Date</th><th>Actions</th></tr></thead><tbody id="expensesBody">${expenses.map((e,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(e.description)}</strong></td><td><span class="badge-status ${e.category==='rent'?'warning':e.category==='salaries'?'success':e.category==='utilities'?'info':'neutral'}">${e.category||'other'}</span></td><td><strong>${formatKsh(e.amount)}</strong></td><td><small>${new Date(e.date).toLocaleDateString()}</small></td><td><button class="btn-sm-custom info" onclick="editExpense(${e.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteExpense(${e.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No expenses found</td></tr>'}</tbody></table></div></div>
-            `;
+            try {
+                const expenses = await API.get('/api/expenses');
+                content.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchExpense" placeholder="Search expenses..." onkeyup="loadExpensesData()"></div>
+                        <button class="btn btn-primary-custom btn-sm" onclick="showAddExpenseModal()"><i class="fas fa-plus me-1"></i> Add</button>
+                    </div>
+                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Description</th><th>Category</th><th>Amount</th><th>Date</th><th>Actions</th></tr></thead><tbody id="expensesBody">${expenses.map((e,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(e.description)}</strong></td><td><span class="badge-status ${e.category==='rent'?'warning':e.category==='salaries'?'success':e.category==='utilities'?'info':'neutral'}">${e.category||'other'}</span></td><td><strong>${formatKsh(e.amount)}</strong></td><td><small>${new Date(e.date).toLocaleDateString()}</small></td><td><button class="btn-sm-custom info" onclick="editExpense(${e.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteExpense(${e.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No expenses found</td></tr>'}</tbody></table></div></div>
+                `;
+            } catch (e) { showToast('Error loading expenses', 'error'); }
         }
 
-        function loadExpensesData() {
+        async function loadExpensesData() {
             const search = document.getElementById('searchExpense').value.toLowerCase();
-            const expenses = DB.all('expenses');
-            const filtered = search ? expenses.filter(e => e.description.toLowerCase().includes(search)) : expenses;
-            const tbody = document.getElementById('expensesBody');
-            if (!filtered.length) { tbody.innerHTML =
-                    '<tr><td colspan="6" class="text-center py-4 text-muted">No expenses found</td></tr>'; return; }
-            tbody.innerHTML = filtered.map((e, i) =>
-                `<tr><td>${i+1}</td><td><strong>${escapeHtml(e.description)}</strong></td><td><span class="badge-status ${e.category==='rent'?'warning':e.category==='salaries'?'success':e.category==='utilities'?'info':'neutral'}">${e.category||'other'}</span></td><td><strong>${formatKsh(e.amount)}</strong></td><td><small>${new Date(e.date).toLocaleDateString()}</small></td><td><button class="btn-sm-custom info" onclick="editExpense(${e.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteExpense(${e.id})"><i class="fas fa-trash"></i></button></td></tr>`
-            ).join('');
+            try {
+                const expenses = await API.get('/api/expenses');
+                const filtered = search ? expenses.filter(e => e.description.toLowerCase().includes(search)) : expenses;
+                const tbody = document.getElementById('expensesBody');
+                if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No expenses found</td></tr>'; return; }
+                tbody.innerHTML = filtered.map((e, i) =>
+                    `<tr><td>${i+1}</td><td><strong>${escapeHtml(e.description)}</strong></td><td><span class="badge-status ${e.category==='rent'?'warning':e.category==='salaries'?'success':e.category==='utilities'?'info':'neutral'}">${e.category||'other'}</span></td><td><strong>${formatKsh(e.amount)}</strong></td><td><small>${new Date(e.date).toLocaleDateString()}</small></td><td><button class="btn-sm-custom info" onclick="editExpense(${e.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteExpense(${e.id})"><i class="fas fa-trash"></i></button></td></tr>`
+                ).join('');
+            } catch (e) { showToast('Error searching expenses', 'error'); }
         }
 
         function showAddExpenseModal() {
@@ -2027,20 +1931,23 @@
             new bootstrap.Modal(document.getElementById('expenseModal')).show();
         }
 
-        function editExpense(id) {
-            const e = DB.find('expenses', id);
-            if (!e) { showToast('Expense not found', 'error'); return; }
-            document.getElementById('expenseModalTitle').textContent = 'Edit Expense';
-            document.getElementById('editExpenseId').value = e.id;
-            document.getElementById('expenseDesc').value = e.description;
-            document.getElementById('expenseAmount').value = e.amount;
-            document.getElementById('expenseCategory').value = e.category || 'other';
-            document.getElementById('expenseDate').value = e.date || new Date().toISOString().split('T')[0];
-            document.getElementById('expenseNotes').value = e.notes || '';
-            new bootstrap.Modal(document.getElementById('expenseModal')).show();
+        async function editExpense(id) {
+            try {
+                const expenses = await API.get('/api/expenses');
+                const e = expenses.find(item => item.id === id);
+                if (!e) { showToast('Expense not found', 'error'); return; }
+                document.getElementById('expenseModalTitle').textContent = 'Edit Expense';
+                document.getElementById('editExpenseId').value = e.id;
+                document.getElementById('expenseDesc').value = e.description;
+                document.getElementById('expenseAmount').value = e.amount;
+                document.getElementById('expenseCategory').value = e.category || 'other';
+                document.getElementById('expenseDate').value = e.date || new Date().toISOString().split('T')[0];
+                document.getElementById('expenseNotes').value = e.notes || '';
+                new bootstrap.Modal(document.getElementById('expenseModal')).show();
+            } catch (e) { showToast('Error loading expense', 'error'); }
         }
 
-        function saveExpense() {
+        async function saveExpense() {
             const id = document.getElementById('editExpenseId').value;
             const data = {
                 description: document.getElementById('expenseDesc').value.trim(),
@@ -2051,18 +1958,26 @@
             };
             if (!data.description) { showToast('Description is required', 'error'); return; }
             if (!data.amount || data.amount <= 0) { showToast('Enter a valid amount', 'error'); return; }
-            if (id) { DB.update('expenses', parseInt(id), data);
-                showToast('Expense updated!', 'success'); } else { DB.add('expenses', data);
-                showToast('Expense added!', 'success'); }
-            bootstrap.Modal.getInstance(document.getElementById('expenseModal')).hide();
-            loadExpenses();
+            try {
+                if (id) {
+                    await API.put(`/api/expenses/${id}`, data);
+                    showToast('Expense updated!', 'success');
+                } else {
+                    await API.post('/api/expenses', data);
+                    showToast('Expense added!', 'success');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('expenseModal')).hide();
+                loadExpenses();
+            } catch (e) { showToast('Error saving expense', 'error'); }
         }
 
-        function deleteExpense(id) {
-            showConfirm('Delete this expense?', function() {
-                DB.delete('expenses', id);
-                loadExpenses();
-                showToast('Expense deleted', 'success');
+        async function deleteExpense(id) {
+            showConfirm('Delete this expense?', async function() {
+                try {
+                    await API.delete(`/api/expenses/${id}`);
+                    loadExpenses();
+                    showToast('Expense deleted', 'success');
+                } catch (e) { showToast('Error deleting expense', 'error'); }
             });
         }
 
@@ -2079,30 +1994,34 @@
         }
 
         // ===== USERS =====
-        function loadUsers() {
+        async function loadUsers() {
             const content = document.getElementById('mainContent');
-            const users = DB.all('users');
-            const shops = DB.all('shops');
-            content.innerHTML = `
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <h6 class="mb-0"><i class="fas fa-users me-2"></i>System Users</h6>
-                    <button class="btn btn-primary-custom btn-sm" onclick="showAddUserModal()"><i class="fas fa-plus me-1"></i> Add User</button>
-                </div>
-                <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>ID</th><th>Username</th><th>Name</th><th>Shop</th><th>Role</th><th>Commission</th><th>Actions</th></tr></thead><tbody>${users.map(u => {
-                    const shop = shops.find(s => s.id === u.shop_id);
-                    const commBadge = u.commission_rate > 0 ? `<span class="commission-badge ${u.commission_rate>5?'high':''}">${u.commission_rate}%</span>` : '<span class="text-muted" style="font-size:0.6rem;">-</span>';
-                    return `<tr><td>${u.id}</td><td><strong>${escapeHtml(u.username)}</strong></td><td>${escapeHtml(u.full_name||'-')}</td><td>${shop?escapeHtml(shop.name):'Global'}</td><td>${getRoleBadge(u.role)}</td><td>${commBadge}</td><td>${u.username!=='admin'?`<button class="btn-sm-custom info" onclick="editUser(${u.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteUser(${u.id})"><i class="fas fa-trash"></i></button>`:'<span class="text-muted" style="font-size:0.6rem;">Protected</span>'}</td></tr>`;
-                }).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No users found</td></tr>'}</tbody></table></div></div>
-            `;
-            document.getElementById('userBadge').textContent = users.length;
-            loadShopsForUserSelect();
+            try {
+                const users = await API.get('/api/users');
+                const shops = await API.get('/api/shops');
+                content.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <h6 class="mb-0"><i class="fas fa-users me-2"></i>System Users</h6>
+                        <button class="btn btn-primary-custom btn-sm" onclick="showAddUserModal()"><i class="fas fa-plus me-1"></i> Add User</button>
+                    </div>
+                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>ID</th><th>Username</th><th>Name</th><th>Shop</th><th>Role</th><th>Commission</th><th>Actions</th></tr></thead><tbody>${users.map(u => {
+                        const shop = shops.find(s => s.id === u.shop_id);
+                        const commBadge = u.commission_rate > 0 ? `<span class="commission-badge ${u.commission_rate>5?'high':''}">${u.commission_rate}%</span>` : '<span class="text-muted" style="font-size:0.6rem;">-</span>';
+                        return `<tr><td>${u.id}</td><td><strong>${escapeHtml(u.username)}</strong></td><td>${escapeHtml(u.full_name||'-')}</td><td>${shop?escapeHtml(shop.name):'Global'}</td><td>${getRoleBadge(u.role)}</td><td>${commBadge}</td><td>${u.username!=='admin'?`<button class="btn-sm-custom info" onclick="editUser(${u.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteUser(${u.id})"><i class="fas fa-trash"></i></button>`:'<span class="text-muted" style="font-size:0.6rem;">Protected</span>'}</td></tr>`;
+                    }).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No users found</td></tr>'}</tbody></table></div></div>
+                `;
+                document.getElementById('userBadge').textContent = users.length;
+                await loadShopsForUserSelect();
+            } catch (e) { showToast('Error loading users', 'error'); }
         }
 
-        function loadShopsForUserSelect() {
-            const shops = DB.all('shops');
-            const select = document.getElementById('userShop');
-            select.innerHTML = '<option value="">No Shop (Global)</option>';
-            shops.forEach(shop => select.innerHTML += `<option value="${shop.id}">${shop.name}</option>`);
+        async function loadShopsForUserSelect() {
+            try {
+                const shops = await API.get('/api/shops');
+                const select = document.getElementById('userShop');
+                select.innerHTML = '<option value="">No Shop (Global)</option>';
+                shops.forEach(shop => select.innerHTML += `<option value="${shop.id}">${shop.name}</option>`);
+            } catch (e) { /* silently fail */ }
         }
 
         function togglePermissions() {
@@ -2118,18 +2037,15 @@
                     checks.forEach(c => {
                         const module = c.dataset.module;
                         const perm = c.dataset.perm;
-                        if (['products', 'sales'].includes(module) && ['view', 'add'].includes(perm)) c
-                            .checked = true;
+                        if (['products', 'sales'].includes(module) && ['view', 'add'].includes(perm)) c.checked = true;
                         else if (module === 'customers' && perm === 'view') c.checked = true;
                         else c.checked = false;
                     });
                 } else if (role === 'manager') {
                     checks.forEach(c => { c.checked = true; });
                     checks.forEach(c => {
-                        if (c.dataset.module === 'users' && c.dataset.perm === 'delete') c.checked =
-                            false;
-                        if (c.dataset.module === 'shops' && c.dataset.perm === 'delete') c.checked =
-                            false;
+                        if (c.dataset.module === 'users' && c.dataset.perm === 'delete') c.checked = false;
+                        if (c.dataset.module === 'shops' && c.dataset.perm === 'delete') c.checked = false;
                     });
                 } else if (role === 'accountant') {
                     checks.forEach(c => {
@@ -2157,37 +2073,40 @@
             new bootstrap.Modal(document.getElementById('userModal')).show();
         }
 
-        function editUser(id) {
-            const u = DB.find('users', id);
-            if (!u) { showToast('User not found', 'error'); return; }
-            document.getElementById('userModalTitle').textContent = 'Edit User';
-            document.getElementById('editUserId').value = u.id;
-            document.getElementById('userUsername').value = u.username;
-            document.getElementById('userFullName').value = u.full_name || '';
-            document.getElementById('userEmail').value = u.email || '';
-            document.getElementById('userRole').value = u.role || 'cashier';
-            document.getElementById('userCommission').value = u.commission_rate || 0;
-            document.getElementById('userIsAdmin').checked = u.is_admin || false;
-            document.getElementById('userPassword').placeholder = 'Leave blank to keep current';
-            document.getElementById('userPassword').required = false;
-            loadShopsForUserSelect();
-            setTimeout(() => { document.getElementById('userShop').value = u.shop_id || ''; }, 100);
-            const container = document.getElementById('permissionsContainer');
-            container.style.display = u.role === 'custom' || u.is_admin ? 'block' : 'none';
-            const perms = u.permissions || {};
-            document.querySelectorAll('.perm-check').forEach(c => {
-                const module = c.dataset.module;
-                const perm = c.dataset.perm;
-                if (u.is_admin) { c.checked = true; } else if (perms[module] && perms[module][perm] !== undefined) {
-                    c.checked = perms[module][perm];
-                } else {
-                    c.checked = false;
-                }
-            });
-            new bootstrap.Modal(document.getElementById('userModal')).show();
+        async function editUser(id) {
+            try {
+                const users = await API.get('/api/users');
+                const u = users.find(item => item.id === id);
+                if (!u) { showToast('User not found', 'error'); return; }
+                document.getElementById('userModalTitle').textContent = 'Edit User';
+                document.getElementById('editUserId').value = u.id;
+                document.getElementById('userUsername').value = u.username;
+                document.getElementById('userFullName').value = u.full_name || '';
+                document.getElementById('userEmail').value = u.email || '';
+                document.getElementById('userRole').value = u.role || 'cashier';
+                document.getElementById('userCommission').value = u.commission_rate || 0;
+                document.getElementById('userIsAdmin').checked = u.is_admin || false;
+                document.getElementById('userPassword').placeholder = 'Leave blank to keep current';
+                document.getElementById('userPassword').required = false;
+                await loadShopsForUserSelect();
+                setTimeout(() => { document.getElementById('userShop').value = u.shop_id || ''; }, 100);
+                const container = document.getElementById('permissionsContainer');
+                container.style.display = u.role === 'custom' || u.is_admin ? 'block' : 'none';
+                const perms = u.permissions || {};
+                document.querySelectorAll('.perm-check').forEach(c => {
+                    const module = c.dataset.module;
+                    const perm = c.dataset.perm;
+                    if (u.is_admin) { c.checked = true; } else if (perms[module] && perms[module][perm] !== undefined) {
+                        c.checked = perms[module][perm];
+                    } else {
+                        c.checked = false;
+                    }
+                });
+                new bootstrap.Modal(document.getElementById('userModal')).show();
+            } catch (e) { showToast('Error loading user', 'error'); }
         }
 
-        function saveUser() {
+        async function saveUser() {
             const id = document.getElementById('editUserId').value;
             const username = document.getElementById('userUsername').value.trim();
             const password = document.getElementById('userPassword').value;
@@ -2206,69 +2125,79 @@
                 full_name: document.getElementById('userFullName').value.trim(),
                 email: document.getElementById('userEmail').value.trim(),
                 role: isAdmin ? 'admin' : role,
-                shop_id: document.getElementById('userShop').value ? parseInt(document.getElementById('userShop')
-                    .value) : null,
+                shop_id: document.getElementById('userShop').value ? parseInt(document.getElementById('userShop').value) : null,
                 commission_rate: parseFloat(document.getElementById('userCommission').value) || 0,
                 is_admin: isAdmin,
                 permissions: isAdmin ? {} : perms
             };
             if (!id && !password) { showToast('Password is required for new users', 'error'); return; }
             if (password) data.password = password;
-            if (id) { DB.update('users', parseInt(id), data);
-                showToast('User updated!', 'success'); } else { DB.add('users', { ...data, password: password ||
-                        'password123' });
-                showToast('User created!', 'success'); }
-            bootstrap.Modal.getInstance(document.getElementById('userModal')).hide();
-            loadUsers();
+            try {
+                if (id) {
+                    await API.put(`/api/users/${id}`, data);
+                    showToast('User updated!', 'success');
+                } else {
+                    await API.post('/api/users', data);
+                    showToast('User created!', 'success');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('userModal')).hide();
+                loadUsers();
+            } catch (e) { showToast('Error saving user: ' + e.message, 'error'); }
         }
 
-        function deleteUser(id) {
-            showConfirm('Delete this user? This cannot be undone.', function() {
-                DB.delete('users', id);
-                loadUsers();
-                showToast('User deleted', 'success');
+        async function deleteUser(id) {
+            showConfirm('Delete this user? This cannot be undone.', async function() {
+                try {
+                    await API.delete(`/api/users/${id}`);
+                    loadUsers();
+                    showToast('User deleted', 'success');
+                } catch (e) { showToast('Error deleting user', 'error'); }
             });
         }
 
         // ===== SETTINGS =====
-        function loadSettings() {
+        async function loadSettings() {
             const content = document.getElementById('mainContent');
-            const settings = DB.get('settings', {});
-            content.innerHTML = `
-                <div class="card-custom">
-                    <div class="card-header-custom"><h6><i class="fas fa-cog me-2"></i>Business Settings</h6><button class="btn btn-primary-custom btn-sm" onclick="showSettingsModal()"><i class="fas fa-edit me-1"></i> Edit</button></div>
-                    <div class="row" id="settingsDisplay">
-                        <div class="col-md-6 mb-2"><strong>Business Name:</strong> <span>${escapeHtml(settings.business_name||'General Shop')}</span></div>
-                        <div class="col-md-6 mb-2"><strong>Phone:</strong> <span>${escapeHtml(settings.phone||'+254 700 000 000')}</span></div>
-                        <div class="col-md-6 mb-2"><strong>Email:</strong> <span>${escapeHtml(settings.email||'info@generalshop.com')}</span></div>
-                        <div class="col-md-6 mb-2"><strong>Address:</strong> <span>${escapeHtml(settings.address||'Nairobi, Kenya')}</span></div>
-                        <div class="col-md-6 mb-2"><strong>PIN:</strong> <span>${escapeHtml(settings.pin||'A123456789')}</span></div>
-                        <div class="col-md-6 mb-2"><strong>Currency:</strong> <span>${escapeHtml(settings.currency||'KES')}</span></div>
-                        <div class="col-md-6 mb-2"><strong>Tax Rate:</strong> <span>${settings.tax_rate||16}%</span></div>
-                        <div class="col-md-6 mb-2"><strong>Default Commission:</strong> <span>${settings.default_commission||0}%</span></div>
-                        <div class="col-md-12 mb-2"><strong>Receipt Footer:</strong> <span>${escapeHtml(settings.footer||'Thank you for shopping with us!')}</span></div>
+            try {
+                const settings = await API.get('/api/settings');
+                content.innerHTML = `
+                    <div class="card-custom">
+                        <div class="card-header-custom"><h6><i class="fas fa-cog me-2"></i>Business Settings</h6><button class="btn btn-primary-custom btn-sm" onclick="showSettingsModal()"><i class="fas fa-edit me-1"></i> Edit</button></div>
+                        <div class="row" id="settingsDisplay">
+                            <div class="col-md-6 mb-2"><strong>Business Name:</strong> <span>${escapeHtml(settings.business_name||'General Shop')}</span></div>
+                            <div class="col-md-6 mb-2"><strong>Phone:</strong> <span>${escapeHtml(settings.phone||'+254 700 000 000')}</span></div>
+                            <div class="col-md-6 mb-2"><strong>Email:</strong> <span>${escapeHtml(settings.email||'info@generalshop.com')}</span></div>
+                            <div class="col-md-6 mb-2"><strong>Address:</strong> <span>${escapeHtml(settings.address||'Nairobi, Kenya')}</span></div>
+                            <div class="col-md-6 mb-2"><strong>PIN:</strong> <span>${escapeHtml(settings.pin||'A123456789')}</span></div>
+                            <div class="col-md-6 mb-2"><strong>Currency:</strong> <span>${escapeHtml(settings.currency||'KES')}</span></div>
+                            <div class="col-md-6 mb-2"><strong>Tax Rate:</strong> <span>${settings.tax_rate||16}%</span></div>
+                            <div class="col-md-6 mb-2"><strong>Default Commission:</strong> <span>${settings.default_commission||0}%</span></div>
+                            <div class="col-md-12 mb-2"><strong>Receipt Footer:</strong> <span>${escapeHtml(settings.footer||'Thank you for shopping with us!')}</span></div>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            } catch (e) { showToast('Error loading settings', 'error'); }
         }
 
         function showSettingsModal() {
-            const settings = DB.get('settings', {});
-            document.getElementById('setBusinessName').value = settings.business_name || 'General Shop';
-            document.getElementById('setLogo').value = settings.logo || '';
-            document.getElementById('setPhone').value = settings.phone || '+254 700 000 000';
-            document.getElementById('setEmail').value = settings.email || 'info@generalshop.com';
-            document.getElementById('setAddress').value = settings.address || 'Nairobi, Kenya';
-            document.getElementById('setPin').value = settings.pin || 'A123456789';
-            document.getElementById('setCurrency').value = settings.currency || 'KES';
-            document.getElementById('setTaxRate').value = settings.tax_rate || 16;
-            document.getElementById('setDefaultCommission').value = settings.default_commission || 0;
-            document.getElementById('setFooter').value = settings.footer || 'Thank you for shopping with us!';
-            document.getElementById('setTimezone').value = settings.timezone || 'Africa/Nairobi';
-            new bootstrap.Modal(document.getElementById('settingsModal')).show();
+            const settings = {}; // will be fetched inside
+            API.get('/api/settings').then(settings => {
+                document.getElementById('setBusinessName').value = settings.business_name || 'General Shop';
+                document.getElementById('setLogo').value = settings.logo || '';
+                document.getElementById('setPhone').value = settings.phone || '+254 700 000 000';
+                document.getElementById('setEmail').value = settings.email || 'info@generalshop.com';
+                document.getElementById('setAddress').value = settings.address || 'Nairobi, Kenya';
+                document.getElementById('setPin').value = settings.pin || 'A123456789';
+                document.getElementById('setCurrency').value = settings.currency || 'KES';
+                document.getElementById('setTaxRate').value = settings.tax_rate || 16;
+                document.getElementById('setDefaultCommission').value = settings.default_commission || 0;
+                document.getElementById('setFooter').value = settings.footer || 'Thank you for shopping with us!';
+                document.getElementById('setTimezone').value = settings.timezone || 'Africa/Nairobi';
+                new bootstrap.Modal(document.getElementById('settingsModal')).show();
+            }).catch(() => showToast('Error loading settings', 'error'));
         }
 
-        function saveSettings() {
+        async function saveSettings() {
             const data = {
                 business_name: document.getElementById('setBusinessName').value.trim(),
                 logo: document.getElementById('setLogo').value.trim(),
@@ -2282,22 +2211,30 @@
                 footer: document.getElementById('setFooter').value.trim(),
                 timezone: document.getElementById('setTimezone').value
             };
-            DB.set('settings', data);
-            bootstrap.Modal.getInstance(document.getElementById('settingsModal')).hide();
-            loadSettings();
-            showToast('Settings saved!', 'success');
+            try {
+                await API.put('/api/settings', data);
+                bootstrap.Modal.getInstance(document.getElementById('settingsModal')).hide();
+                loadSettings();
+                showToast('Settings saved!', 'success');
+            } catch (e) { showToast('Error saving settings', 'error'); }
         }
 
         // ==================== INIT ====================
-        $(document).ready(function() {
-            DB.init();
-            if (!DB.find('users', 1)) {
-                DB.add('users', { username: 'admin', full_name: 'System Admin', email: 'admin@pos.com',
-                    password: 'admin123', role: 'admin', shop_id: null, commission_rate: 0, is_admin: true,
-                    permissions: {} });
+        $(document).ready(async function() {
+            try {
+                // Get current user and shop
+                const user = await API.get('/api/current-user');
+                if (user && user.id) {
+                    document.getElementById('adminName').textContent = user.full_name || user.username;
+                    currentShopId = user.shop_id;
+                    await loadShopSelector();
+                    loadDashboard();
+                } else {
+                    window.location.href = '/';
+                }
+            } catch (e) {
+                showToast('Error loading user data', 'error');
             }
-            loadShopSelector();
-            loadDashboard();
 
             document.getElementById('notificationBtn').addEventListener('click', function() {
                 showToast('🔔 No new notifications', 'info');
@@ -2311,8 +2248,7 @@
             });
 
             document.addEventListener('keydown', function(e) {
-                if (e.ctrlKey && e.key === 'r') { e.preventDefault();
-                    refreshPage(); }
+                if (e.ctrlKey && e.key === 'r') { e.preventDefault(); refreshPage(); }
             });
 
             $('.user-btn').on('click', function(e) { e.stopPropagation(); });
