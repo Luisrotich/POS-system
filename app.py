@@ -2177,11 +2177,20 @@ def mpesa_transactions():
     shop_id = get_current_shop_id()
     conn = get_db()
     c = conn.cursor()
-    c.execute("""SELECT receipt_number, phone_number, amount, status, transaction_date 
+    c.execute("""SELECT id, receipt_number, phone_number, amount, status, transaction_date 
                  FROM mpesa_transactions 
                  WHERE shop_id = ? 
                  ORDER BY transaction_date DESC LIMIT 50""", (shop_id,))
-    transactions = [{'receipt_number': row[0] or '-', 'phone_number': row[1], 'amount': row[2] or 0, 'status': row[3], 'date': row[4]} for row in c.fetchall()]
+    transactions = []
+    for row in c.fetchall():
+        transactions.append({
+            'id': row[0],                     # <-- now included
+            'receipt_number': row[1] or '-',
+            'phone_number': row[2],
+            'amount': row[3] or 0,
+            'status': row[4],
+            'date': row[5]
+        })
     conn.close()
     return jsonify(transactions)
 
@@ -2221,6 +2230,15 @@ def test_mpesa():
     
     return jsonify(results)
 
+@app.route('/api/mpesa/transactions/<int:transaction_id>', methods=['DELETE'])
+@admin_required
+def delete_mpesa_transaction(transaction_id):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("DELETE FROM mpesa_transactions WHERE id = ?", (transaction_id,))
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})
 # ---------- DASHBOARD ----------
 @app.route('/api/dashboard/stats')
 @admin_required
@@ -3227,6 +3245,7 @@ def serve_manifest():
         ]
     }
     return jsonify(manifest)
+
 
 
 @app.route('/sw.js')

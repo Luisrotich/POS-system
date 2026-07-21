@@ -398,6 +398,10 @@
             .payment-summary-grid .ps-card { padding:10px 12px; }
             .payment-summary-grid .ps-card .ps-value { font-size:1rem; }
         }
+        /* ===== ADDITIONAL: Date picker inline ===== */
+        .date-range { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+        .date-range input[type="date"] { padding:4px 10px; border-radius:6px; border:1px solid var(--gray-300); font-size:0.8rem; }
+        .date-range button { padding:4px 14px; font-size:0.75rem; }
     </style>
 </head>
 <body>
@@ -521,8 +525,8 @@
         <div class="content-wrapper" id="mainContent"><div class="text-center py-5"><div class="loading-spinner" style="margin:0 auto 16px;"></div><p class="text-muted">Loading dashboard...</p></div></div>
     </div>
 
-    <!-- ===== MODALS (unchanged) ===== -->
-    <!-- Shop Modal -->
+    <!-- ===== MODALS ===== -->
+    <!-- Shop Modal (unchanged) -->
     <div class="modal fade" id="shopModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-content-custom">
@@ -541,22 +545,44 @@
         </div>
     </div>
 
-    <!-- Product Modal -->
+    <!-- ===== PRODUCT MODAL (with name attributes added) ===== -->
     <div class="modal fade" id="productModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content modal-content-custom">
                 <div class="modal-header modal-header-custom"><h5 class="modal-title"><i class="fas fa-box me-2"></i> <span id="productModalTitle">Add Product</span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body modal-body-custom">
                     <form id="productForm" enctype="multipart/form-data"><input type="hidden" id="editProductId">
-                        <div class="row g-2"><div class="col-8"><label class="form-label">Product Name *</label><input type="text" class="form-control form-control-custom" id="prodName" required></div><div class="col-4"><label class="form-label">SKU</label><input type="text" class="form-control form-control-custom" id="prodSKU" placeholder="Auto"></div></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Barcode</label><input type="text" class="form-control form-control-custom" id="prodBarcode"></div><div class="col-md-6"><label class="form-label">Category</label><select class="form-select form-select-custom" id="prodCategory"></select></div></div>
-                        <div class="row g-2"><div class="col-4"><label class="form-label">Buying Price</label><input type="number" class="form-control form-control-custom" id="prodBuyingPrice" step="0.01" value="0"></div><div class="col-4"><label class="form-label">Selling Price *</label><input type="number" class="form-control form-control-custom" id="prodSellingPrice" step="0.01" required></div><div class="col-4"><label class="form-label">Tax Rate (%)</label><input type="number" class="form-control form-control-custom" id="prodTaxRate" value="16" step="0.01"></div></div>
-                        <div class="row g-2"><div class="col-4"><label class="form-label">Stock</label><input type="number" class="form-control form-control-custom" id="prodStock" value="0"></div><div class="col-4"><label class="form-label">Threshold</label><input type="number" class="form-control form-control-custom" id="prodThreshold" value="5"></div><div class="col-4"><label class="form-label">Unit</label><select class="form-select form-select-custom" id="prodUnit"><option value="piece">Piece</option><option value="kg">Kg</option><option value="litre">Litre</option><option value="gram">Gram</option><option value="ml">ML</option><option value="pack">Pack</option><option value="carton">Carton</option></select></div></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Brand</label><select class="form-select form-select-custom" id="prodBrand"><option value="">Select Brand</option></select></div><div class="col-md-6"><label class="form-label">Supplier</label><input type="text" class="form-control form-control-custom" id="prodSupplier"></div></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Expiry Date</label><input type="date" class="form-control form-control-custom" id="prodExpiry"></div><div class="col-md-6"><label class="form-label">Discount (%)</label><input type="number" class="form-control form-control-custom" id="prodDiscount" value="0" step="0.01"></div></div>
+                        <div class="row g-2">
+                            <div class="col-8"><label class="form-label">Product Name *</label><input type="text" class="form-control form-control-custom" id="prodName" name="name" required></div>
+                            <div class="col-4"><label class="form-label">SKU</label><input type="text" class="form-control form-control-custom" id="prodSKU" name="sku" placeholder="Auto"></div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-md-6"><label class="form-label">Barcode</label><input type="text" class="form-control form-control-custom" id="prodBarcode" name="barcode"></div>
+                            <div class="col-md-6"><label class="form-label">Category</label><select class="form-select form-select-custom" id="prodCategory" name="category_id"></select></div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-4"><label class="form-label">Buying Price</label><input type="number" class="form-control form-control-custom" id="prodBuyingPrice" name="buying_price" step="0.01" value="0"></div>
+                            <div class="col-4"><label class="form-label">Selling Price *</label><input type="number" class="form-control form-control-custom" id="prodSellingPrice" name="selling_price" step="0.01" required></div>
+                            <div class="col-4"><label class="form-label">Tax Rate (%)</label><input type="number" class="form-control form-control-custom" id="prodTaxRate" name="tax_rate" value="16" step="0.01"></div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-4"><label class="form-label">Stock</label><input type="number" class="form-control form-control-custom" id="prodStock" name="stock_quantity" value="0"></div>
+                            <div class="col-4"><label class="form-label">Threshold</label><input type="number" class="form-control form-control-custom" id="prodThreshold" name="low_stock_threshold" value="5"></div>
+                            <div class="col-4"><label class="form-label">Unit</label><select class="form-select form-select-custom" id="prodUnit" name="unit">
+                                <option value="piece">Piece</option><option value="kg">Kg</option><option value="litre">Litre</option><option value="gram">Gram</option><option value="ml">ML</option><option value="pack">Pack</option><option value="carton">Carton</option>
+                            </select></div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-md-6"><label class="form-label">Brand</label><select class="form-select form-select-custom" id="prodBrand" name="brand_id"><option value="">Select Brand</option></select></div>
+                            <div class="col-md-6"><label class="form-label">Supplier</label><input type="text" class="form-control form-control-custom" id="prodSupplier" name="supplier"></div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-md-6"><label class="form-label">Expiry Date</label><input type="date" class="form-control form-control-custom" id="prodExpiry" name="expiry_date"></div>
+                            <div class="col-md-6"><label class="form-label">Discount (%)</label><input type="number" class="form-control form-control-custom" id="prodDiscount" name="discount" value="0" step="0.01"></div>
+                        </div>
                         <div class="row g-2 mt-2">
-                            <div class="col-md-8"><label class="form-label">Description</label><textarea class="form-control form-control-custom" id="prodDescription" rows="2"></textarea></div>
-                            <div class="col-md-4"><label class="form-label">Image</label><div class="text-center"><img id="imagePreview" class="image-preview mb-2" src="https://via.placeholder.com/150?text=Click" onclick="$('#productImage').click()" style="cursor:pointer"><input type="file" id="productImage" accept="image/*" style="display:none" onchange="previewImage(this)"><small class="text-muted d-block">Click to upload</small></div></div>
+                            <div class="col-md-8"><label class="form-label">Description</label><textarea class="form-control form-control-custom" id="prodDescription" name="description" rows="2"></textarea></div>
+                            <div class="col-md-4"><label class="form-label">Image</label><div class="text-center"><img id="imagePreview" class="image-preview mb-2" src="https://via.placeholder.com/150?text=Click" onclick="$('#productImage').click()" style="cursor:pointer"><input type="file" id="productImage" name="image" accept="image/*" style="display:none" onchange="previewImage(this)"><small class="text-muted d-block">Click to upload</small></div></div>
                         </div>
                     </form>
                 </div>
@@ -572,8 +598,8 @@
                 <div class="modal-header modal-header-custom"><h5 class="modal-title"><i class="fas fa-tag me-2"></i> <span id="categoryModalTitle">Add Category</span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body modal-body-custom">
                     <form id="categoryForm"><input type="hidden" id="editCategoryId">
-                        <div class="mb-3"><label class="form-label">Category Name *</label><input type="text" class="form-control form-control-custom" id="catName" required></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Color</label><input type="color" class="form-control form-control-custom" id="catColor" value="#6c5ce7" style="height:45px;padding:2px;"></div><div class="col-md-6"><label class="form-label">Icon</label><input type="text" class="form-control form-control-custom" id="catIcon" placeholder="📦" value="📦"></div></div>
+                        <div class="mb-3"><label class="form-label">Category Name *</label><input type="text" class="form-control form-control-custom" id="catName" name="name" required></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Color</label><input type="color" class="form-control form-control-custom" id="catColor" name="color" value="#6c5ce7" style="height:45px;padding:2px;"></div><div class="col-md-6"><label class="form-label">Icon</label><input type="text" class="form-control form-control-custom" id="catIcon" name="icon" placeholder="📦" value="📦"></div></div>
                     </form>
                 </div>
                 <div class="modal-footer-custom"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary-custom" onclick="saveCategory()">Save Category</button></div>
@@ -588,8 +614,8 @@
                 <div class="modal-header modal-header-custom"><h5 class="modal-title"><i class="fas fa-trademark me-2"></i> <span id="brandModalTitle">Add Brand</span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body modal-body-custom">
                     <form id="brandForm"><input type="hidden" id="editBrandId">
-                        <div class="mb-3"><label class="form-label">Brand Name *</label><input type="text" class="form-control form-control-custom" id="brandName" required></div>
-                        <div class="mb-3"><label class="form-label">Description</label><textarea class="form-control form-control-custom" id="brandDesc" rows="2"></textarea></div>
+                        <div class="mb-3"><label class="form-label">Brand Name *</label><input type="text" class="form-control form-control-custom" id="brandName" name="name" required></div>
+                        <div class="mb-3"><label class="form-label">Description</label><textarea class="form-control form-control-custom" id="brandDesc" name="description" rows="2"></textarea></div>
                     </form>
                 </div>
                 <div class="modal-footer-custom"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary-custom" onclick="saveBrand()">Save Brand</button></div>
@@ -604,8 +630,8 @@
                 <div class="modal-header modal-header-custom"><h5 class="modal-title"><i class="fas fa-weight-hanging me-2"></i> <span id="unitModalTitle">Add Unit</span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body modal-body-custom">
                     <form id="unitForm"><input type="hidden" id="editUnitId">
-                        <div class="mb-3"><label class="form-label">Unit Name *</label><input type="text" class="form-control form-control-custom" id="unitName" required placeholder="e.g. Kilogram"></div>
-                        <div class="mb-3"><label class="form-label">Short Code</label><input type="text" class="form-control form-control-custom" id="unitCode" placeholder="e.g. kg"></div>
+                        <div class="mb-3"><label class="form-label">Unit Name *</label><input type="text" class="form-control form-control-custom" id="unitName" name="name" required placeholder="e.g. Kilogram"></div>
+                        <div class="mb-3"><label class="form-label">Short Code</label><input type="text" class="form-control form-control-custom" id="unitCode" name="code" placeholder="e.g. kg"></div>
                     </form>
                 </div>
                 <div class="modal-footer-custom"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary-custom" onclick="saveUnit()">Save Unit</button></div>
@@ -639,10 +665,10 @@
                 <div class="modal-header modal-header-custom"><h5 class="modal-title"><i class="fas fa-handshake me-2"></i> <span id="supplierModalTitle">Add Supplier</span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body modal-body-custom">
                     <form id="supplierForm"><input type="hidden" id="editSupplierId">
-                        <div class="mb-3"><label class="form-label">Supplier Name *</label><input type="text" class="form-control form-control-custom" id="supplierName" required></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Phone</label><input type="text" class="form-control form-control-custom" id="supplierPhone"></div><div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control form-control-custom" id="supplierEmail"></div></div>
-                        <div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control form-control-custom" id="supplierAddress"></div>
-                        <div class="mb-3"><label class="form-label">Notes</label><textarea class="form-control form-control-custom" id="supplierNotes" rows="2"></textarea></div>
+                        <div class="mb-3"><label class="form-label">Supplier Name *</label><input type="text" class="form-control form-control-custom" id="supplierName" name="name" required></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Phone</label><input type="text" class="form-control form-control-custom" id="supplierPhone" name="phone"></div><div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control form-control-custom" id="supplierEmail" name="email"></div></div>
+                        <div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control form-control-custom" id="supplierAddress" name="address"></div>
+                        <div class="mb-3"><label class="form-label">Notes</label><textarea class="form-control form-control-custom" id="supplierNotes" name="notes" rows="2"></textarea></div>
                     </form>
                 </div>
                 <div class="modal-footer-custom"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary-custom" onclick="saveSupplier()">Save Supplier</button></div>
@@ -657,10 +683,10 @@
                 <div class="modal-header modal-header-custom"><h5 class="modal-title"><i class="fas fa-user-plus me-2"></i> <span id="userModalTitle">Add User</span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body modal-body-custom">
                     <form id="userForm"><input type="hidden" id="editUserId">
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Username *</label><input type="text" class="form-control form-control-custom" id="userUsername" required></div><div class="col-md-6"><label class="form-label">Full Name</label><input type="text" class="form-control form-control-custom" id="userFullName"></div></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control form-control-custom" id="userEmail"></div><div class="col-md-6"><label class="form-label">Password</label><input type="password" class="form-control form-control-custom" id="userPassword" placeholder="Enter password"></div></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Shop</label><select class="form-select form-select-custom" id="userShop"><option value="">No Shop (Global)</option></select></div><div class="col-md-6"><label class="form-label">Role</label><select class="form-select form-select-custom" id="userRole" onchange="togglePermissions()"><option value="cashier">Cashier</option><option value="custom">Custom</option><option value="manager">Manager</option><option value="accountant">Accountant</option><option value="storekeeper">Store Keeper</option></select></div></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Commission Rate (%)</label><input type="number" class="form-control form-control-custom" id="userCommission" value="0" step="0.5" min="0"></div><div class="col-md-6"><div class="form-check mt-2"><input class="form-check-input" type="checkbox" id="userIsAdmin" style="width:18px;height:18px;accent-color:var(--accent);"><label class="form-check-label" for="userIsAdmin" style="font-size:0.8rem;color:var(--gray-600);">Grant full admin access</label></div></div></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Username *</label><input type="text" class="form-control form-control-custom" id="userUsername" name="username" required></div><div class="col-md-6"><label class="form-label">Full Name</label><input type="text" class="form-control form-control-custom" id="userFullName" name="full_name"></div></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control form-control-custom" id="userEmail" name="email"></div><div class="col-md-6"><label class="form-label">Password</label><input type="password" class="form-control form-control-custom" id="userPassword" name="password" placeholder="Enter password"></div></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Shop</label><select class="form-select form-select-custom" id="userShop" name="shop_id"><option value="">No Shop (Global)</option></select></div><div class="col-md-6"><label class="form-label">Role</label><select class="form-select form-select-custom" id="userRole" name="role" onchange="togglePermissions()"><option value="cashier">Cashier</option><option value="custom">Custom</option><option value="manager">Manager</option><option value="accountant">Accountant</option><option value="storekeeper">Store Keeper</option></select></div></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Commission Rate (%)</label><input type="number" class="form-control form-control-custom" id="userCommission" name="commission_rate" value="0" step="0.5" min="0"></div><div class="col-md-6"><div class="form-check mt-2"><input class="form-check-input" type="checkbox" id="userIsAdmin" name="is_admin" style="width:18px;height:18px;accent-color:var(--accent);"><label class="form-check-label" for="userIsAdmin" style="font-size:0.8rem;color:var(--gray-600);">Grant full admin access</label></div></div></div>
                         <div class="mt-3 pt-2 border-top">
                             <h6 style="font-weight:600;font-size:0.85rem;color:var(--primary);"><i class="fas fa-lock me-2"></i>Module Permissions</h6>
                             <small class="text-muted d-block mb-2">Check to allow access. Unchecked = no access.</small>
@@ -724,12 +750,12 @@
                 <div class="modal-header modal-header-custom"><h5 class="modal-title"><i class="fas fa-cog me-2"></i>Business Settings</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body modal-body-custom">
                     <form id="settingsForm">
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Business Name</label><input type="text" class="form-control form-control-custom" id="setBusinessName"></div><div class="col-md-6"><label class="form-label">Logo URL</label><input type="text" class="form-control form-control-custom" id="setLogo"></div></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Phone</label><input type="text" class="form-control form-control-custom" id="setPhone"></div><div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control form-control-custom" id="setEmail"></div></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Address</label><input type="text" class="form-control form-control-custom" id="setAddress"></div><div class="col-md-6"><label class="form-label">PIN</label><input type="text" class="form-control form-control-custom" id="setPin"></div></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Currency</label><select class="form-select form-select-custom" id="setCurrency"><option value="KES">KES</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option></select></div><div class="col-md-6"><label class="form-label">Tax Rate (%)</label><input type="number" class="form-control form-control-custom" id="setTaxRate"></div></div>
-                        <div class="row g-2"><div class="col-md-12"><label class="form-label">Receipt Footer</label><textarea class="form-control form-control-custom" id="setFooter" rows="2"></textarea></div></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Default Commission (%)</label><input type="number" class="form-control form-control-custom" id="setDefaultCommission" step="0.5" min="0"></div><div class="col-md-6"><label class="form-label">Time Zone</label><select class="form-select form-select-custom" id="setTimezone"><option value="Africa/Nairobi">Africa/Nairobi</option><option value="UTC">UTC</option><option value="America/New_York">America/New_York</option><option value="Europe/London">Europe/London</option></select></div></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Business Name</label><input type="text" class="form-control form-control-custom" id="setBusinessName" name="business_name"></div><div class="col-md-6"><label class="form-label">Logo URL</label><input type="text" class="form-control form-control-custom" id="setLogo" name="logo"></div></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Phone</label><input type="text" class="form-control form-control-custom" id="setPhone" name="phone"></div><div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control form-control-custom" id="setEmail" name="email"></div></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Address</label><input type="text" class="form-control form-control-custom" id="setAddress" name="address"></div><div class="col-md-6"><label class="form-label">PIN</label><input type="text" class="form-control form-control-custom" id="setPin" name="pin"></div></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Currency</label><select class="form-select form-select-custom" id="setCurrency" name="currency"><option value="KES">KES</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option></select></div><div class="col-md-6"><label class="form-label">Tax Rate (%)</label><input type="number" class="form-control form-control-custom" id="setTaxRate" name="tax_rate"></div></div>
+                        <div class="row g-2"><div class="col-md-12"><label class="form-label">Receipt Footer</label><textarea class="form-control form-control-custom" id="setFooter" name="footer" rows="2"></textarea></div></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Default Commission (%)</label><input type="number" class="form-control form-control-custom" id="setDefaultCommission" name="default_commission" step="0.5" min="0"></div><div class="col-md-6"><label class="form-label">Time Zone</label><select class="form-select form-select-custom" id="setTimezone" name="timezone"><option value="Africa/Nairobi">Africa/Nairobi</option><option value="UTC">UTC</option><option value="America/New_York">America/New_York</option><option value="Europe/London">Europe/London</option></select></div></div>
                     </form>
                 </div>
                 <div class="modal-footer-custom"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary-custom" onclick="saveSettings()">Save Settings</button></div>
@@ -744,11 +770,11 @@
                 <div class="modal-header modal-header-custom"><h5 class="modal-title"><i class="fas fa-user me-2"></i> <span id="customerModalTitle">Add Customer</span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body modal-body-custom">
                     <form id="customerForm"><input type="hidden" id="editCustomerId">
-                        <div class="mb-3"><label class="form-label">Customer Name *</label><input type="text" class="form-control form-control-custom" id="customerName" required></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Phone</label><input type="text" class="form-control form-control-custom" id="customerPhone"></div><div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control form-control-custom" id="customerEmail"></div></div>
-                        <div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control form-control-custom" id="customerAddress"></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Loyalty Points</label><input type="number" class="form-control form-control-custom" id="customerPoints" value="0" min="0"></div><div class="col-md-6"><label class="form-label">Credit Limit</label><input type="number" class="form-control form-control-custom" id="customerCreditLimit" value="0" step="0.01" min="0"></div></div>
-                        <div class="mb-3"><label class="form-label">Group</label><select class="form-select form-select-custom" id="customerGroup"><option value="regular">Regular</option><option value="vip">VIP</option><option value="wholesale">Wholesale</option><option value="credit">Credit</option></select></div>
+                        <div class="mb-3"><label class="form-label">Customer Name *</label><input type="text" class="form-control form-control-custom" id="customerName" name="name" required></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Phone</label><input type="text" class="form-control form-control-custom" id="customerPhone" name="phone"></div><div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control form-control-custom" id="customerEmail" name="email"></div></div>
+                        <div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control form-control-custom" id="customerAddress" name="address"></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Loyalty Points</label><input type="number" class="form-control form-control-custom" id="customerPoints" name="loyalty_points" value="0" min="0"></div><div class="col-md-6"><label class="form-label">Credit Limit</label><input type="number" class="form-control form-control-custom" id="customerCreditLimit" name="credit_limit" value="0" step="0.01" min="0"></div></div>
+                        <div class="mb-3"><label class="form-label">Group</label><select class="form-select form-select-custom" id="customerGroup" name="customer_group"><option value="regular">Regular</option><option value="vip">VIP</option><option value="wholesale">Wholesale</option><option value="credit">Credit</option></select></div>
                     </form>
                 </div>
                 <div class="modal-footer-custom"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary-custom" onclick="saveCustomer()">Save Customer</button></div>
@@ -763,10 +789,10 @@
                 <div class="modal-header modal-header-custom"><h5 class="modal-title"><i class="fas fa-wallet me-2"></i> <span id="expenseModalTitle">Add Expense</span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body modal-body-custom">
                     <form id="expenseForm"><input type="hidden" id="editExpenseId">
-                        <div class="mb-3"><label class="form-label">Description *</label><input type="text" class="form-control form-control-custom" id="expenseDesc" required></div>
-                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Amount *</label><input type="number" class="form-control form-control-custom" id="expenseAmount" step="0.01" required></div><div class="col-md-6"><label class="form-label">Category</label><select class="form-select form-select-custom" id="expenseCategory"><option value="utilities">Utilities</option><option value="rent">Rent</option><option value="salaries">Salaries</option><option value="supplies">Supplies</option><option value="marketing">Marketing</option><option value="maintenance">Maintenance</option><option value="transport">Transport</option><option value="other">Other</option></select></div></div>
-                        <div class="mb-3"><label class="form-label">Date</label><input type="date" class="form-control form-control-custom" id="expenseDate"></div>
-                        <div class="mb-3"><label class="form-label">Notes</label><textarea class="form-control form-control-custom" id="expenseNotes" rows="2"></textarea></div>
+                        <div class="mb-3"><label class="form-label">Description *</label><input type="text" class="form-control form-control-custom" id="expenseDesc" name="description" required></div>
+                        <div class="row g-2"><div class="col-md-6"><label class="form-label">Amount *</label><input type="number" class="form-control form-control-custom" id="expenseAmount" name="amount" step="0.01" required></div><div class="col-md-6"><label class="form-label">Category</label><select class="form-select form-select-custom" id="expenseCategory" name="category"><option value="utilities">Utilities</option><option value="rent">Rent</option><option value="salaries">Salaries</option><option value="supplies">Supplies</option><option value="marketing">Marketing</option><option value="maintenance">Maintenance</option><option value="transport">Transport</option><option value="other">Other</option></select></div></div>
+                        <div class="mb-3"><label class="form-label">Date</label><input type="date" class="form-control form-control-custom" id="expenseDate" name="date"></div>
+                        <div class="mb-3"><label class="form-label">Notes</label><textarea class="form-control form-control-custom" id="expenseNotes" name="notes" rows="2"></textarea></div>
                     </form>
                 </div>
                 <div class="modal-footer-custom"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary-custom" onclick="saveExpense()">Save Expense</button></div>
@@ -805,7 +831,6 @@
                     credentials: 'include'
                 };
                 if (formData) {
-                    // For multipart/form-data (product images)
                     options.body = body;
                 } else {
                     options.headers = { 'Content-Type': 'application/json' };
@@ -823,7 +848,36 @@
             put(url, data) { return this.request(url, 'PUT', data); },
             delete(url) { return this.request(url, 'DELETE'); },
             postForm(url, data) { return this.request(url, 'POST', data, true); },
-            putForm(url, data) { return this.request(url, 'PUT', data, true); }
+            putForm(url, data) { return this.request(url, 'PUT', data, true); },
+            async download(url, method = 'GET', body = null) {
+                const options = {
+                    method,
+                    credentials: 'include'
+                };
+                if (body) {
+                    options.headers = { 'Content-Type': 'application/json' };
+                    options.body = JSON.stringify(body);
+                }
+                const res = await fetch(url, options);
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    throw new Error(err.error || `HTTP ${res.status}`);
+                }
+                const blob = await res.blob();
+                const contentDisposition = res.headers.get('content-disposition');
+                let filename = 'report.csv';
+                if (contentDisposition) {
+                    const match = contentDisposition.match(/filename="?(.+?)"?$/);
+                    if (match) filename = match[1];
+                }
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(a.href);
+            }
         };
 
         // ==================== GLOBALS ====================
@@ -983,7 +1037,7 @@
                 brands: loadBrands,
                 units: loadUnits,
                 shops: loadShops,
-                inventory: loadProducts, // stock page reuses products
+                inventory: loadProducts,
                 suppliers: loadSuppliers,
                 sales: loadSales,
                 customers: loadCustomers,
@@ -1337,7 +1391,7 @@
 
         async function editCategory(id) {
             try {
-                const c = await API.get(`/api/categories`); // we don't have a single get, so fetch all
+                const c = await API.get(`/api/categories`);
                 const cat = c.find(item => item.id === id);
                 if (!cat) { showToast('Category not found', 'error'); return; }
                 document.getElementById('categoryModalTitle').textContent = 'Edit Category';
@@ -1710,7 +1764,20 @@
                         </div>
                         <button class="btn btn-primary-custom btn-sm" onclick="window.open('/pos','_blank')"><i class="fas fa-plus me-1"></i> New Sale</button>
                     </div>
-                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover" id="salesTable"><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Method</th><th>Status</th><th>Date</th><th>Cashier</th><th>Actions</th></tr></thead><tbody id="salesBody">${sales.map(s => `<tr data-order="${s.order_number.toLowerCase()}" data-customer="${(s.customer_name||'walk-in').toLowerCase()}"><td><strong>${s.order_number}</strong></td><td>${s.customer_name||'Walk-in'}</td><td>${s.item_count||0}</td><td><strong>${formatKsh(s.total)}</strong></td><td>${getStatusBadge(s.payment_method)}</td><td><span class="badge-status ${s.status==='completed'?'success':s.status==='pending'?'warning':'info'}">${String(s.status).charAt(0).toUpperCase()+String(s.status).slice(1)}</span></td><td><small>${new Date(s.date).toLocaleString()}</small></td><td>${s.cashier_name||'Admin'}</td><td><button class="btn-sm-custom info" onclick="showToast('Receipt #${s.order_number}','info')"><i class="fas fa-receipt"></i></button><button class="btn-sm-custom danger" onclick="deleteSale(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="9" class="text-center py-4 text-muted">No sales found</td></tr>'}</tbody></table></div></div>
+                    <div class="card-custom">
+                        <div class="card-header-custom">
+                            <h6><i class="fas fa-filter me-2"></i>Filter by Date</h6>
+                            <div class="date-range">
+                                <label>From:</label>
+                                <input type="date" id="salesFrom" />
+                                <label>To:</label>
+                                <input type="date" id="salesTo" />
+                                <button class="btn-sm-custom info" onclick="applySalesFilter()">Apply</button>
+                                <button class="btn-sm-custom success" onclick="exportSalesReport()"><i class="fas fa-file-export me-1"></i>Export CSV</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover" id="salesTable"><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Method</th><th>Status</th><th>Date</th><th>Cashier</th><th>Actions</th></tr></thead><tbody id="salesBody">${sales.map(s => `<tr data-order="${s.order_number.toLowerCase()}" data-customer="${(s.customer_name||'walk-in').toLowerCase()}" data-date="${s.date}"><td><strong>${s.order_number}</strong></td><td>${s.customer_name||'Walk-in'}</td><td>${s.item_count||0}</td><td><strong>${formatKsh(s.total)}</strong></td><td>${getStatusBadge(s.payment_method)}</td><td><span class="badge-status ${s.status==='completed'?'success':s.status==='pending'?'warning':'info'}">${String(s.status).charAt(0).toUpperCase()+String(s.status).slice(1)}</span></td><td><small>${new Date(s.date).toLocaleString()}</small></td><td>${s.cashier_name||'Admin'}</td><td><button class="btn-sm-custom info" onclick="showToast('Receipt #${s.order_number}','info')"><i class="fas fa-receipt"></i></button><button class="btn-sm-custom danger" onclick="deleteSale(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="9" class="text-center py-4 text-muted">No sales found</td></tr>'}</tbody></table></div></div>
                 `;
                 document.getElementById('salesBadge').textContent = sales.length;
             } catch (e) { showToast('Error loading sales', 'error'); }
@@ -1718,11 +1785,40 @@
 
         function filterSales() {
             const search = document.getElementById('salesSearch').value.toLowerCase();
+            const from = document.getElementById('salesFrom').value;
+            const to = document.getElementById('salesTo').value;
             document.querySelectorAll('#salesBody tr').forEach(row => {
                 const order = row.dataset.order || '';
                 const customer = row.dataset.customer || '';
-                row.style.display = (order.includes(search) || customer.includes(search)) ? '' : 'none';
+                const date = row.dataset.date || '';
+                let show = true;
+                if (search && !(order.includes(search) || customer.includes(search))) show = false;
+                if (from && new Date(date) < new Date(from)) show = false;
+                if (to && new Date(date) > new Date(to)) show = false;
+                row.style.display = show ? '' : 'none';
             });
+        }
+
+        function applySalesFilter() {
+            filterSales();
+            showToast('Filter applied', 'success');
+        }
+
+        async function exportSalesReport() {
+            const from = document.getElementById('salesFrom').value;
+            const to = document.getElementById('salesTo').value;
+            let url = '/api/export/reports?type=sales';
+            if (from) url += `&from=${from}`;
+            if (to) url += `&to=${to}`;
+            try {
+                showLoading('Exporting...');
+                await API.download(url);
+                hideLoading();
+                showToast('Export successful', 'success');
+            } catch (e) {
+                hideLoading();
+                showToast('Export failed: ' + e.message, 'error');
+            }
         }
 
         async function deleteSale(id) {
@@ -1833,13 +1929,8 @@
         async function loadPayments() {
             const content = document.getElementById('mainContent');
             try {
-                const payments = await API.get('/api/payments'); // Not a standard endpoint; we'll use a combination
-                // For now, we'll use the sales report to get payment data
                 const salesData = await API.get('/api/sales/report');
                 const sales = salesData.sales || [];
-                // Also fetch mpesa logs for mpesa payments
-                const mpesa = await API.get('/api/mpesa/transactions').catch(() => []);
-
                 const totalPurchases = sales.reduce((s, p) => s + p.total, 0);
                 const paidAmount = sales.filter(s => s.payment_method !== 'credit').reduce((s, p) => s + p.total, 0);
                 const pendingAmount = sales.filter(s => s.payment_method === 'credit' && s.status !== 'paid').reduce((s, p) => s + p.total, 0);
@@ -1880,7 +1971,7 @@
             } catch (e) { showToast('Error loading payments', 'error'); }
         }
 
-        // ===== M-PESA LOGS =====
+        // ===== M-PESA LOGS (with delete) =====
         async function loadMpesaLogs() {
             const content = document.getElementById('mainContent');
             try {
@@ -1890,9 +1981,21 @@
                         <h6 class="mb-0"><i class="fas fa-mobile-alt me-2"></i>M-Pesa Transaction Logs</h6>
                         <button class="btn-sm-custom info" onclick="loadMpesaLogs()"><i class="fas fa-sync-alt me-1"></i> Refresh</button>
                     </div>
-                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>Receipt</th><th>Phone</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>${txns.map(t => `<tr><td>${t.receipt_number||'-'}</td><td>${t.phone_number}</td><td><strong>${formatKsh(t.amount)}</strong></td><td>${getStatusBadge(t.status)}</td><td><small>${new Date(t.date).toLocaleString()}</small></td></tr>`).join('') || '<tr><td colspan="5" class="text-center py-4 text-muted">No M-Pesa transactions</td></tr>'}</tbody></table></div></div>
+                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>Receipt</th><th>Phone</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>${txns.map(t => `<tr><td>${t.receipt_number||'-'}</td><td>${t.phone_number}</td><td><strong>${formatKsh(t.amount)}</strong></td><td>${getStatusBadge(t.status)}</td><td><small>${new Date(t.date).toLocaleString()}</small></td><td><button class="btn-sm-custom danger" onclick="deleteMpesaLog(${t.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No M-Pesa transactions</td></tr>'}</tbody></table></div></div>
                 `;
             } catch (e) { showToast('Error loading M-Pesa logs', 'error'); }
+        }
+
+        async function deleteMpesaLog(id) {
+            showConfirm('Delete this M-Pesa log entry?', async function() {
+                try {
+                    await API.delete(`/api/mpesa/transactions/${id}`);
+                    loadMpesaLogs();
+                    showToast('M-Pesa log deleted', 'success');
+                } catch (e) {
+                    showToast('Error deleting: ' + e.message, 'error');
+                }
+            });
         }
 
         // ===== EXPENSES =====
@@ -2180,7 +2283,6 @@
         }
 
         function showSettingsModal() {
-            const settings = {}; // will be fetched inside
             API.get('/api/settings').then(settings => {
                 document.getElementById('setBusinessName').value = settings.business_name || 'General Shop';
                 document.getElementById('setLogo').value = settings.logo || '';
@@ -2222,7 +2324,6 @@
         // ==================== INIT ====================
         $(document).ready(async function() {
             try {
-                // Get current user and shop
                 const user = await API.get('/api/current-user');
                 if (user && user.id) {
                     document.getElementById('adminName').textContent = user.full_name || user.username;
