@@ -14,15 +14,15 @@ import base64
 import json
 from requests.auth import HTTPBasicAuth
 import pytz
+from datetime import datetime
 
-app = Flask(__name__)
-CORS(app)
-
-# ==================== TIMEZONE HELPER ====================
 def get_nairobi_time():
     """Return current datetime in Nairobi timezone (UTC+3)"""
     nairobi_tz = pytz.timezone('Africa/Nairobi')
     return datetime.now(nairobi_tz)
+
+app = Flask(__name__)
+CORS(app)
 
 # ==================== SESSION CONFIGURATION ====================
 app.config['SECRET_KEY'] = 'your-secret-key-change-in-production-12345'
@@ -832,7 +832,7 @@ def get_shop_stats(shop_id):
     conn = get_db()
     c = conn.cursor()
     
-    today = get_nairobi_time().strftime('%Y-%m-%d')
+    today = datetime.now().strftime('%Y-%m-%d')
     
     c.execute("""SELECT COALESCE(SUM(total), 0), COUNT(*) 
                  FROM sales 
@@ -916,8 +916,7 @@ def stk_push_request(phone_number, amount, account_reference="POS Payment", tran
         print(f"❌ {error_msg}")
         return {'error': error_msg}, None
     
-    # Use Nairobi time for timestamp
-    timestamp = get_nairobi_time().strftime('%Y%m%d%H%M%S')
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     password = generate_mpesa_password(MPESA_SHORTCODE, MPESA_PASSKEY, timestamp)
     
     original_phone = phone_number
@@ -1552,8 +1551,6 @@ def get_inventory_transactions():
         })
     conn.close()
     return jsonify(transactions)
-
-# ---------- SALES ----------
 @app.route('/api/sale', methods=['POST'])
 @cashier_required
 @shop_required
@@ -1582,18 +1579,21 @@ def create_sale():
     tax = subtotal * (tax_rate / 100)
     total = subtotal + tax
     
-    now = get_nairobi_time()  # Nairobi time once per request
+    # --- Nairobi time (once per request) ---
+    now = get_nairobi_time()
     
     order_number = f"ORD-{now.strftime('%Y%m%d%H%M%S')}"
     receipt_number = f"RCP-{now.strftime('%Y%m%d%H%M%S')}"
     cashier_name = session.get('full_name') or session.get('username') or 'Unknown Cashier'
     
-    # Insert sale with explicit sale_date in Nairobi time
+    # Insert sale – if you have a `created_at` column, include `now` explicitly
+    # (If not, you can keep the INSERT as is – SQLite's CURRENT_TIMESTAMP will be server time,
+    #  but your order/receipt numbers will already be Nairobi-based.)
     c.execute("""INSERT INTO sales (order_number, user_id, customer_name, customer_phone, 
-                      subtotal, tax, total, payment_method, receipt_number, status, cashier_name, shop_id, sale_date)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                      subtotal, tax, total, payment_method, receipt_number, status, cashier_name, shop_id)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
               (order_number, session['user_id'], customer_name, customer_phone, 
-               subtotal, tax, total, payment_method, receipt_number, 'completed', cashier_name, shop_id, now))
+               subtotal, tax, total, payment_method, receipt_number, 'completed', cashier_name, shop_id))
     sale_id = c.lastrowid
     
     for item in items:
@@ -1609,6 +1609,7 @@ def create_sale():
     # Create invoice automatically for the sale
     if sale_id:
         try:
+            # --- FIX: use the same `now` variable for invoice number ---
             invoice_number = f"INV-{now.strftime('%Y%m%d%H%M%S')}"
             c.execute("""INSERT INTO invoices (invoice_number, sale_id, customer_name, customer_phone,
                          subtotal, tax, total, payment_method, shop_id)
@@ -1649,7 +1650,7 @@ def create_sale():
     receipt_data = {
         'order_number': order_number,
         'receipt_number': receipt_number,
-        'date': now.strftime('%Y-%m-%d %H:%M:%S'),
+        'date': now.strftime('%Y-%m-%d %H:%M:%S'),   # already Nairobi time
         'customer_name': customer_name,
         'items': sale_items,
         'subtotal': subtotal,
@@ -1660,7 +1661,6 @@ def create_sale():
     conn.close()
     return jsonify({'success': True, 'sale_id': sale_id, 'order_number': order_number, 
                     'receipt_number': receipt_number, 'receipt_data': receipt_data})
-
 @app.route('/api/sales/<int:sale_id>/void', methods=['POST'])
 @admin_required
 @shop_required
@@ -1823,7 +1823,7 @@ def view_receipt(sale_id):
         total = float(sale_dict.get('total', 0) or 0)
         payment = sale_dict.get('payment_method', 'Cash')
         receipt = sale_dict.get('receipt_number', 'N/A')
-        date = sale_dict.get('sale_date', get_nairobi_time().strftime('%Y-%m-%d %H:%M:%S'))
+        date = sale_dict.get('sale_date', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     except (ValueError, TypeError):
         subtotal = 0
         tax = 0
@@ -1832,7 +1832,7 @@ def view_receipt(sale_id):
         customer = 'Walk-in'
         payment = 'Cash'
         receipt = 'N/A'
-        date = get_nairobi_time().strftime('%Y-%m-%d %H:%M:%S')
+        date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
     conn = get_db()
     c = conn.cursor()
@@ -2031,7 +2031,7 @@ def print_receipt():
             <p class="order-info">
                 Order: {receipt_data.get('order_number', 'N/A')}<br>
                 Receipt: {receipt_data.get('receipt_number', 'N/A')}<br>
-                Date: {receipt_data.get('date', get_nairobi_time().strftime('%Y-%m-%d %H:%M:%S'))}<br>
+                Date: {receipt_data.get('date', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))}<br>
                 Customer: {receipt_data.get('customer_name', 'Walk-in')}
             </p>
             <div class="divider"></div>
@@ -2250,7 +2250,6 @@ def delete_mpesa_transaction(transaction_id):
     conn.commit()
     conn.close()
     return jsonify({'success': True})
-
 # ---------- DASHBOARD ----------
 @app.route('/api/dashboard/stats')
 @admin_required
@@ -2262,10 +2261,9 @@ def dashboard_stats():
     conn = get_db()
     c = conn.cursor()
     
-    now_nairobi = get_nairobi_time()
-    today = now_nairobi.strftime('%Y-%m-%d')
-    week_ago = (now_nairobi - timedelta(days=7)).strftime('%Y-%m-%d')
-    month_ago = (now_nairobi - timedelta(days=30)).strftime('%Y-%m-%d')
+    today = datetime.now().strftime('%Y-%m-%d')
+    week_ago = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
+    month_ago = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
     
     c.execute("SELECT COALESCE(SUM(total), 0), COUNT(*) FROM sales WHERE shop_id = ? AND DATE(sale_date) = ? AND (status IS NULL OR status != 'refunded')", (shop_id, today))
     today_sales, today_count = c.fetchone()
@@ -2314,21 +2312,18 @@ def sales_chart():
     
     labels = []
     values = []
-    now_nairobi = get_nairobi_time()
     
     if period == 'week':
         for i in range(6, -1, -1):
-            dt = now_nairobi - timedelta(days=i)
-            date = dt.strftime('%Y-%m-%d')
-            labels.append(dt.strftime('%a'))
+            date = (datetime.now() - timedelta(days=i)).strftime('%Y-%m-%d')
+            labels.append((datetime.now() - timedelta(days=i)).strftime('%a'))
             c.execute("SELECT COALESCE(SUM(total), 0) FROM sales WHERE shop_id = ? AND DATE(sale_date) = ? AND (status IS NULL OR status != 'refunded')", (shop_id, date))
             val = c.fetchone()[0]
             values.append(float(val or 0))
     else:
         for i in range(29, -1, -1):
-            dt = now_nairobi - timedelta(days=i)
-            date = dt.strftime('%Y-%m-%d')
-            labels.append(dt.strftime('%d %b'))
+            date = (datetime.now() - timedelta(days=i)).strftime('%Y-%m-%d')
+            labels.append((datetime.now() - timedelta(days=i)).strftime('%d %b'))
             c.execute("SELECT COALESCE(SUM(total), 0) FROM sales WHERE shop_id = ? AND DATE(sale_date) = ? AND (status IS NULL OR status != 'refunded')", (shop_id, date))
             val = c.fetchone()[0]
             values.append(float(val or 0))
@@ -2706,7 +2701,7 @@ def handle_expenses():
                 'amount': row[1] or 0,
                 'description': row[2] or '',
                 'category': row[3] or 'General',
-                'date': row[4] or get_nairobi_time().strftime('%Y-%m-%d'),
+                'date': row[4] or datetime.now().strftime('%Y-%m-%d'),
                 'created_at': row[5]
             })
         conn.close()
@@ -2717,7 +2712,7 @@ def handle_expenses():
         amount = data.get('amount')
         description = data.get('description')
         category = data.get('category', 'General')
-        date = data.get('date', get_nairobi_time().strftime('%Y-%m-%d'))
+        date = data.get('date', datetime.now().strftime('%Y-%m-%d'))
         
         if not amount or amount <= 0:
             return jsonify({'error': 'Valid amount required'}), 400
@@ -3224,7 +3219,7 @@ def export_reports():
         BytesIO(output.getvalue().encode('utf-8')),
         mimetype='text/csv',
         as_attachment=True,
-        download_name=f'{report_type}_report_{get_nairobi_time().strftime("%Y%m%d")}.csv'
+        download_name=f'{report_type}_report_{datetime.now().strftime("%Y%m%d")}.csv'
     )
 
 # ---------- STATIC FILES ----------
@@ -3234,7 +3229,6 @@ def uploaded_file(filename):
     if not os.path.exists(filepath):
         return '', 404
     return send_file(filepath)
-
 # ==================== PWA ROUTES ====================
 
 @app.route('/manifest.json')
@@ -3262,6 +3256,8 @@ def serve_manifest():
         ]
     }
     return jsonify(manifest)
+
+
 
 @app.route('/sw.js')
 def serve_sw():
@@ -3297,7 +3293,6 @@ self.addEventListener('fetch', event => {
 });
 """
     return app.response_class(sw_js, mimetype='application/javascript')
-
 # ==================== RUN SERVER ====================
 if __name__ == '__main__':
     print("\n" + "="*60)
@@ -3313,6 +3308,5 @@ if __name__ == '__main__':
     print("💳 Expanded Payment Methods: Cash, M-Pesa, Till")
     print("📈 Reports: Sales, Expenses, Inventory, Commissions")
     print("📄 Invoices: Auto-generated from sales")
-    print("🕒 All times are in NAIROBI TIME (EAT, UTC+3)")
     print("="*60 + "\n")
     app.run(debug=True, host='0.0.0.0', port=5000)
