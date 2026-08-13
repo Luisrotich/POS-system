@@ -23,7 +23,7 @@ def get_nairobi_time():
     """Return current datetime in Nairobi timezone (UTC+3)"""
     nairobi_tz = pytz.timezone('Africa/Nairobi')
     return datetime.now(nairobi_tz)
-
+    
 # ==================== SESSION CONFIGURATION ====================
 app.config['SECRET_KEY'] = 'your-secret-key-change-in-production-12345'
 app.config['SESSION_COOKIE_NAME'] = 'pos_session'
