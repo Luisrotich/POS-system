@@ -17,7 +17,6 @@ import pytz
 
 app = Flask(__name__)
 CORS(app)
-
 # ==================== TIMEZONE HELPER ====================
 def get_nairobi_time():
     """Return current datetime in Nairobi timezone (UTC+3)"""
