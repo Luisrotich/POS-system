@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
     <title>POS • Cashier</title>
 
-
-   <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='logo.jpeg') }}">
+    <link rel="icon" type="image/jpeg" href="/templates/logo.jpeg">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -1299,7 +1298,7 @@
             transform: translateY(-1px);
         }
 
-        /* Left side: order + date */
+        /* Left side: items + date */
         .history-item .left {
             flex: 1;
             min-width: 0;
@@ -1309,15 +1308,16 @@
             gap: 4px;
         }
         .history-item .left .order {
-            font-weight: 700;
-            font-size: 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
             color: var(--gray-700);
             display: flex;
             align-items: center;
             gap: 8px;
             letter-spacing: -0.01em;
+            line-height: 1.3;
         }
-        .history-item .left .order .order-icon {
+        .history-item .left .order .item-icon {
             color: var(--accent);
             font-size: 0.7rem;
             opacity: 0.6;
@@ -1459,6 +1459,59 @@
         }
         .back-to-admin i {
             font-size: 0.65rem;
+        }
+
+        /* ===== RECENT SALES BUTTON (desktop) ===== */
+        .btn-recent-sales {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 18px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            justify-content: center;
+            margin-top: 8px;
+        }
+        .btn-recent-sales:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(108, 92, 231, 0.35);
+            color: white;
+        }
+        .btn-recent-sales:active {
+            transform: scale(0.96);
+        }
+
+        /* ===== RECENT SALES MODAL (desktop) ===== */
+        .recent-sales-modal .custom-modal-content {
+            max-width: 700px;
+            max-height: 90vh;
+        }
+        .recent-sales-modal .custom-modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 12px 20px;
+        }
+        .recent-sales-modal .history-item {
+            margin: 0.3rem 0;
+            padding: 0.6rem 0.8rem;
+        }
+        .recent-sales-modal .history-item .left .order {
+            font-size: 0.85rem;
+        }
+        .recent-sales-modal .history-item .right .amount {
+            font-size: 1rem;
+            padding: 2px 10px;
+        }
+        .recent-sales-modal .history-item .right .method {
+            font-size: 0.6rem;
+            padding: 2px 10px;
         }
 
         /* ===== RESPONSIVE ===== */
@@ -1689,7 +1742,7 @@
                 height: 36px;
             }
 
-            /* ===== HISTORY MOBILE TWEAKS ===== */
+            /* HISTORY MOBILE TWEAKS */
             .history-container {
                 padding: 0.5rem;
                 margin: 0;
@@ -1710,7 +1763,7 @@
                 gap: 12px;
             }
             .history-item .left .order {
-                font-size: 0.95rem;
+                font-size: 0.85rem;
             }
             .history-item .left .date {
                 font-size: 0.6rem;
@@ -1739,6 +1792,15 @@
             }
             .history-empty p {
                 font-size: 0.85rem;
+            }
+
+            /* Recent sales modal on mobile */
+            .recent-sales-modal .custom-modal-content {
+                max-width: 100%;
+                margin: 10px;
+            }
+            .recent-sales-modal .custom-modal-body {
+                max-height: 50vh;
             }
         }
 
@@ -1806,7 +1868,6 @@
                 font-size: 0.75rem;
             }
 
-            /* HISTORY extra-tight but still spacious */
             .history-container {
                 padding: 0.4rem;
             }
@@ -1816,7 +1877,7 @@
                 gap: 8px;
             }
             .history-item .left .order {
-                font-size: 0.85rem;
+                font-size: 0.8rem;
             }
             .history-item .left .date {
                 font-size: 0.5rem;
@@ -1904,16 +1965,14 @@
                 <i class="fas fa-arrow-left"></i> Dashboard
             </a>
             <span class="time-display" id="datetime">--:--</span>
-            <!-- Install App Button (visible when prompt available) 
             <button class="btn-icon install-btn" id="installAppBtn" title="Install App">
                 <i class="fas fa-download"></i> Install
             </button>
-      
             <button class="btn-icon" onclick="logout()" title="Logout">
                 <i class="fas fa-sign-out-alt"></i>
             </button>
+            -->
         </div>
-        -->
     </header>
 
     <!-- ===== MAIN CONTENT ===== -->
@@ -1979,6 +2038,11 @@
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
+
+                <!-- NEW: Recent Sales Button (Desktop) -->
+                <button class="btn-recent-sales" id="recentSalesBtnDesktop">
+                    <i class="fas fa-clock"></i> Recent Sales
+                </button>
 
                 <footer class="mt-3 text-muted" style="font-size:0.65rem;text-align:center;">
                     <i class="fas fa-lock me-1"></i> All transactions are secure & logged
@@ -2104,8 +2168,25 @@
             <div class="custom-modal-footer" id="mpesaModalFooter">
                 <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
                 <button class="btn btn-success" id="confirmMpesaCustomBtn">
-                    <i class="fas fa-paper-plane me-1"></i> Send
+                    <i class="fas fa-check me-1"></i> Confirm Payment
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PWA Install Modal -->
+    <div class="custom-modal" id="pwaInstallModal">
+        <div class="custom-modal-content">
+            <div class="custom-modal-header">
+                <img src="/templates/logo.jpeg" alt="Logo" style="width:40px;height:40px;border-radius:8px;margin-right:8px;" />
+                Install POS App
+            </div>
+            <div class="custom-modal-body">
+                <p>Install this app to your device for faster access and offline support.</p>
+            </div>
+            <div class="custom-modal-footer" style="justify-content:center;">
+                <button class="btn btn-secondary" id="pwaCancelInstallBtn">Maybe later</button>
+                <button class="btn btn-success" id="pwaInstallBtn">Install</button>
             </div>
         </div>
     </div>
@@ -2141,20 +2222,33 @@
                 <i class="fas fa-ellipsis-h"></i> More Options
             </div>
             <div class="more-modal-body">
-                <!--
-                <button class="btn btn-success" id="moreInstallBtn">
-                    <i class="fas fa-download"></i> Install App
-                </button>
-                <button class="btn btn-primary" id="moreSwitchShopBtn">
-                    <i class="fas fa-store"></i> Switch Shop
-                </button>
-                -->
                 <button class="btn btn-danger" id="moreLogoutBtn">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
             </div>
             <div class="custom-modal-footer" style="justify-content:center;">
                 <button class="btn btn-secondary" onclick="closeMoreModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== RECENT SALES MODAL (Desktop) ===== -->
+    <div class="custom-modal recent-sales-modal" id="recentSalesModal">
+        <div class="custom-modal-content">
+            <div class="custom-modal-header">
+                <i class="fas fa-clock"></i> Recent Sales
+            </div>
+            <div class="custom-modal-body" id="recentSalesBody">
+                <div class="text-center py-3">
+                    <div class="loading-spinner" style="margin:0 auto 12px;width:30px;height:30px;"></div>
+                    <p class="text-muted" style="font-size:0.85rem;">Loading sales...</p>
+                </div>
+            </div>
+            <div class="custom-modal-footer">
+                <button class="btn btn-secondary" onclick="closeRecentSalesModal()">Close</button>
+                <button class="btn btn-primary" onclick="refreshRecentSales()">
+                    <i class="fas fa-sync-alt me-1"></i> Refresh
+                </button>
             </div>
         </div>
     </div>
@@ -2171,150 +2265,28 @@
             set(key, val) { localStorage.setItem('pos_' + key, JSON.stringify(val)); },
             init() {
                 if (!this.get('initialized', false)) {
-                    this.set('shops', [
-                        { id: 1, name: 'Main Store', address: 'Nairobi, Kenya', phone: '+254 700 000 001',
-                            email: 'main@store.com', currency: 'KES', tax_rate: 16, is_active: 1, slug: 'main-store' },
-                        { id: 2, name: 'Branch A', address: 'Mombasa, Kenya', phone: '+254 700 000 002',
-                            email: 'brancha@store.com', currency: 'KES', tax_rate: 16, is_active: 1, slug: 'branch-a' }
-                    ]);
-                    this.set('categories', [
-                        { id: 1, name: 'Electronics', color: '#6c5ce7', icon: '📱' },
-                        { id: 2, name: 'Clothing', color: '#00b894', icon: '👕' },
-                        { id: 3, name: 'Food', color: '#fdcb6e', icon: '🍔' },
-                        { id: 4, name: 'Books', color: '#74b9ff', icon: '📚' },
-                        { id: 5, name: 'Tools', color: '#ff6b6b', icon: '🔧' }
-                    ]);
-                    this.set('brands', [
-                        { id: 1, name: 'Samsung', description: 'Electronics giant' },
-                        { id: 2, name: 'Nike', description: 'Sportswear' },
-                        { id: 3, name: 'Kenya Tea', description: 'Local tea brand' },
-                        { id: 4, name: 'Penguin', description: 'Publishing house' }
-                    ]);
-                    this.set('units', [
-                        { id: 1, name: 'Piece', code: 'pc' },
-                        { id: 2, name: 'Kilogram', code: 'kg' },
-                        { id: 3, name: 'Litre', code: 'l' },
-                        { id: 4, name: 'Pack', code: 'pk' },
-                        { id: 5, name: 'Carton', code: 'ctn' }
-                    ]);
-                    this.set('suppliers', [
-                        { id: 1, name: 'Tech Distributors Ltd', phone: '+254 700 100 001',
-                            email: 'info@techdist.co.ke', address: 'Nairobi, Kenya', notes: 'Main electronics supplier' },
-                        { id: 2, name: 'Fashion Hub', phone: '+254 700 100 002', email: 'sales@fashionhub.co.ke',
-                            address: 'Mombasa, Kenya', notes: 'Clothing and accessories' },
-                        { id: 3, name: 'Fresh Foods Co', phone: '+254 700 100 003', email: 'orders@freshfoods.co.ke',
-                            address: 'Nairobi, Kenya', notes: 'Perishable goods' }
-                    ]);
-                    this.set('customers', [
-                        { id: 1, name: 'John Doe', phone: '+254 712 345 678', email: 'john@example.com',
-                            address: 'Nairobi', loyalty_points: 120, credit_limit: 5000, customer_group: 'vip' },
-                        { id: 2, name: 'Jane Smith', phone: '+254 723 456 789', email: 'jane@example.com',
-                            address: 'Mombasa', loyalty_points: 45, credit_limit: 2000, customer_group: 'regular' },
-                        { id: 3, name: 'Peter Mwangi', phone: '+254 734 567 890', email: 'peter@example.com',
-                            address: 'Kisumu', loyalty_points: 200, credit_limit: 10000, customer_group: 'wholesale' }
-                    ]);
-                    this.set('products', [
-                        { id: 1, name: 'Smartphone X', sku: 'PH-001', barcode: '8901234567890',
-                            category_id: 1, brand_id: 1, buying_price: 25000, selling_price: 35000,
-                            stock_quantity: 15, low_stock_threshold: 5, tax_rate: 16, discount: 0,
-                            supplier: 'Tech Distributors Ltd', expiry_date: '', unit: 'piece',
-                            description: 'Latest model with 6.5" display', image_url: '' },
-                        { id: 2, name: 'Running Shoes', sku: 'SH-002', barcode: '8901234567891',
-                            category_id: 2, brand_id: 2, buying_price: 3000, selling_price: 5500,
-                            stock_quantity: 20, low_stock_threshold: 5, tax_rate: 16, discount: 10,
-                            supplier: 'Fashion Hub', expiry_date: '', unit: 'piece',
-                            description: 'Comfortable running shoes', image_url: '' },
-                        { id: 3, name: 'Tea Bags 100ct', sku: 'FD-003', barcode: '8901234567892',
-                            category_id: 3, brand_id: 3, buying_price: 150, selling_price: 250,
-                            stock_quantity: 50, low_stock_threshold: 10, tax_rate: 16, discount: 0,
-                            supplier: 'Fresh Foods Co', expiry_date: '2027-12-31', unit: 'pack',
-                            description: 'Premium Kenyan tea', image_url: '' },
-                        { id: 4, name: 'Novel - The Journey', sku: 'BK-004', barcode: '8901234567893',
-                            category_id: 4, brand_id: 4, buying_price: 400, selling_price: 800,
-                            stock_quantity: 30, low_stock_threshold: 5, tax_rate: 16, discount: 5,
-                            supplier: 'Tech Distributors Ltd', expiry_date: '', unit: 'piece',
-                            description: 'Bestselling novel', image_url: '' },
-                        { id: 5, name: 'Cordless Drill', sku: 'TL-005', barcode: '8901234567894',
-                            category_id: 5, brand_id: 1, buying_price: 4500, selling_price: 7500,
-                            stock_quantity: 8, low_stock_threshold: 3, tax_rate: 16, discount: 0,
-                            supplier: 'Tech Distributors Ltd', expiry_date: '', unit: 'piece',
-                            description: '18V cordless drill', image_url: '' },
-                        { id: 6, name: 'T-shirt (White)', sku: 'AP-006', barcode: '8901234567895',
-                            category_id: 2, brand_id: 2, buying_price: 500, selling_price: 1200,
-                            stock_quantity: 25, low_stock_threshold: 5, tax_rate: 16, discount: 0,
-                            supplier: 'Fashion Hub', expiry_date: '', unit: 'piece',
-                            description: 'Cotton t-shirt', image_url: '' }
-                    ]);
-                    this.set('sales', [
-                        { id: 1, order_number: 'ORD-20260717152839', customer_name: 'John Doe',
-                            item_count: 2, total: 36200, paid: 36200, balance: 0, payment_method: 'mpesa',
-                            status: 'completed', date: '2026-07-17T12:28:39', cashier_name: 'Admin' },
-                        { id: 2, order_number: 'ORD-20260717152108', customer_name: 'Jane Smith',
-                            item_count: 1, total: 232, paid: 232, balance: 0, payment_method: 'cash',
-                            status: 'completed', date: '2026-07-17T12:21:08', cashier_name: 'Admin' },
-                        { id: 3, order_number: 'ORD-20260615180955', customer_name: 'Peter Mwangi',
-                            item_count: 1, total: 232, paid: 232, balance: 0, payment_method: 'mpesa',
-                            status: 'completed', date: '2026-06-15T15:09:55', cashier_name: 'Admin' },
-                        { id: 4, order_number: 'ORD-20260615165427', customer_name: 'John Doe',
-                            item_count: 3, total: 1160, paid: 1000, balance: 160, payment_method: 'cash',
-                            status: 'pending', date: '2026-06-15T13:54:27', cashier_name: 'Admin' },
-                        { id: 5, order_number: 'ORD-20260615165334', customer_name: 'Jane Smith',
-                            item_count: 2, total: 1160, paid: 1160, balance: 0, payment_method: 'mpesa',
-                            status: 'completed', date: '2026-06-15T13:53:34', cashier_name: 'Admin' }
-                    ]);
-                    this.set('users', [
-                        { id: 1, username: 'admin', full_name: 'System Admin', email: 'admin@pos.com',
-                            password: 'admin123', role: 'admin', shop_id: null, commission_rate: 0,
-                            is_admin: true, permissions: {} },
-                        { id: 2, username: 'cashier1', full_name: 'Cashier One', email: 'cashier@pos.com',
-                            password: 'cashier123', role: 'cashier', shop_id: 1, commission_rate: 2,
-                            is_admin: false, permissions: { products: { view: true, add: true, edit: true,
-                                    delete: false }, categories: { view: true, add: false, edit: false,
-                                    delete: false }, shops: { view: false, add: false, edit: false,
-                                    delete: false }, sales: { view: true, add: true, edit: false,
-                                    delete: false }, payments: { view: true, add: false, edit: false,
-                                    delete: false }, users: { view: false, add: false, edit: false,
-                                    delete: false } } }
-                    ]);
-                    this.set('expenses', [
-                        { id: 1, description: 'Office Rent', amount: 50000, category: 'rent',
-                            date: '2026-07-01', notes: 'Monthly rent' },
-                        { id: 2, description: 'Electricity Bill', amount: 8500, category: 'utilities',
-                            date: '2026-07-05', notes: 'KPLC bill' },
-                        { id: 3, description: 'Staff Salaries', amount: 120000, category: 'salaries',
-                            date: '2026-07-25', notes: 'Monthly payroll' }
-                    ]);
-                    this.set('mpesa_transactions', [
-                        { id: 1, receipt_number: 'MPESA-001', phone_number: '254712345678',
-                            amount: 36200, status: 'completed', checkout_request_id: 'CHK-001',
-                            date: '2026-07-17T12:30:00' },
-                        { id: 2, receipt_number: 'MPESA-002', phone_number: '254723456789',
-                            amount: 232, status: 'completed', checkout_request_id: 'CHK-002',
-                            date: '2026-06-15T15:10:00' },
-                        { id: 3, receipt_number: 'MPESA-003', phone_number: '254734567890',
-                            amount: 1160, status: 'pending', checkout_request_id: 'CHK-003',
-                            date: '2026-06-15T13:55:00' }
-                    ]);
-                    this.set('payments', [
-                        { id: 1, order_number: 'ORD-20260717152839', supplier_name: 'Tech Distributors Ltd',
-                            amount: 36200, paid: 36200, balance: 0, date: '2026-07-17' },
-                        { id: 2, order_number: 'ORD-20260717152108', supplier_name: 'Fashion Hub',
-                            amount: 232, paid: 232, balance: 0, date: '2026-07-17' },
-                        { id: 3, order_number: 'ORD-20260615180955', supplier_name: 'Fresh Foods Co',
-                            amount: 232, paid: 232, balance: 0, date: '2026-06-15' },
-                        { id: 4, order_number: 'ORD-20260615165427', supplier_name: 'Tech Distributors Ltd',
-                            amount: 1160, paid: 1000, balance: 160, date: '2026-06-15' }
-                    ]);
+                    this.set('shops', []);
+                    this.set('categories', []);
+                    this.set('brands', []);
+                    this.set('units', []);
+                    this.set('suppliers', []);
+                    this.set('customers', []);
+                    this.set('products', []);
+                    this.set('sales', []);
+                    this.set('users', []);
+                    this.set('expenses', []);
+                    this.set('mpesa_transactions', []);
+                    this.set('payments', []);
                     this.set('settings', {
                         business_name: 'General Shop',
                         logo: '',
-                        phone: '+254 700 000 000',
-                        email: 'info@generalshop.com',
-                        address: 'Nairobi, Kenya',
-                        pin: 'A123456789',
+                        phone: '',
+                        email: '',
+                        address: '',
+                        pin: '',
                         currency: 'KES',
                         tax_rate: 16,
-                        footer: 'Thank you for shopping with us!',
+                        footer: '',
                         default_commission: 0,
                         timezone: 'Africa/Nairobi'
                     });
@@ -2457,7 +2429,6 @@
 
         // ==================== CROSS‑TAB SYNC ====================
         function loadShopFromStorage() {
-            // Reload shop context from localStorage (used by cross‑tab event)
             const shopId = localStorage.getItem('pos_current_shop');
             if (shopId) {
                 const shops = DB.all('shops');
@@ -2472,6 +2443,10 @@
         function setCurrentShop(shopId, shopName) {
             currentShopId = shopId;
             currentShopName = shopName;
+            try {
+                localStorage.setItem('pos_current_shop', String(shopId));
+                localStorage.setItem('pos_shop_changed', String(Date.now()));
+            } catch (e) { /* ignore storage errors */ }
             $('#shopName').text(shopName);
             $('#shopBadge').show();
             $('#noShopWarning').hide();
@@ -2519,7 +2494,6 @@
                 const search = $('#searchInput').val().trim();
                 if (search) url += `?search=${encodeURIComponent(search)}`;
 
-                // If we have a category filter
                 let categoryId = null;
                 if (currentCategory) {
                     const categories = await API.get('/api/categories');
@@ -2740,7 +2714,7 @@
                 closeCartDrawer();
                 $('#productsGrid').hide();
                 $('#historyGrid').show();
-                showHistory();
+                showHistory(); // <-- now shows item names
             } else if (tab === 'cart') {
                 $('#mainContent').show();
                 $('#desktopCart').hide();
@@ -2751,21 +2725,43 @@
             }
         }
 
-        // ==================== HISTORY (backend) ====================
+        // ==================== HISTORY (backend) - SHOWS ITEM NAMES ====================
         async function showHistory() {
             try {
                 const data = await API.get('/api/sales/report');
                 const sales = data.sales || [];
+
+                // For each sale, fetch item names
+                const salesWithItems = await Promise.all(sales.map(async (s) => {
+                    let itemNames = [];
+                    try {
+                        const itemsData = await API.get(`/api/sale-items/${s.id}`);
+                        itemNames = itemsData.map(item => item.name);
+                    } catch (e) {
+                        itemNames = ['N/A'];
+                    }
+                    // Build display string: show up to 3 items, then "+N more"
+                    let displayItems = '';
+                    if (itemNames.length === 0) {
+                        displayItems = 'No items';
+                    } else if (itemNames.length <= 3) {
+                        displayItems = itemNames.join(', ');
+                    } else {
+                        displayItems = itemNames.slice(0, 3).join(', ') + ` +${itemNames.length - 3} more`;
+                    }
+                    return { ...s, displayItems };
+                }));
+
                 let html = `
                     <div class="history-container">
                         <div class="history-header-title">
                             <i class="fas fa-clock"></i> Recent Sales
-                            <span class="badge-count">${sales.length}</span>
+                            <span class="badge-count">${salesWithItems.length}</span>
                         </div>
                         <div style="max-height:65vh;overflow-y:auto;padding:0 0.25rem;">
                 `;
 
-                if (sales.length === 0) {
+                if (salesWithItems.length === 0) {
                     html += `
                         <div class="history-empty">
                             <i class="fas fa-receipt"></i>
@@ -2774,7 +2770,7 @@
                         </div>
                     `;
                 } else {
-                    const sorted = [...sales].sort((a, b) => new Date(b.date) - new Date(a.date));
+                    const sorted = salesWithItems.sort((a, b) => new Date(b.date) - new Date(a.date));
                     sorted.forEach((s) => {
                         const cls = s.payment_method === 'mpesa' ? 'mpesa' : 'cash';
                         const barCls = s.payment_method === 'mpesa' ? 'mpesa-bar' : 'cash-bar';
@@ -2794,8 +2790,8 @@
                                 <div class="accent-bar ${barCls}"></div>
                                 <div class="left">
                                     <div class="order">
-                                        <span class="order-icon"><i class="fas fa-hashtag"></i></span>
-                                        ${escapeHtml(s.order_number || 'ORD-' + String(s.id).padStart(4, '0'))}
+                                        <span class="item-icon"><i class="fas fa-box"></i></span>
+                                        ${escapeHtml(s.displayItems)}
                                     </div>
                                     <div class="date">
                                         <i class="far fa-calendar-alt"></i> ${timeStr}
@@ -2926,24 +2922,32 @@
         function openMpesaModal(amount) {
             $('#mpesaAmountDisplay').text(formatKsh(amount));
             $('#mpesaPhoneInput').val('');
+            if (!$('#mpesaRefInput').length) {
+                $('#mpesaPhoneInput').after('<input type="text" id="mpesaRefInput" placeholder="Till / Transaction Ref (optional)" style="margin-top:8px;padding:10px;border:2px solid #e6e8ef;border-radius:8px;width:100%;">');
+            }
             const statusBox = $('#mpesaStatusBox');
             statusBox.removeClass('success error warning pulse').addClass('info');
-            statusBox.html('<i class="fas fa-info-circle"></i> Enter a valid M-Pesa number (e.g. 254712345678)');
+            statusBox.html('<i class="fas fa-info-circle"></i> Ask the customer to pay using M-Pesa (use Till or Buy Goods). Once paid, the cashier confirms below.');
             $('#mpesaCustomModal').addClass('active');
             $('#mpesaPhoneInput').focus();
             const footer = $('#mpesaModalFooter');
             footer.html(`
                 <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
                 <button class="btn btn-success" id="confirmMpesaCustomBtn">
-                    <i class="fas fa-paper-plane me-1"></i> Send
+                    <i class="fas fa-check me-1"></i> Confirm Payment
                 </button>
             `);
             $('#confirmMpesaCustomBtn').off('click').on('click', function() {
-                initiateMpesaPayment();
+                manualConfirmPayment();
             });
+            // FIX: allow both admin and cashier to confirm M-Pesa
+            if (!currentUser || (currentUser.role !== 'cashier' && currentUser.role !== 'admin')) {
+                $('#confirmMpesaCustomBtn').attr('disabled', true).attr('title', 'Only cashier or admin can confirm payment');
+                $('#confirmMpesaCustomBtn i').removeClass('fa-check me-1').addClass('fa-lock');
+            }
             $('#mpesaPhoneInput').off('keydown').on('keydown', function(e) {
                 if (e.key === 'Enter') {
-                    initiateMpesaPayment();
+                    $('#mpesaRefInput').focus();
                 }
             });
             mpesaManualConfirm = false;
@@ -2959,176 +2963,52 @@
             footer.html(`
                 <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
                 <button class="btn btn-success" id="confirmMpesaCustomBtn">
-                    <i class="fas fa-paper-plane me-1"></i> Send
+                    <i class="fas fa-check me-1"></i> Confirm Payment
                 </button>
             `);
             $('#confirmMpesaCustomBtn').off('click').on('click', function() {
-                initiateMpesaPayment();
+                manualConfirmPayment();
             });
+            // FIX: allow both admin and cashier
+            if (!currentUser || (currentUser.role !== 'cashier' && currentUser.role !== 'admin')) {
+                $('#confirmMpesaCustomBtn').attr('disabled', true).attr('title', 'Only cashier or admin can confirm payment');
+                $('#confirmMpesaCustomBtn i').removeClass('fa-check me-1').addClass('fa-lock');
+            }
             mpesaManualConfirm = false;
         }
 
-        async function initiateMpesaPayment() {
-            const phone = $('#mpesaPhoneInput').val().trim();
-            if (!phone.match(/^254[17][0-9]{8}$/)) {
-                const statusBox = $('#mpesaStatusBox');
-                statusBox.removeClass('info success warning pulse').addClass('error');
-                statusBox.html('<i class="fas fa-exclamation-circle"></i> Valid format: 2547XXXXXXXX');
+        // ===== MANUAL CONFIRM PAYMENT (cashier or admin) =====
+        function manualConfirmPayment() {
+            // Allow admin and cashier
+            if (!currentUser || (currentUser.role !== 'cashier' && currentUser.role !== 'admin')) {
+                showError('Only a cashier or admin can confirm M-Pesa payments.');
                 return;
             }
+
             const amountText = $('#mpesaAmountDisplay').text().replace(/[^0-9.]/g, '');
             const amount = parseFloat(amountText);
-            if (isNaN(amount) || amount <= 0) return;
+            if (isNaN(amount) || amount <= 0) { showError('Invalid amount'); return; }
 
-            const footer = $('#mpesaModalFooter');
-            footer.html(`
-                <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
-                <button class="btn btn-success" disabled>
-                    <i class="fas fa-spinner fa-pulse me-1"></i> Processing...
-                </button>
-            `);
+            const ref = $('#mpesaRefInput').length ? $('#mpesaRefInput').val().trim() : null;
 
             const statusBox = $('#mpesaStatusBox');
-            statusBox.removeClass('info error success').addClass('warning pulse');
-            statusBox.html('<i class="fas fa-spinner fa-pulse"></i> Initiating STK Push...');
-
-            try {
-                const result = await API.post('/api/mpesa/pay', {
-                    phone_number: phone,
-                    amount: amount
-                });
-
-                if (!result.success) {
-                    throw new Error(result.error || 'STK push initiation failed');
-                }
-
-                const checkoutRequestId = result.checkout_request_id;
-                mpesaCheckoutId = checkoutRequestId;
-
-                statusBox.removeClass('warning pulse').addClass('info');
-                statusBox.html('<i class="fas fa-clock"></i> Check your phone & enter PIN...');
-
-                let attempts = 0;
-                const maxAttempts = 15;
-                const manualConfirmAfter = 8;
-
-                if (mpesaPollInterval) clearInterval(mpesaPollInterval);
-
-                mpesaPollInterval = setInterval(async () => {
-                    attempts++;
-                    try {
-                        const statusResult = await API.get(`/api/mpesa/status/${checkoutRequestId}`);
-                        const status = statusResult.status;
-
-                        if (status === 'completed') {
-                            clearInterval(mpesaPollInterval);
-                            mpesaPollInterval = null;
-                            statusBox.removeClass('info').addClass('success');
-                            statusBox.html('<i class="fas fa-check-circle"></i> Payment confirmed!');
-                            footer.html(`
-                                <button class="btn btn-secondary" onclick="closeMpesaModal()">Close</button>
-                                <button class="btn btn-success" disabled>
-                                    <i class="fas fa-check me-1"></i> Completed
-                                </button>
-                            `);
-                            setTimeout(() => {
-                                closeMpesaModal();
-                                processSale('mpesa', checkoutRequestId);
-                            }, 600);
-                            return;
-                        } else if (status === 'failed' || status === 'not_found') {
-                            clearInterval(mpesaPollInterval);
-                            mpesaPollInterval = null;
-                            statusBox.removeClass('info').addClass('error');
-                            statusBox.html('<i class="fas fa-exclamation-circle"></i> Payment failed. Please try again.');
-                            footer.html(`
-                                <button class="btn btn-secondary" onclick="closeMpesaModal()">Close</button>
-                                <button class="btn btn-danger" onclick="initiateMpesaPayment()">Retry</button>
-                            `);
-                            return;
-                        }
-
-                        if (attempts >= manualConfirmAfter && !mpesaManualConfirm) {
-                            mpesaManualConfirm = true;
-                            statusBox.removeClass('info').addClass('warning');
-                            statusBox.html(`
-                                <i class="fas fa-clock"></i> Still waiting for confirmation.<br>
-                                If you have received the M-Pesa message, click "Confirm Payment".
-                            `);
-                            footer.html(`
-                                <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
-                                <button class="btn btn-success" id="manualConfirmBtn">
-                                    <i class="fas fa-check me-1"></i> Confirm Payment
-                                </button>
-                                <button class="btn btn-warning" onclick="initiateMpesaPayment()">Retry</button>
-                            `);
-                            $('#manualConfirmBtn').off('click').on('click', function() {
-                                clearInterval(mpesaPollInterval);
-                                mpesaPollInterval = null;
-                                statusBox.removeClass('warning').addClass('success');
-                                statusBox.html('<i class="fas fa-check-circle"></i> Payment confirmed manually.');
-                                footer.html(`
-                                    <button class="btn btn-secondary" onclick="closeMpesaModal()">Close</button>
-                                    <button class="btn btn-success" disabled>
-                                        <i class="fas fa-check me-1"></i> Completed
-                                    </button>
-                                `);
-                                setTimeout(() => {
-                                    closeMpesaModal();
-                                    processSale('mpesa', checkoutRequestId);
-                                }, 600);
-                            });
-                        }
-
-                        if (attempts >= maxAttempts) {
-                            clearInterval(mpesaPollInterval);
-                            mpesaPollInterval = null;
-                            if (!mpesaManualConfirm) {
-                                statusBox.removeClass('info').addClass('warning');
-                                statusBox.html(`
-                                    <i class="fas fa-clock"></i> Payment timeout.<br>
-                                    If you have received the M-Pesa confirmation, click "Confirm Payment".
-                                `);
-                                footer.html(`
-                                    <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
-                                    <button class="btn btn-success" id="manualConfirmBtn">
-                                        <i class="fas fa-check me-1"></i> Confirm Payment
-                                    </button>
-                                    <button class="btn btn-warning" onclick="initiateMpesaPayment()">Retry</button>
-                                `);
-                                $('#manualConfirmBtn').off('click').on('click', function() {
-                                    statusBox.removeClass('warning').addClass('success');
-                                    statusBox.html('<i class="fas fa-check-circle"></i> Payment confirmed manually.');
-                                    footer.html(`
-                                        <button class="btn btn-secondary" onclick="closeMpesaModal()">Close</button>
-                                        <button class="btn btn-success" disabled>
-                                            <i class="fas fa-check me-1"></i> Completed
-                                        </button>
-                                    `);
-                                    setTimeout(() => {
-                                        closeMpesaModal();
-                                        processSale('mpesa', checkoutRequestId);
-                                    }, 600);
-                                });
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Polling error:', error);
-                    }
-                }, 2000);
-
-            } catch (error) {
-                statusBox.removeClass('warning pulse').addClass('error');
-                statusBox.html(`<i class="fas fa-exclamation-circle"></i> ${error.message || 'STK push failed'}`);
-                footer.html(`
-                    <button class="btn btn-secondary" onclick="closeMpesaModal()">Cancel</button>
-                    <button class="btn btn-danger" onclick="initiateMpesaPayment()">Retry</button>
-                `);
-            }
+            statusBox.removeClass('info error warning pulse').addClass('success');
+            statusBox.html('<i class="fas fa-check-circle"></i> Payment confirmed manually by cashier.');
+            const footer = $('#mpesaModalFooter');
+            footer.html(`
+                <button class="btn btn-secondary" onclick="closeMpesaModal()">Close</button>
+                <button class="btn btn-success" disabled>
+                    <i class="fas fa-check me-1"></i> Completed
+                </button>
+            `);
+            setTimeout(() => {
+                closeMpesaModal();
+                processSale('mpesa', ref || 'MPESA-MANUAL-' + Date.now());
+            }, 400);
         }
 
         // ==================== PROCESS SALE (backend) ====================
-        async function processSale(method, mpesaTransactionId) {
+        async function processSale(method, transactionId) {
             if (cart.length === 0) { showError('Cart is empty!'); return false; }
             if (!currentShopId) { showError('No shop selected!'); return false; }
             if (isProcessing) { showToast('Please wait...', 'info'); return false; }
@@ -3154,7 +3034,9 @@
                 customer_phone: '',
                 payment_method: method,
                 tax_rate: taxRate,
-                mpesa_transaction_id: method === 'mpesa' ? mpesaTransactionId : null
+                mpesa_transaction_id: method === 'mpesa' ? transactionId : null,
+                amount_paid: total, // full payment
+                shop_id: currentShopId
             };
 
             try {
@@ -3179,7 +3061,6 @@
                     footer: 'Thank you for shopping with us!'
                 };
 
-                // No need to update local stock – backend already handles it
                 // Clear cart and reload
                 cart = [];
                 updateAllCartUI();
@@ -3255,6 +3136,109 @@
             });
         }
 
+        // ==================== RECENT SALES (Desktop Modal) ====================
+        async function openRecentSalesModal() {
+            const modal = $('#recentSalesModal');
+            const body = $('#recentSalesBody');
+            body.html(`
+                <div class="text-center py-3">
+                    <div class="loading-spinner" style="margin:0 auto 12px;width:30px;height:30px;"></div>
+                    <p class="text-muted" style="font-size:0.85rem;">Loading sales...</p>
+                </div>
+            `);
+            modal.addClass('active');
+            await refreshRecentSales();
+        }
+
+        function closeRecentSalesModal() {
+            $('#recentSalesModal').removeClass('active');
+        }
+
+        async function refreshRecentSales() {
+            const body = $('#recentSalesBody');
+            try {
+                const data = await API.get('/api/sales/report');
+                const sales = data.sales || [];
+                let html = '';
+                if (sales.length === 0) {
+                    html = `
+                        <div class="history-empty">
+                            <i class="fas fa-receipt"></i>
+                            <p>No sales recorded yet</p>
+                            <small>Complete your first sale to see it here</small>
+                        </div>
+                    `;
+                } else {
+                    const sorted = [...sales].sort((a, b) => new Date(b.date) - new Date(a.date));
+                    // Limit to 20
+                    const recent = sorted.slice(0, 20);
+                    for (const s of recent) {
+                        let itemNames = [];
+                        try {
+                            const itemsData = await API.get(`/api/sale-items/${s.id}`);
+                            itemNames = itemsData.map(item => item.name);
+                        } catch (e) {
+                            itemNames = ['N/A'];
+                        }
+                        // Join item names, limit to 3 with "+N more"
+                        let displayItems = '';
+                        if (itemNames.length === 0) {
+                            displayItems = 'No items';
+                        } else if (itemNames.length <= 3) {
+                            displayItems = itemNames.join(', ');
+                        } else {
+                            displayItems = itemNames.slice(0, 3).join(', ') + ` +${itemNames.length - 3} more`;
+                        }
+                        const cls = s.payment_method === 'mpesa' ? 'mpesa' : 'cash';
+                        const barCls = s.payment_method === 'mpesa' ? 'mpesa-bar' : 'cash-bar';
+                        const icon = s.payment_method === 'mpesa' ? 'fa-mobile-alt' : 'fa-money-bill-wave';
+                        const dateObj = new Date(s.date);
+                        const timeStr = dateObj.toLocaleString('en-KE', {
+                            hour12: true,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric'
+                        });
+                        html += `
+                            <div class="history-item">
+                                <div class="accent-bar ${barCls}"></div>
+                                <div class="left">
+                                    <div class="order">
+                                        <span class="order-icon"><i class="fas fa-box"></i></span>
+                                        ${escapeHtml(displayItems)}
+                                    </div>
+                                    <div class="date">
+                                        <i class="far fa-calendar-alt"></i> ${timeStr}
+                                    </div>
+                                </div>
+                                <div class="right">
+                                    <div class="amount">${formatKsh(s.total)}</div>
+                                    <span class="method ${cls}">
+                                        <i class="fas ${icon}"></i> ${s.payment_method}
+                                    </span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    if (sorted.length > 20) {
+                        html += `<div class="text-center text-muted mt-2" style="font-size:0.7rem;">Showing last 20 of ${sorted.length} sales</div>`;
+                    }
+                }
+                body.html(html);
+            } catch (e) {
+                body.html(`
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Failed to load sales</p>
+                        <small>${e.message}</small>
+                    </div>
+                `);
+                showToast('Error loading sales', 'error');
+            }
+        }
+
         // ==================== EVENT HANDLERS ====================
         $(document).on('click', '.product-card', function() {
             const id = $(this).data('id');
@@ -3295,6 +3279,18 @@
             }
         });
 
+        // Desktop Recent Sales button
+        $('#recentSalesBtnDesktop').on('click', function() {
+            openRecentSalesModal();
+        });
+
+        // Close recent sales modal on overlay click
+        $('#recentSalesModal').on('click', function(e) {
+            if (e.target === this) {
+                closeRecentSalesModal();
+            }
+        });
+
         // ==================== LOGOUT ====================
         window.logout = function() {
             showModal('Logout', 'Are you sure you want to logout?', function() {
@@ -3303,7 +3299,9 @@
         };
 
         // ==================== PWA INSTALL PROMPT ====================
-        const installBtn = document.getElementById('installAppBtn');
+        const pwaModal = document.getElementById('pwaInstallModal');
+        const pwaInstallBtn = document.getElementById('pwaInstallBtn');
+        const pwaCancelBtn = document.getElementById('pwaCancelInstallBtn');
 
         function triggerInstall() {
             if (deferredPrompt) {
@@ -3311,19 +3309,19 @@
                 deferredPrompt.userChoice.then(({ outcome }) => {
                     if (outcome === 'accepted') {
                         showToast('App installed successfully! 🎉', 'success');
-                        if (installBtn) installBtn.style.display = 'none';
                     } else {
                         showToast('Installation cancelled.', 'info');
                     }
                     deferredPrompt = null;
+                    if (pwaModal) pwaModal.classList.remove('active');
                 });
             } else {
                 if (window.matchMedia('(display-mode: standalone)').matches) {
                     showToast('App is already installed.', 'info');
-                    if (installBtn) installBtn.style.display = 'none';
+                    if (pwaModal) pwaModal.classList.remove('active');
                     return;
                 }
-                if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('iPad')) {
+                if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
                     showToast('Tap the Share button and select "Add to Home Screen".', 'info');
                 } else {
                     showToast('Installation not available. Use the browser menu (⋮) → Install App.', 'info');
@@ -3334,14 +3332,15 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            if (installBtn) {
-                installBtn.style.display = 'inline-flex';
-            }
+            if (pwaModal) pwaModal.classList.add('active');
         });
+
+        if (pwaInstallBtn) pwaInstallBtn.addEventListener('click', triggerInstall);
+        if (pwaCancelBtn) pwaCancelBtn.addEventListener('click', () => { if (pwaModal) pwaModal.classList.remove('active'); });
 
         window.addEventListener('appinstalled', () => {
             showToast('App installed successfully! 🎉', 'success');
-            if (installBtn) installBtn.style.display = 'none';
+            if (pwaModal) pwaModal.classList.remove('active');
         });
 
         // ==================== INIT ====================
@@ -3357,7 +3356,6 @@
                         currentUser = user;
                         let shopId = user.shop_id;
                         if (shopId) {
-                            // Fetch shops to get the name
                             fetch('/api/shops', { credentials: 'include' })
                                 .then(r => r.json())
                                 .then(shops => {
@@ -3365,7 +3363,6 @@
                                     if (shop && shop.is_active) {
                                         setCurrentShop(shop.id, shop.name);
                                     } else {
-                                        // fallback
                                         const activeShop = shops.find(s => s.is_active);
                                         if (activeShop) {
                                             setCurrentShop(activeShop.id, activeShop.name);
@@ -3376,11 +3373,9 @@
                                     }
                                 })
                                 .catch(() => {
-                                    // fallback to localStorage
                                     loadShopFromStorage();
                                 });
                         } else {
-                            // No shop assigned, try first active
                             fetch('/api/shops', { credentials: 'include' })
                                 .then(r => r.json())
                                 .then(shops => {
@@ -3398,11 +3393,9 @@
                     }
                 })
                 .catch(() => {
-                    // Fallback to localStorage
                     loadShopFromStorage();
                 });
 
-            // Cross‑tab sync: listen for changes
             window.addEventListener('storage', function(e) {
                 if (e.key === 'pos_shop_changed' || e.key === 'pos_current_shop') {
                     loadShopFromStorage();
@@ -3423,7 +3416,6 @@
                 window.location.href = '/admin';
             });
 
-            // More modal buttons
             $('#moreInstallBtn').on('click', function() {
                 closeMoreModal();
                 triggerInstall();
@@ -3437,7 +3429,6 @@
                 logout();
             });
 
-            // Periodically refresh products
             setInterval(function() {
                 loadProducts();
             }, 30000);

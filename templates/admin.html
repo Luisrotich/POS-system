@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Admin • POS 2026</title>
+    <link rel="icon" type="image/jpeg" href="/templates/logo.jpeg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='logo.jpg') }}">
@@ -36,18 +37,31 @@
             --shadow-lg: 0 20px 60px rgba(10, 26, 58, 0.12);
             --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
         body {
             background: var(--gray-50);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             color: var(--gray-700);
-            overflow-x:hidden;
-            padding-top:var(--header-height);
-            -webkit-font-smoothing:antialiased;
+            overflow-x: hidden;
+            padding-top: var(--header-height);
+            -webkit-font-smoothing: antialiased;
         }
-        ::-webkit-scrollbar { width:4px; height:4px; }
-        ::-webkit-scrollbar-track { background:transparent; }
-        ::-webkit-scrollbar-thumb { background:var(--gray-300); border-radius:20px; }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 20px;
+        }
 
         /* ===== SIDEBAR (unchanged) ===== */
         .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:999; backdrop-filter:blur(4px); }
@@ -159,13 +173,13 @@
         .top-bar .top-right .user-btn .chevron { font-size:0.6rem; opacity:0.5; }
         .top-bar .top-right .shop-badge-top { background:var(--success); color:white; padding:3px 14px; border-radius:50px; font-size:0.65rem; font-weight:600; white-space:nowrap; display:inline-block; }
 
-        /* ===== MAIN CONTENT (unchanged) ===== */
+        /* ===== MAIN CONTENT ===== */
         .main-content { margin-left:var(--sidebar-width); min-height:100vh; transition:margin-left var(--transition); padding:0; }
         .main-content.sidebar-closed { margin-left:0; }
         .main-content.sidebar-collapsed { margin-left:var(--sidebar-collapsed); }
         .content-wrapper { padding:20px 24px 40px; }
 
-        /* ===== STAT CARDS (unchanged) ===== */
+        /* ===== STAT CARDS ===== */
         .stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:24px; }
         .stat-card { background:white; border-radius:var(--radius-md); padding:18px 20px; border:1px solid var(--gray-200); transition:all 0.3s; cursor:default; position:relative; overflow:hidden; }
         .stat-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:var(--gray-300); }
@@ -174,14 +188,14 @@
         .stat-card .stat-label { color:var(--gray-400); font-size:0.75rem; font-weight:500; margin-top:2px; }
         .stat-card .stat-bg { position:absolute; right:-20px; bottom:-20px; font-size:5rem; opacity:0.04; color:var(--primary); }
 
-        /* ===== CARDS (unchanged) ===== */
+        /* ===== CARDS ===== */
         .card-custom { background:white; border-radius:var(--radius-md); padding:18px 20px; border:1px solid var(--gray-200); margin-bottom:20px; transition:var(--transition); }
         .card-custom:hover { border-color:var(--gray-300); }
         .card-custom .card-header-custom { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--gray-100); flex-wrap:wrap; gap:8px; }
         .card-custom .card-header-custom h6 { font-weight:600; margin:0; color:var(--primary); font-size:0.9rem; display:flex; align-items:center; gap:8px; }
         .card-custom .card-header-custom h6 i { color:var(--accent); }
 
-        /* ===== BUTTONS (unchanged) ===== */
+        /* ===== BUTTONS ===== */
         .btn-primary-custom { background:var(--accent-gradient); border:none; border-radius:var(--radius-sm); padding:6px 18px; font-weight:600; font-size:0.8rem; color:white; transition:all 0.3s; white-space:nowrap; cursor:pointer; }
         .btn-primary-custom:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(108,92,231,0.35); color:white; }
         .btn-success-custom { background:linear-gradient(135deg,var(--success),#00a381); border:none; border-radius:var(--radius-sm); padding:6px 18px; font-weight:600; font-size:0.8rem; color:white; transition:all 0.3s; cursor:pointer; }
@@ -201,7 +215,7 @@
         .btn-sm-custom.neutral { background:var(--gray-100); color:var(--gray-500); }
         .btn-sm-custom.neutral:hover { background:var(--gray-200); }
 
-        /* ===== TABLES (unchanged) ===== */
+        /* ===== TABLES ===== */
         .table-custom { font-size:0.8rem; border-radius:var(--radius-sm); overflow:hidden; }
         .table-custom thead th { background:var(--gray-50); border-bottom:2px solid var(--gray-200); font-weight:600; color:var(--gray-600); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.4px; padding:10px 12px; white-space:nowrap; }
         .table-custom tbody td { padding:10px 12px; vertical-align:middle; font-size:0.8rem; border-bottom:1px solid var(--gray-100); word-break:break-word; }
@@ -209,7 +223,7 @@
         .table-custom tbody tr:last-child td { border-bottom:none; }
         .table-responsive { -webkit-overflow-scrolling:touch; }
 
-        /* ===== BADGES (unchanged) ===== */
+        /* ===== BADGES ===== */
         .badge-status { padding:3px 12px; border-radius:50px; font-weight:500; font-size:0.65rem; display:inline-block; white-space:nowrap; }
         .badge-status.success { background:#d1fae5; color:#059669; }
         .badge-status.warning { background:#fef3c7; color:#d97706; }
@@ -225,12 +239,12 @@
         .role-badge.storekeeper { background:#fce4ec; color:#dc2626; }
         .role-badge.custom { background:#e0e7ff; color:#4338ca; }
 
-        /* ===== IMAGE CELL (unchanged) ===== */
+        /* ===== IMAGE CELL ===== */
         .img-cell { width:36px; height:36px; border-radius:var(--radius-sm); object-fit:cover; border:1px solid var(--gray-200); background:var(--gray-50); }
         .image-preview { width:120px; height:120px; border-radius:var(--radius-md); object-fit:cover; border:2px dashed var(--gray-300); cursor:pointer; transition:all 0.3s; }
         .image-preview:hover { border-color:var(--accent); transform:scale(1.02); }
 
-        /* ===== MODALS (unchanged) ===== */
+        /* ===== MODALS ===== */
         .modal-content-custom { border-radius:var(--radius-lg); border:none; box-shadow:var(--shadow-lg); overflow:hidden; }
         .modal-header-custom { background:var(--primary); color:white; padding:16px 24px; border-bottom:none; }
         .modal-header-custom .btn-close { background:rgba(255,255,255,0.2); border-radius:50%; opacity:1; padding:6px; transition:var(--transition); }
@@ -242,7 +256,7 @@
         .form-control-custom:focus, .form-select-custom:focus { border-color:var(--accent); box-shadow:0 0 0 4px rgba(108,92,231,0.08); }
         .form-label { font-size:0.8rem; font-weight:600; color:var(--gray-600); margin-bottom:4px; }
 
-        /* ===== PERMISSION GRID (unchanged) ===== */
+        /* ===== PERMISSION GRID ===== */
         .permission-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px 16px; padding:8px 0; }
         .permission-grid .perm-item { display:flex; align-items:center; gap:6px; font-size:0.8rem; padding:4px 0; }
         .permission-grid .perm-item input[type="checkbox"] { width:16px; height:16px; accent-color:var(--accent); cursor:pointer; flex-shrink:0; }
@@ -255,7 +269,7 @@
         .permission-grid .perm-item .perm-badge.delete { background:#fee2e2; color:#dc2626; }
         .permission-section-title { font-weight:600; font-size:0.75rem; color:var(--gray-500); margin-top:8px; padding:4px 0 2px; border-bottom:1px solid var(--gray-100); }
 
-        /* ===== TOASTS (unchanged) ===== */
+        /* ===== TOASTS ===== */
         .toast-container-custom { position:fixed; top:76px; right:16px; z-index:9999; display:flex; flex-direction:column; gap:8px; max-width:380px; width:90%; }
         .toast-item { padding:14px 18px; border-radius:var(--radius-sm); background:white; box-shadow:var(--shadow-lg); display:flex; align-items:center; gap:10px; font-size:0.85rem; animation:slideInRight 0.4s cubic-bezier(0.32,0.72,0,1); border:1px solid var(--gray-200); border-left:4px solid var(--accent); }
         @keyframes slideInRight { from { transform:translateX(120%); opacity:0; } to { transform:translateX(0); opacity:1; } }
@@ -265,20 +279,20 @@
         .toast-item.warning { border-left-color:var(--warning); }
         .toast-item .toast-close { background:none; border:none; font-size:1.1rem; color:var(--gray-400); cursor:pointer; margin-left:auto; padding:0 4px; }
 
-        /* ===== LOADING (unchanged) ===== */
+        /* ===== LOADING ===== */
         .loading-overlay { position:fixed; inset:0; background:rgba(255,255,255,0.85); backdrop-filter:blur(8px); z-index:9999; display:flex; align-items:center; justify-content:center; opacity:0; visibility:hidden; transition:all 0.3s ease; }
         .loading-overlay.active { opacity:1; visibility:visible; }
         .loading-content { text-align:center; }
         .loading-spinner { width:44px; height:44px; border:3px solid var(--gray-200); border-top-color:var(--accent); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 16px; }
         @keyframes spin { to { transform:rotate(360deg); } }
 
-        /* ===== EMPTY STATE (unchanged) ===== */
+        /* ===== EMPTY STATE ===== */
         .empty-state { text-align:center; padding:48px 20px; color:var(--gray-400); }
         .empty-state i { font-size:3rem; color:var(--gray-200); margin-bottom:12px; }
         .empty-state p { font-weight:500; color:var(--gray-500); }
         .empty-state small { font-size:0.8rem; }
 
-        /* ===== PAYMENT SUMMARY (unchanged) ===== */
+        /* ===== PAYMENT SUMMARY ===== */
         .payment-summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-bottom:16px; }
         .payment-summary-grid .ps-card { background:var(--gray-50); border-radius:var(--radius-sm); padding:14px 16px; border:1px solid var(--gray-200); text-align:center; }
         .payment-summary-grid .ps-card .ps-value { font-size:1.2rem; font-weight:700; color:var(--primary); }
@@ -288,17 +302,8 @@
         .payment-summary-grid .ps-card.danger .ps-value { color:var(--danger); }
         .payment-summary-grid .ps-card.warning .ps-value { color:var(--warning); }
 
-        .supplier-stock-item { display:flex; justify-content:space-between; align-items:center; padding:8px 12px; border-bottom:1px solid var(--gray-100); }
-        .supplier-stock-item:last-child { border-bottom:none; }
-        .supplier-stock-item .supplier-name { font-weight:500; font-size:0.85rem; }
-        .supplier-stock-item .supplier-total { font-weight:700; font-size:0.9rem; color:var(--primary); }
-        .supplier-stock-item .supplier-count { font-size:0.7rem; color:var(--gray-400); }
-        .supplier-stock-item .progress-bar-bg { height:4px; background:var(--gray-200); border-radius:4px; margin-top:4px; width:100%; }
-        .supplier-stock-item .progress-bar-fill { height:100%; border-radius:4px; background:var(--accent-gradient); transition:width 0.6s ease; }
-
         .commission-badge { background:#fef3c7; color:#d97706; padding:2px 10px; border-radius:50px; font-size:0.6rem; font-weight:600; }
         .commission-badge.high { background:#d1fae5; color:#059669; }
-
         .quick-actions { display:flex; gap:8px; flex-wrap:wrap; }
         .quick-actions .qa-btn { padding:8px 16px; border-radius:var(--radius-sm); border:1px solid var(--gray-200); background:white; font-size:0.75rem; font-weight:500; color:var(--gray-600); cursor:pointer; transition:var(--transition); display:flex; align-items:center; gap:6px; }
         .quick-actions .qa-btn:hover { border-color:var(--accent); color:var(--accent); background:rgba(108,92,231,0.04); transform:translateY(-2px); }
@@ -318,7 +323,28 @@
         .shop-card-item .shop-status-badge.active { background:#d1fae5; color:#059669; }
         .shop-card-item .shop-status-badge.inactive { background:#fee2e2; color:#dc2626; }
 
-        /* ===== RESPONSIVE (unchanged) ===== */
+        /* ===== DEBT STATUS BADGE ===== */
+        .badge-debt { padding:3px 12px; border-radius:50px; font-weight:500; font-size:0.65rem; display:inline-block; white-space:nowrap; }
+        .badge-debt.paid { background:#d1fae5; color:#059669; }
+        .badge-debt.unpaid { background:#fee2e2; color:#dc2626; }
+        .badge-debt.partial { background:#fef3c7; color:#d97706; }
+
+        /* ===== DEBT SUMMARY ===== */
+        .debt-summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:16px; }
+        .debt-summary-grid .ds-card { background:white; border-radius:var(--radius-sm); padding:14px 16px; border:1px solid var(--gray-200); text-align:center; }
+        .debt-summary-grid .ds-card .ds-value { font-size:1.2rem; font-weight:700; color:var(--primary); }
+        .debt-summary-grid .ds-card .ds-label { font-size:0.7rem; color:var(--gray-400); font-weight:500; }
+        .debt-summary-grid .ds-card.primary .ds-value { color:var(--accent); }
+        .debt-summary-grid .ds-card.success .ds-value { color:var(--success); }
+        .debt-summary-grid .ds-card.danger .ds-value { color:var(--danger); }
+        .debt-summary-grid .ds-card.warning .ds-value { color:var(--warning); }
+
+        /* ===== DATE RANGE ===== */
+        .date-range { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+        .date-range input[type="date"] { padding:4px 10px; border-radius:6px; border:1px solid var(--gray-300); font-size:0.8rem; }
+        .date-range button { padding:4px 14px; font-size:0.75rem; }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width:992px) {
             :root { --sidebar-width:280px; }
             .sidebar { transform:translateX(-100%); }
@@ -399,10 +425,6 @@
             .payment-summary-grid .ps-card { padding:10px 12px; }
             .payment-summary-grid .ps-card .ps-value { font-size:1rem; }
         }
-        /* ===== ADDITIONAL: Date picker inline ===== */
-        .date-range { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-        .date-range input[type="date"] { padding:4px 10px; border-radius:6px; border:1px solid var(--gray-300); font-size:0.8rem; }
-        .date-range button { padding:4px 14px; font-size:0.75rem; }
     </style>
 </head>
 <body>
@@ -468,9 +490,6 @@
             <div class="sidebar-divider"></div>
             <div class="nav-section">
                 <div class="nav-section-title">Payments</div>
-                <!--
-                <a class="nav-link" href="#" data-page="payments"><i class="fas fa-money-bill-wave"></i> <span>Payment Summary</span></a>
-                -->
                 <a class="nav-link" href="#" data-page="mpesa-logs"><i class="fas fa-mobile-alt"></i> <span>M-Pesa Logs</span></a>
             </div>
             <div class="sidebar-divider"></div>
@@ -478,6 +497,7 @@
                 <div class="nav-section-title">Finance</div>
                 <a class="nav-link" href="#" data-page="expenses"><i class="fas fa-wallet"></i> <span>Expenses</span></a>
                 <a class="nav-link" href="#" data-page="reports"><i class="fas fa-chart-pie"></i> <span>Reports</span></a>
+                <a class="nav-link" href="#" data-page="debts"><i class="fas fa-file-invoice-dollar"></i> <span>Debts</span></a>
             </div>
             <div class="sidebar-divider"></div>
             <div class="nav-section">
@@ -527,7 +547,7 @@
     </div>
 
     <!-- ===== MODALS ===== -->
-    <!-- Shop Modal (unchanged) -->
+    <!-- Shop Modal -->
     <div class="modal fade" id="shopModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-content-custom">
@@ -546,7 +566,7 @@
         </div>
     </div>
 
-    <!-- ===== PRODUCT MODAL (with name attributes added) ===== -->
+    <!-- Product Modal -->
     <div class="modal fade" id="productModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content modal-content-custom">
@@ -801,6 +821,81 @@
         </div>
     </div>
 
+    <!-- ===== DEBT MODAL ===== -->
+    <div class="modal fade" id="debtModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-content-custom">
+                <div class="modal-header modal-header-custom" style="background:linear-gradient(135deg,#0f1724,#2d1b69);">
+                    <h5 class="modal-title"><i class="fas fa-file-invoice-dollar me-2"></i> <span id="debtModalTitle">Debt Details</span></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body modal-body-custom" id="debtModalBody">
+                    <div class="text-center py-3"><div class="loading-spinner" style="margin:0 auto 12px;"></div><p class="text-muted">Loading debt details...</p></div>
+                </div>
+                <div class="modal-footer-custom" id="debtModalFooter">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success-custom" id="debtMarkPaidBtn" onclick="markDebtPaid()"><i class="fas fa-check me-1"></i> Mark as Paid</button>
+                    <button type="button" class="btn btn-danger-custom" id="debtDeleteBtn" onclick="deleteDebt()"><i class="fas fa-trash me-1"></i> Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- ===== ADD DEBT MODAL (updated with debt type) ===== -->
+<div class="modal fade" id="addDebtModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header modal-header-custom" style="background:linear-gradient(135deg,#0f1724,#2d1b69);">
+                <h5 class="modal-title"><i class="fas fa-file-invoice-dollar me-2"></i> Add Debt</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body modal-body-custom">
+                <form id="addDebtForm">
+                    <div class="mb-3">
+                        <label class="form-label">Debt Type *</label>
+                        <select class="form-select form-select-custom" id="debtType">
+                            <option value="customer">Customer Debt (you are owed)</option>
+                            <option value="supplier">Supplier Debt (you owe)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Name *</label>
+                        <input type="text" class="form-control form-control-custom" id="debtCustomerName" required placeholder="Customer or Supplier name">
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Phone</label>
+                            <input type="text" class="form-control form-control-custom" id="debtPhone">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Vehicle Registration (optional)</label>
+                            <input type="text" class="form-control form-control-custom" id="debtVehicleReg">
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Total Amount *</label>
+                            <input type="number" class="form-control form-control-custom" id="debtTotalAmount" step="0.01" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Due Date</label>
+                            <input type="date" class="form-control form-control-custom" id="debtDueDate">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control form-control-custom" id="debtDescription" rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer-custom">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary-custom" id="saveDebtBtn">Save Debt</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <!-- Confirm Modal -->
     <div class="modal fade" id="confirmModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -827,10 +922,7 @@
         // ==================== BACKEND API HELPER ====================
         const API = {
             async request(url, method = 'GET', body = null, formData = false) {
-                const options = {
-                    method,
-                    credentials: 'include'
-                };
+                const options = { method, credentials: 'include' };
                 if (formData) {
                     options.body = body;
                 } else {
@@ -851,10 +943,7 @@
             postForm(url, data) { return this.request(url, 'POST', data, true); },
             putForm(url, data) { return this.request(url, 'PUT', data, true); },
             async download(url, method = 'GET', body = null) {
-                const options = {
-                    method,
-                    credentials: 'include'
-                };
+                const options = { method, credentials: 'include' };
                 if (body) {
                     options.headers = { 'Content-Type': 'application/json' };
                     options.body = JSON.stringify(body);
@@ -885,6 +974,7 @@
         let salesChart = null;
         let confirmCallback = null;
         let currentShopId = null;
+        let debtModalSaleId = null;
 
         // ==================== UTILITIES ====================
         function formatKsh(amount) { return 'Ksh ' + parseFloat(amount || 0).toFixed(2); }
@@ -896,7 +986,8 @@
 
         function showToast(msg, type = 'info') {
             const colors = { success: '#00b894', error: '#ff6b6b', warning: '#fdcb6e', info: '#6c5ce7' };
-            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle' };
             const toast = document.createElement('div');
             toast.className = 'toast-item ' + type;
             toast.innerHTML =
@@ -944,17 +1035,36 @@
 
         function getStatusBadge(status) {
             const map = {
-                completed: 'success', pending: 'warning', processing: 'info',
-                cancelled: 'danger', failed: 'danger', paid: 'success',
-                unpaid: 'warning', active: 'success', inactive: 'danger',
-                refunded: 'info', voided: 'neutral'
+                completed: 'success',
+                pending: 'warning',
+                processing: 'info',
+                cancelled: 'danger',
+                failed: 'danger',
+                paid: 'success',
+                unpaid: 'warning',
+                active: 'success',
+                inactive: 'danger',
+                refunded: 'info',
+                voided: 'neutral',
+                mpesa: 'accent',
+                cash: 'success',
+                credit: 'warning'
             };
             const cls = map[status] || 'info';
-            return `<span class="badge-status ${cls}">${String(status).charAt(0).toUpperCase()+String(status).slice(1)}</span>`;
+            const label = String(status).charAt(0).toUpperCase() + String(status).slice(1);
+            return `<span class="badge-status ${cls}">${label}</span>`;
+        }
+
+        function getDebtStatusBadge(status) {
+            const map = { paid: 'paid', unpaid: 'unpaid', partial: 'partial' };
+            const cls = map[status] || 'unpaid';
+            const label = String(status).charAt(0).toUpperCase() + String(status).slice(1);
+            return `<span class="badge-debt ${cls}">${label}</span>`;
         }
 
         function getRoleBadge(role) {
-            const map = { admin: 'admin', cashier: 'cashier', manager: 'manager', accountant: 'accountant', storekeeper: 'storekeeper', custom: 'custom' };
+            const map = { admin: 'admin', cashier: 'cashier', manager: 'manager', accountant: 'accountant',
+                storekeeper: 'storekeeper', custom: 'custom' };
             const cls = map[role] || 'cashier';
             return `<span class="role-badge ${cls}">${String(role).charAt(0).toUpperCase()+String(role).slice(1)}</span>`;
         }
@@ -962,8 +1072,11 @@
         function updateDateTime() {
             const now = new Date();
             document.getElementById('datetime').textContent = now.toLocaleString('en-KE', {
-                year: 'numeric', month: 'short', day: 'numeric',
-                hour: '2-digit', minute: '2-digit'
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
             });
         }
         setInterval(updateDateTime, 1000);
@@ -1020,12 +1133,24 @@
             document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
             link.classList.add('active');
             const titles = {
-                dashboard: 'Dashboard', pos: 'POS Terminal', products: 'Products',
-                categories: 'Categories', brands: 'Brands', units: 'Units',
-                shops: 'Shops', inventory: 'Stock', suppliers: 'Suppliers',
-                sales: 'Sales', customers: 'Customers', payments: 'Payment Summary',
-                'mpesa-logs': 'M-Pesa Logs', expenses: 'Expenses', reports: 'Reports',
-                users: 'Users', settings: 'Settings'
+                dashboard: 'Dashboard',
+                pos: 'POS Terminal',
+                products: 'Products',
+                categories: 'Categories',
+                brands: 'Brands',
+                units: 'Units',
+                shops: 'Shops',
+                inventory: 'Stock',
+                suppliers: 'Suppliers',
+                sales: 'Sales',
+                customers: 'Customers',
+                payments: 'Payment Summary',
+                'mpesa-logs': 'M-Pesa Logs',
+                expenses: 'Expenses',
+                reports: 'Reports',
+                users: 'Users',
+                settings: 'Settings',
+                debts: 'Debts'
             };
             document.getElementById('pageTitle').innerHTML =
                 `${titles[page]||page} <small>Manage your store</small>`;
@@ -1045,6 +1170,7 @@
                 payments: loadPayments,
                 'mpesa-logs': loadMpesaLogs,
                 expenses: loadExpenses,
+                debts: loadDebts,
                 reports: loadReports,
                 users: loadUsers,
                 settings: loadSettings
@@ -1111,42 +1237,50 @@
                 const totalRevenue = stats.total_revenue || 0;
 
                 const statsData = [
-                    { label: "Today's Sales", value: formatKsh(todaySales.amount), sub: todaySales.count + ' transactions', icon: 'fa-calendar-day', color: '#6c5ce7' },
-                    { label: 'Weekly Sales', value: formatKsh(weeklySales.amount), sub: weeklySales.count + ' transactions', icon: 'fa-chart-line', color: '#00b894' },
-                    { label: 'Monthly Sales', value: formatKsh(monthlySales.amount), sub: monthlySales.count + ' transactions', icon: 'fa-chart-bar', color: '#fdcb6e' },
-                    { label: 'Total Revenue', value: formatKsh(totalRevenue), sub: products.length + ' products', icon: 'fa-coins', color: '#a29bfe' },
-                    { label: 'Low Stock Items', value: lowStock.length, sub: 'Need attention', icon: 'fa-exclamation-triangle', color: '#ff6b6b' },
-                    { label: 'Total Customers', value: customers.length, sub: 'Registered', icon: 'fa-users', color: '#74b9ff' }
+                    { label: "Today's Sales", value: formatKsh(todaySales.amount), sub: todaySales.count +
+                            ' transactions', icon: 'fa-calendar-day', color: '#6c5ce7' },
+                    { label: 'Weekly Sales', value: formatKsh(weeklySales.amount), sub: weeklySales.count +
+                            ' transactions', icon: 'fa-chart-line', color: '#00b894' },
+                    { label: 'Monthly Sales', value: formatKsh(monthlySales.amount), sub: monthlySales.count +
+                            ' transactions', icon: 'fa-chart-bar', color: '#fdcb6e' },
+                    { label: 'Total Revenue', value: formatKsh(totalRevenue), sub: products.length + ' products',
+                        icon: 'fa-coins', color: '#a29bfe' },
+                    { label: 'Low Stock Items', value: lowStock.length, sub: 'Need attention',
+                        icon: 'fa-exclamation-triangle', color: '#ff6b6b' },
+                    { label: 'Total Customers', value: customers.length, sub: 'Registered', icon: 'fa-users',
+                        color: '#74b9ff' }
                 ];
 
                 content.innerHTML = `
-                    <div class="stat-grid" id="statsRow">${statsData.map((s,i) => `<div class="stat-card" style="cursor:pointer" onclick="${i===4?'navigateTo(\'inventory\')':i===5?'navigateTo(\'customers\')':'navigateTo(\'sales\')'}">
-                        <div class="d-flex justify-content-between align-items-center"><div><div class="stat-label">${s.label}</div><div class="stat-number">${s.value}</div><small class="text-muted">${s.sub}</small></div><div class="stat-icon" style="background:${s.color}20;color:${s.color};"><i class="fas ${s.icon}"></i></div></div></div>`).join('')}</div>
-                    <div class="row g-2 g-md-3">
-                        <div class="col-lg-8"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-chart-line me-2"></i>Sales Overview</h6><div><button class="btn-sm-custom info" onclick="loadSalesChart('week')">Week</button><button class="btn-sm-custom success" onclick="loadSalesChart('month')">Month</button><button class="btn-sm-custom warning" onclick="loadSalesChart('year')">Year</button></div></div><canvas id="salesChart"></canvas></div></div>
-                        <div class="col-lg-4"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-fire me-2"></i>Best Sellers</h6></div><div id="bestSellers">${products.slice(0,5).map(p => `<div class="d-flex justify-content-between align-items-center py-2 border-bottom"><div><strong>${escapeHtml(p.name)}</strong><small class="text-muted d-block">${p.stock_quantity} in stock</small></div><span class="fw-semibold">${formatKsh(p.selling_price)}</span></div>`).join('') || '<div class="empty-state"><i class="fas fa-fire"></i><p>No products</p></div>'}</div></div>
-                            <div class="card-custom mt-2"><div class="card-header-custom"><h6><i class="fas fa-coins me-2"></i>Commission Summary</h6></div><div class="commission-summary"><span class="label"><i class="fas fa-percent me-1"></i>Total Commission</span><span class="amount">${formatKsh((sales.sales||[]).reduce((s,i) => s + (i.total * 0.02), 0))}</span></div></div></div>
-                    </div>
-                    <div class="row g-2 g-md-3">
-                        <div class="col-lg-6"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-clock me-2"></i>Recent Transactions</h6><button class="btn-sm-custom info" onclick="navigateTo('sales')">View All</button></div><div class="table-responsive"><table class="table table-custom"><thead><tr><th>Order</th><th>Amount</th><th>Method</th><th>Date</th></tr></thead><tbody>${(sales.sales||[]).slice(0,6).map(s => `<tr><td><strong>${s.order_number}</strong></td><td>${formatKsh(s.total)}</td><td>${getStatusBadge(s.payment_method)}</td><td><small>${new Date(s.date).toLocaleString()}</small></td></tr>`).join('') || '<tr><td colspan="4" class="text-center py-4 text-muted">No transactions</td></tr>'}</tbody></table></div></div></div>
-                        <div class="col-lg-6"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-exclamation-triangle me-2"></i>Low Stock Alerts</h6><button class="btn-sm-custom warning" onclick="navigateTo('inventory')">View All</button></div><div>${lowStock.slice(0,6).map(p => `<div class="d-flex justify-content-between align-items-center py-2 border-bottom"><div><strong>${escapeHtml(p.name)}</strong><small class="text-muted d-block">SKU: ${p.sku||'N/A'}</small></div><span class="badge-status danger">${p.stock_quantity} left</span></div>`).join('') || '<div class="empty-state"><i class="fas fa-check-circle" style="color:var(--success);"></i><p>All products have sufficient stock</p></div>'}</div></div></div>
-                    </div>
-                    <div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-bolt me-2"></i>Quick Actions</h6></div><div class="quick-actions">
-                        <button class="qa-btn" onclick="showAddProductModal()"><i class="fas fa-plus-circle text-success"></i> Add Product</button>
-                        <button class="qa-btn" onclick="showAddCustomerModal()"><i class="fas fa-user-plus text-info"></i> Add Customer</button>
-                        <button class="qa-btn" onclick="navigateTo('sales')"><i class="fas fa-shopping-bag text-primary"></i> View Sales</button>
-                        <button class="qa-btn" onclick="navigateTo('inventory')"><i class="fas fa-warehouse text-warning"></i> Manage Stock</button>
-                        <button class="qa-btn" onclick="navigateTo('expenses')"><i class="fas fa-wallet text-danger"></i> Add Expense</button>
-                        <button class="qa-btn" onclick="navigateTo('payments')"><i class="fas fa-file-invoice text-accent"></i> Payment Summary</button>
-                    </div></div>
-                `;
+                        <div class="stat-grid" id="statsRow">${statsData.map((s,i) => `<div class="stat-card" style="cursor:pointer" onclick="${i===4?'navigateTo(\'inventory\')':i===5?'navigateTo(\'customers\')':'navigateTo(\'sales\')'}">
+                            <div class="d-flex justify-content-between align-items-center"><div><div class="stat-label">${s.label}</div><div class="stat-number">${s.value}</div><small class="text-muted">${s.sub}</small></div><div class="stat-icon" style="background:${s.color}20;color:${s.color};"><i class="fas ${s.icon}"></i></div></div></div>`).join('')}</div>
+                        <div class="row g-2 g-md-3">
+                            <div class="col-lg-8"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-chart-line me-2"></i>Sales Overview</h6><div><button class="btn-sm-custom info" onclick="loadSalesChart('week')">Week</button><button class="btn-sm-custom success" onclick="loadSalesChart('month')">Month</button><button class="btn-sm-custom warning" onclick="loadSalesChart('year')">Year</button></div></div><canvas id="salesChart"></canvas></div></div>
+                            <div class="col-lg-4"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-fire me-2"></i>Best Sellers</h6></div><div id="bestSellers">${products.slice(0,5).map(p => `<div class="d-flex justify-content-between align-items-center py-2 border-bottom"><div><strong>${escapeHtml(p.name)}</strong><small class="text-muted d-block">${p.stock_quantity} in stock</small></div><span class="fw-semibold">${formatKsh(p.selling_price)}</span></div>`).join('') || '<div class="empty-state"><i class="fas fa-fire"></i><p>No products</p></div>'}</div></div>
+                                <div class="card-custom mt-2"><div class="card-header-custom"><h6><i class="fas fa-coins me-2"></i>Commission Summary</h6></div><div class="commission-summary"><span class="label"><i class="fas fa-percent me-1"></i>Total Commission</span><span class="amount">${formatKsh((sales.sales||[]).reduce((s,i) => s + (i.total * 0.02), 0))}</span></div></div></div>
+                        </div>
+                        <div class="row g-2 g-md-3">
+                            <div class="col-lg-6"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-clock me-2"></i>Recent Transactions</h6><button class="btn-sm-custom info" onclick="navigateTo('sales')">View All</button></div><div class="table-responsive"><table class="table table-custom"><thead><tr><th>Order</th><th>Amount</th><th>Method</th><th>Date</th></tr></thead><tbody>${(sales.sales||[]).slice(0,6).map(s => `<tr><td><strong>${s.order_number}</strong></td><td>${formatKsh(s.total)}</td><td>${getStatusBadge(s.payment_method)}</td><td><small>${new Date(s.date).toLocaleString()}</small></td></tr>`).join('') || '<tr><td colspan="4" class="text-center py-4 text-muted">No transactions</td></tr>'}</tbody></table></div></div></div>
+                            <div class="col-lg-6"><div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-exclamation-triangle me-2"></i>Low Stock Alerts</h6><button class="btn-sm-custom warning" onclick="navigateTo('inventory')">View All</button></div><div>${lowStock.slice(0,6).map(p => `<div class="d-flex justify-content-between align-items-center py-2 border-bottom"><div><strong>${escapeHtml(p.name)}</strong><small class="text-muted d-block">SKU: ${p.sku||'N/A'}</small></div><span class="badge-status danger">${p.stock_quantity} left</span></div>`).join('') || '<div class="empty-state"><i class="fas fa-check-circle" style="color:var(--success);"></i><p>All products have sufficient stock</p></div>'}</div></div></div>
+                        </div>
+                        <div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-bolt me-2"></i>Quick Actions</h6></div><div class="quick-actions">
+                            <button class="qa-btn" onclick="showAddProductModal()"><i class="fas fa-plus-circle text-success"></i> Add Product</button>
+                            <button class="qa-btn" onclick="showAddCustomerModal()"><i class="fas fa-user-plus text-info"></i> Add Customer</button>
+                            <button class="qa-btn" onclick="navigateTo('sales')"><i class="fas fa-shopping-bag text-primary"></i> View Sales</button>
+                            <button class="qa-btn" onclick="navigateTo('inventory')"><i class="fas fa-warehouse text-warning"></i> Manage Stock</button>
+                            <button class="qa-btn" onclick="navigateTo('expenses')"><i class="fas fa-wallet text-danger"></i> Add Expense</button>
+                            <button class="qa-btn" onclick="navigateTo('payments')"><i class="fas fa-file-invoice text-accent"></i> Payment Summary</button>
+                            <button class="qa-btn" onclick="navigateTo('debts')"><i class="fas fa-file-invoice-dollar text-danger"></i> Debts</button>
+                        </div></div>
+                    `;
                 document.getElementById('productBadge').textContent = products.length;
-                document.getElementById('salesBadge').textContent = (sales.sales||[]).length;
+                document.getElementById('salesBadge').textContent = (sales.sales || []).length;
                 document.getElementById('customerBadge').textContent = customers.length;
                 document.getElementById('lowStockBadge').textContent = lowStock.length;
                 loadSalesChart('week');
             } catch (e) {
-                content.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Failed to load dashboard</p></div>`;
+                content.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Failed to load dashboard</p></div>`;
                 showToast('Error loading dashboard', 'error');
             }
         }
@@ -1181,8 +1315,11 @@
                         aspectRatio: window.innerWidth <= 768 ? 1.6 : 2.5,
                         plugins: { legend: { display: false } },
                         scales: {
-                            x: { ticks: { font: { size: window.innerWidth <= 768 ? 8 : 10 }, maxTicksLimit: window.innerWidth <= 768 ? 7 : 10 } },
-                            y: { beginAtZero: true, ticks: { font: { size: window.innerWidth <= 768 ? 8 : 10 }, callback: function(v) { return window.innerWidth <= 768 ? 'Ksh ' + (v/1000).toFixed(0) + 'k' : 'Ksh ' + v.toLocaleString(); } } }
+                            x: { ticks: { font: { size: window.innerWidth <= 768 ? 8 : 10 },
+                                    maxTicksLimit: window.innerWidth <= 768 ? 7 : 10 } },
+                            y: { beginAtZero: true, ticks: { font: { size: window.innerWidth <= 768 ? 8 : 10 },
+                                    callback: function(v) { return window.innerWidth <= 768 ? 'Ksh ' + (v / 1000)
+                                            .toFixed(0) + 'k' : 'Ksh ' + v.toLocaleString(); } } }
                         },
                         interaction: { intersect: false, mode: 'index' }
                     }
@@ -1192,22 +1329,22 @@
             }
         }
 
-        // ===== PRODUCTS =====
+        // ===== PRODUCTS (unchanged) =====
         async function loadProducts() {
             const content = document.getElementById('mainContent');
             try {
                 const products = await API.get('/api/products');
                 const categories = await API.get('/api/categories');
                 content.innerHTML = `
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchProducts" placeholder="Search products..." onkeyup="loadProductsData()"></div>
-                        <button class="btn btn-primary-custom btn-sm" onclick="showAddProductModal()"><i class="fas fa-plus me-1"></i> Add Product</button>
-                    </div>
-                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>Image</th><th>Name</th><th>SKU</th><th>Price</th><th>Stock</th><th>Category</th><th>Actions</th></tr></thead><tbody id="productsBody">${products.map(p => {
-                        const cat = categories.find(c => c.id === p.category_id);
-                        return `<tr><td><img src="${p.image_url||'https://via.placeholder.com/45?text=No+Img'}" class="img-cell" onerror="this.src='https://via.placeholder.com/45?text=No+Img'"></td><td><strong>${escapeHtml(p.name)}</strong></td><td>${p.sku||'-'}</td><td>${formatKsh(p.selling_price)}</td><td class="${p.stock_quantity<=p.low_stock_threshold?'text-danger fw-bold':''}">${p.stock_quantity}</td><td>${cat?escapeHtml(cat.name):'Uncategorized'}</td><td><button class="btn-sm-custom info" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom warning" onclick="manageInventory(${p.id})"><i class="fas fa-warehouse"></i></button><button class="btn-sm-custom danger" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></td></tr>`;
-                    }).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No products found</td></tr>'}</tbody></table></div></div>
-                `;
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchProducts" placeholder="Search products..." onkeyup="loadProductsData()"></div>
+                            <button class="btn btn-primary-custom btn-sm" onclick="showAddProductModal()"><i class="fas fa-plus me-1"></i> Add Product</button>
+                        </div>
+                        <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>Image</th><th>Name</th><th>SKU</th><th>Price</th><th>Stock</th><th>Category</th><th>Actions</th></tr></thead><tbody id="productsBody">${products.map(p => {
+                            const cat = categories.find(c => c.id === p.category_id);
+                            return `<tr><td><img src="${p.image_url||'https://via.placeholder.com/45?text=No+Img'}" class="img-cell" onerror="this.src='https://via.placeholder.com/45?text=No+Img'"></td><td><strong>${escapeHtml(p.name)}</strong></td><td>${p.sku||'-'}</td><td>${formatKsh(p.selling_price)}</td><td class="${p.stock_quantity<=p.low_stock_threshold?'text-danger fw-bold':''}">${p.stock_quantity}</td><td>${cat?escapeHtml(cat.name):'Uncategorized'}</td><td><button class="btn-sm-custom info" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom warning" onclick="manageInventory(${p.id})"><i class="fas fa-warehouse"></i></button><button class="btn-sm-custom danger" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></td></tr>`;
+                        }).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No products found</td></tr>'}</tbody></table></div></div>
+                    `;
                 document.getElementById('productBadge').textContent = products.length;
                 loadCategoriesForSelect('prodCategory');
                 loadBrandsForSelect('prodBrand');
@@ -1221,9 +1358,11 @@
             try {
                 const products = await API.get('/api/products');
                 const categories = await API.get('/api/categories');
-                const filtered = search ? products.filter(p => p.name.toLowerCase().includes(search) || (p.sku && p.sku.toLowerCase().includes(search))) : products;
+                const filtered = search ? products.filter(p => p.name.toLowerCase().includes(search) || (p.sku && p.sku
+                    .toLowerCase().includes(search))) : products;
                 const tbody = document.getElementById('productsBody');
-                if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No products found</td></tr>'; return; }
+                if (!filtered.length) { tbody.innerHTML =
+                        '<tr><td colspan="7" class="text-center py-4 text-muted">No products found</td></tr>'; return; }
                 tbody.innerHTML = filtered.map(p => {
                     const cat = categories.find(c => c.id === p.category_id);
                     return `<tr><td><img src="${p.image_url||'https://via.placeholder.com/45?text=No+Img'}" class="img-cell" onerror="this.src='https://via.placeholder.com/45?text=No+Img'"></td><td><strong>${escapeHtml(p.name)}</strong></td><td>${p.sku||'-'}</td><td>${formatKsh(p.selling_price)}</td><td class="${p.stock_quantity<=p.low_stock_threshold?'text-danger fw-bold':''}">${p.stock_quantity}</td><td>${cat?escapeHtml(cat.name):'Uncategorized'}</td><td><button class="btn-sm-custom info" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom warning" onclick="manageInventory(${p.id})"><i class="fas fa-warehouse"></i></button><button class="btn-sm-custom danger" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></td></tr>`;
@@ -1271,13 +1410,11 @@
             const id = document.getElementById('editProductId').value;
             const form = document.getElementById('productForm');
             const formData = new FormData(form);
-            // Ensure all fields are included, even if empty
             if (!formData.get('name')) { showToast('Product name is required', 'error'); return; }
             if (!formData.get('selling_price') || parseFloat(formData.get('selling_price')) <= 0) {
                 showToast('Valid selling price required', 'error');
                 return;
             }
-            // If no image file selected, don't send empty file
             const fileInput = document.getElementById('productImage');
             if (!fileInput.files || !fileInput.files[0]) {
                 formData.delete('image');
@@ -1344,7 +1481,8 @@
             try {
                 const categories = await API.get('/api/categories');
                 let html = '<option value="">Select Category</option>';
-                categories.forEach(c => html += `<option value="${c.id}" ${selectedId==c.id?'selected':''}>${escapeHtml(c.name)}</option>`);
+                categories.forEach(c => html +=
+                    `<option value="${c.id}" ${selectedId==c.id?'selected':''}>${escapeHtml(c.name)}</option>`);
                 document.getElementById(selectId).innerHTML = html;
             } catch (e) { /* silently fail */ }
         }
@@ -1353,23 +1491,24 @@
             try {
                 const brands = await API.get('/api/brands');
                 let html = '<option value="">Select Brand</option>';
-                brands.forEach(b => html += `<option value="${b.id}" ${selectedId==b.id?'selected':''}>${escapeHtml(b.name)}</option>`);
+                brands.forEach(b => html +=
+                    `<option value="${b.id}" ${selectedId==b.id?'selected':''}>${escapeHtml(b.name)}</option>`);
                 document.getElementById(selectId).innerHTML = html;
             } catch (e) { /* silently fail */ }
         }
 
-        // ===== CATEGORIES =====
+        // ===== CATEGORIES (unchanged) =====
         async function loadCategories() {
             const content = document.getElementById('mainContent');
             try {
                 const categories = await API.get('/api/categories');
                 content.innerHTML = `
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchCategory" placeholder="Search categories..." onkeyup="filterCategories()"></div>
-                        <button class="btn btn-primary-custom btn-sm" onclick="showAddCategoryModal()"><i class="fas fa-plus me-1"></i> Add</button>
-                    </div>
-                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Icon</th><th>Name</th><th>Color</th><th>Products</th><th>Actions</th></tr></thead><tbody id="categoriesBody">${categories.map((c,i) => `<tr><td>${i+1}</td><td><span style="font-size:24px;">${c.icon||'📦'}</span></td><td><strong>${escapeHtml(c.name)}</strong></td><td><div style="width:32px;height:32px;border-radius:8px;background:${c.color||'#6c5ce7'};border:1px solid var(--gray-200);"></div></td><td>${c.product_count||0}</td><td><button class="btn-sm-custom info" onclick="editCategory(${c.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteCategory(${c.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No categories found</td></tr>'}</tbody></table></div></div>
-                `;
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchCategory" placeholder="Search categories..." onkeyup="filterCategories()"></div>
+                            <button class="btn btn-primary-custom btn-sm" onclick="showAddCategoryModal()"><i class="fas fa-plus me-1"></i> Add</button>
+                        </div>
+                        <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Icon</th><th>Name</th><th>Color</th><th>Products</th><th>Actions</th></tr></thead><tbody id="categoriesBody">${categories.map((c,i) => `<tr><td>${i+1}</td><td><span style="font-size:24px;">${c.icon||'📦'}</span></td><td><strong>${escapeHtml(c.name)}</strong></td><td><div style="width:32px;height:32px;border-radius:8px;background:${c.color||'#6c5ce7'};border:1px solid var(--gray-200);"></div></td><td>${c.product_count||0}</td><td><button class="btn-sm-custom info" onclick="editCategory(${c.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteCategory(${c.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No categories found</td></tr>'}</tbody></table></div></div>
+                    `;
             } catch (e) { showToast('Error loading categories', 'error'); }
         }
 
@@ -1435,18 +1574,18 @@
             });
         }
 
-        // ===== BRANDS =====
+        // ===== BRANDS (unchanged) =====
         async function loadBrands() {
             const content = document.getElementById('mainContent');
             try {
                 const brands = await API.get('/api/brands');
                 content.innerHTML = `
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchBrand" placeholder="Search brands..." onkeyup="filterBrands()"></div>
-                        <button class="btn btn-primary-custom btn-sm" onclick="showAddBrandModal()"><i class="fas fa-plus me-1"></i> Add</button>
-                    </div>
-                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Description</th><th>Products</th><th>Actions</th></tr></thead><tbody id="brandsBody">${brands.map((b,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(b.name)}</strong></td><td>${escapeHtml(b.description||'-')}</td><td>${b.product_count||0}</td><td><button class="btn-sm-custom info" onclick="editBrand(${b.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteBrand(${b.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="5" class="text-center py-4 text-muted">No brands found</td></tr>'}</tbody></table></div></div>
-                `;
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchBrand" placeholder="Search brands..." onkeyup="filterBrands()"></div>
+                            <button class="btn btn-primary-custom btn-sm" onclick="showAddBrandModal()"><i class="fas fa-plus me-1"></i> Add</button>
+                        </div>
+                        <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Description</th><th>Products</th><th>Actions</th></tr></thead><tbody id="brandsBody">${brands.map((b,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(b.name)}</strong></td><td>${escapeHtml(b.description||'-')}</td><td>${b.product_count||0}</td><td><button class="btn-sm-custom info" onclick="editBrand(${b.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteBrand(${b.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="5" class="text-center py-4 text-muted">No brands found</td></tr>'}</tbody></table></div></div>
+                    `;
             } catch (e) { showToast('Error loading brands', 'error'); }
         }
 
@@ -1480,7 +1619,8 @@
 
         async function saveBrand() {
             const id = document.getElementById('editBrandId').value;
-            const data = { name: document.getElementById('brandName').value.trim(), description: document.getElementById('brandDesc').value.trim() };
+            const data = { name: document.getElementById('brandName').value.trim(), description: document.getElementById(
+                    'brandDesc').value.trim() };
             if (!data.name) { showToast('Brand name is required', 'error'); return; }
             try {
                 if (id) {
@@ -1505,18 +1645,18 @@
             });
         }
 
-        // ===== UNITS =====
+        // ===== UNITS (unchanged) =====
         async function loadUnits() {
             const content = document.getElementById('mainContent');
             try {
                 const units = await API.get('/api/units');
                 content.innerHTML = `
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchUnit" placeholder="Search units..." onkeyup="filterUnits()"></div>
-                        <button class="btn btn-primary-custom btn-sm" onclick="showAddUnitModal()"><i class="fas fa-plus me-1"></i> Add</button>
-                    </div>
-                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Code</th><th>Actions</th></tr></thead><tbody id="unitsBody">${units.map((u,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(u.name)}</strong></td><td>${escapeHtml(u.code||'-')}</td><td><button class="btn-sm-custom info" onclick="editUnit(${u.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteUnit(${u.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="4" class="text-center py-4 text-muted">No units found</td></tr>'}</tbody></table></div></div>
-                `;
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchUnit" placeholder="Search units..." onkeyup="filterUnits()"></div>
+                            <button class="btn btn-primary-custom btn-sm" onclick="showAddUnitModal()"><i class="fas fa-plus me-1"></i> Add</button>
+                        </div>
+                        <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Code</th><th>Actions</th></tr></thead><tbody id="unitsBody">${units.map((u,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(u.name)}</strong></td><td>${escapeHtml(u.code||'-')}</td><td><button class="btn-sm-custom info" onclick="editUnit(${u.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteUnit(${u.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="4" class="text-center py-4 text-muted">No units found</td></tr>'}</tbody></table></div></div>
+                    `;
             } catch (e) { showToast('Error loading units', 'error'); }
         }
 
@@ -1550,7 +1690,8 @@
 
         async function saveUnit() {
             const id = document.getElementById('editUnitId').value;
-            const data = { name: document.getElementById('unitName').value.trim(), code: document.getElementById('unitCode').value.trim() };
+            const data = { name: document.getElementById('unitName').value.trim(), code: document.getElementById('unitCode')
+                    .value.trim() };
             if (!data.name) { showToast('Unit name is required', 'error'); return; }
             try {
                 if (id) {
@@ -1575,26 +1716,26 @@
             });
         }
 
-        // ===== SHOPS =====
+        // ===== SHOPS (unchanged) =====
         async function loadShops() {
             const content = document.getElementById('mainContent');
             try {
                 const shops = await API.get('/api/shops');
                 content.innerHTML = `
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchShop" placeholder="Search shops..." onkeyup="filterShops()"></div>
-                        <button class="btn btn-primary-custom btn-sm" onclick="showAddShopModal()"><i class="fas fa-plus me-1"></i> Add Shop</button>
-                    </div>
-                    <div id="shopsList">${shops.map(shop => `
-                        <div class="shop-card-item" data-shop-name="${escapeHtml(shop.name)}" data-shop-status="${shop.is_active}">
-                            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
-                                <div><div class="d-flex align-items-center gap-2 flex-wrap"><span class="shop-name">${escapeHtml(shop.name)}</span><span class="shop-status-badge ${shop.is_active?'active':'inactive'}">${shop.is_active?'Active':'Inactive'}</span>${shop.id===currentShopId?'<span class="badge bg-success">Current</span>':''}</div>
-                                <div class="shop-slug">Slug: ${escapeHtml(shop.slug)}</div>
-                                <div class="shop-stats-mini mt-1"><span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(shop.address||'No address')}</span><span><i class="fas fa-phone"></i> ${escapeHtml(shop.phone||'No phone')}</span><span><i class="fas fa-money-bill-wave"></i> ${escapeHtml(shop.currency||'KES')}</span></div></div>
-                                <div class="d-flex gap-1 flex-wrap">${shop.id!==currentShopId?`<button class="btn btn-sm btn-success-custom" onclick="switchShop(${shop.id})"><i class="fas fa-exchange-alt"></i> Switch</button>`:''}<button class="btn btn-sm btn-warning" onclick="editShop(${shop.id})"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleteShop(${shop.id})"><i class="fas fa-trash"></i></button></div>
-                            </div>
-                        </div>`).join('') || '<div class="empty-state"><i class="fas fa-store-alt"></i><p>No shops found</p></div>'}</div>
-                `;
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchShop" placeholder="Search shops..." onkeyup="filterShops()"></div>
+                            <button class="btn btn-primary-custom btn-sm" onclick="showAddShopModal()"><i class="fas fa-plus me-1"></i> Add Shop</button>
+                        </div>
+                        <div id="shopsList">${shops.map(shop => `
+                            <div class="shop-card-item" data-shop-name="${escapeHtml(shop.name)}" data-shop-status="${shop.is_active}">
+                                <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+                                    <div><div class="d-flex align-items-center gap-2 flex-wrap"><span class="shop-name">${escapeHtml(shop.name)}</span><span class="shop-status-badge ${shop.is_active?'active':'inactive'}">${shop.is_active?'Active':'Inactive'}</span>${shop.id===currentShopId?'<span class="badge bg-success">Current</span>':''}</div>
+                                    <div class="shop-slug">Slug: ${escapeHtml(shop.slug)}</div>
+                                    <div class="shop-stats-mini mt-1"><span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(shop.address||'No address')}</span><span><i class="fas fa-phone"></i> ${escapeHtml(shop.phone||'No phone')}</span><span><i class="fas fa-money-bill-wave"></i> ${escapeHtml(shop.currency||'KES')}</span></div></div>
+                                    <div class="d-flex gap-1 flex-wrap">${shop.id!==currentShopId?`<button class="btn btn-sm btn-success-custom" onclick="switchShop(${shop.id})"><i class="fas fa-exchange-alt"></i> Switch</button>`:''}<button class="btn btn-sm btn-warning" onclick="editShop(${shop.id})"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleteShop(${shop.id})"><i class="fas fa-trash"></i></button></div>
+                                </div>
+                            </div>`).join('') || '<div class="empty-state"><i class="fas fa-store-alt"></i><p>No shops found</p></div>'}</div>
+                    `;
                 document.getElementById('shopCount').textContent = shops.length;
             } catch (e) { showToast('Error loading shops', 'error'); }
         }
@@ -1672,18 +1813,18 @@
             });
         }
 
-        // ===== SUPPLIERS =====
+        // ===== SUPPLIERS (unchanged) =====
         async function loadSuppliers() {
             const content = document.getElementById('mainContent');
             try {
                 const suppliers = await API.get('/api/suppliers');
                 content.innerHTML = `
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchSupplier" placeholder="Search suppliers..." onkeyup="filterSuppliers()"></div>
-                        <button class="btn btn-primary-custom btn-sm" onclick="showAddSupplierModal()"><i class="fas fa-plus me-1"></i> Add</button>
-                    </div>
-                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Address</th><th>Actions</th></tr></thead><tbody id="suppliersBody">${suppliers.map((s,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(s.name)}</strong></td><td>${escapeHtml(s.phone||'-')}</td><td>${escapeHtml(s.email||'-')}</td><td>${escapeHtml(s.address||'-')}</td><td><button class="btn-sm-custom info" onclick="editSupplier(${s.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteSupplier(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No suppliers found</td></tr>'}</tbody></table></div></div>
-                `;
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchSupplier" placeholder="Search suppliers..." onkeyup="filterSuppliers()"></div>
+                            <button class="btn btn-primary-custom btn-sm" onclick="showAddSupplierModal()"><i class="fas fa-plus me-1"></i> Add</button>
+                        </div>
+                        <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Address</th><th>Actions</th></tr></thead><tbody id="suppliersBody">${suppliers.map((s,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(s.name)}</strong></td><td>${escapeHtml(s.phone||'-')}</td><td>${escapeHtml(s.email||'-')}</td><td>${escapeHtml(s.address||'-')}</td><td><button class="btn-sm-custom info" onclick="editSupplier(${s.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteSupplier(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No suppliers found</td></tr>'}</tbody></table></div></div>
+                    `;
             } catch (e) { showToast('Error loading suppliers', 'error'); }
         }
 
@@ -1751,37 +1892,77 @@
             });
         }
 
-        // ===== SALES =====
+        // ===== SALES (real data from API, no mock) =====
         async function loadSales() {
             const content = document.getElementById('mainContent');
             try {
                 const data = await API.get('/api/sales/report');
                 const sales = data.sales || [];
+
+                // For each sale, fetch item names to display in the "Item(s)" column
+                const salesWithItems = await Promise.all(sales.map(async (s) => {
+                    try {
+                        const itemsData = await API.get(`/api/sale-items/${s.id}`);
+                        s.item_names = itemsData.map(item => item.name).join(', ');
+                    } catch (e) {
+                        s.item_names = 'N/A';
+                    }
+                    return s;
+                }));
+
                 content.innerHTML = `
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <div class="d-flex gap-2 flex-wrap" style="flex:1;min-width:200px;">
-                            <input type="text" class="form-control form-control-custom" id="salesSearch" placeholder="Search by order or customer..." style="flex:1;min-width:150px;" onkeyup="filterSales()">
-                            <button class="btn-sm-custom info" onclick="document.getElementById('salesSearch').value='';filterSales();"><i class="fas fa-times"></i> Clear</button>
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <div class="d-flex gap-2 flex-wrap" style="flex:1;min-width:200px;">
+                                <input type="text" class="form-control form-control-custom" id="salesSearch" placeholder="Search by order or customer..." style="flex:1;min-width:150px;" onkeyup="filterSales()">
+                                <button class="btn-sm-custom info" onclick="document.getElementById('salesSearch').value='';filterSales();"><i class="fas fa-times"></i> Clear</button>
+                            </div>
+                            <button class="btn btn-primary-custom btn-sm" onclick="window.open('/pos','_blank')"><i class="fas fa-plus me-1"></i> New Sale</button>
                         </div>
-                        <button class="btn btn-primary-custom btn-sm" onclick="window.open('/pos','_blank')"><i class="fas fa-plus me-1"></i> New Sale</button>
-                    </div>
-                    <div class="card-custom">
-                        <div class="card-header-custom">
-                            <h6><i class="fas fa-filter me-2"></i>Filter by Date</h6>
-                            <div class="date-range">
-                                <label>From:</label>
-                                <input type="date" id="salesFrom" />
-                                <label>To:</label>
-                                <input type="date" id="salesTo" />
-                                <button class="btn-sm-custom info" onclick="applySalesFilter()">Apply</button>
-                                <button class="btn-sm-custom success" onclick="exportSalesReport()"><i class="fas fa-file-export me-1"></i>Export CSV</button>
+                        <div class="card-custom">
+                            <div class="card-header-custom">
+                                <h6><i class="fas fa-filter me-2"></i>Filter by Date</h6>
+                                <div class="date-range">
+                                    <label>From:</label>
+                                    <input type="date" id="salesFrom" />
+                                    <label>To:</label>
+                                    <input type="date" id="salesTo" />
+                                    <button class="btn-sm-custom info" onclick="applySalesFilter()">Apply</button>
+                                    <button class="btn-sm-custom success" onclick="exportSalesReport()"><i class="fas fa-file-export me-1"></i>Export CSV</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover" id="salesTable"><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Method</th><th>Status</th><th>Date</th><th>Cashier</th><th>Actions</th></tr></thead><tbody id="salesBody">${sales.map(s => `<tr data-order="${s.order_number.toLowerCase()}" data-customer="${(s.customer_name||'walk-in').toLowerCase()}" data-date="${s.date}"><td><strong>${s.order_number}</strong></td><td>${s.customer_name||'Walk-in'}</td><td>${s.item_count||0}</td><td><strong>${formatKsh(s.total)}</strong></td><td>${getStatusBadge(s.payment_method)}</td><td><span class="badge-status ${s.status==='completed'?'success':s.status==='pending'?'warning':'info'}">${String(s.status).charAt(0).toUpperCase()+String(s.status).slice(1)}</span></td><td><small>${new Date(s.date).toLocaleString()}</small></td><td>${s.cashier_name||'Admin'}</td><td><button class="btn-sm-custom info" onclick="showToast('Receipt #${s.order_number}','info')"><i class="fas fa-receipt"></i></button><button class="btn-sm-custom danger" onclick="deleteSale(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="9" class="text-center py-4 text-muted">No sales found</td></tr>'}</tbody></table></div></div>
-                `;
+                        <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover" id="salesTable"><thead><tr>
+                            <th>Order</th>
+                            <th>Item(s)</th>
+                            <th>Customers (Phone)</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Method</th>
+                            <th>Date</th>
+                            <th>Cashier</th>
+                            <th>Actions</th>
+                        </tr></thead><tbody id="salesBody">
+                        ${salesWithItems.map(s => `
+                            <tr data-order="${s.order_number.toLowerCase()}" data-customer="${(s.customer_name||'walk-in').toLowerCase()}" data-date="${s.date}">
+                                <td><strong>${s.order_number}</strong></td>
+                                <td>${s.item_names || 'N/A'}</td>
+                                <td>${s.customer_phone || s.customer_name || 'Walk-in'}</td>
+                                <td>${s.item_count||0}</td>
+                                <td><strong>${formatKsh(s.total)}</strong></td>
+                                <td>${getStatusBadge(s.payment_method)}</td>
+                                <td><small>${new Date(s.date).toLocaleString()}</small></td>
+                                <td>${s.cashier_name||'Admin'}</td>
+                                <td>
+                                    <button class="btn-sm-custom info" onclick="showToast('Receipt #${s.order_number}','info')"><i class="fas fa-receipt"></i></button>
+                                    <button class="btn-sm-custom danger" onclick="deleteSale(${s.id})"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        `).join('') || '<tr><td colspan="9" class="text-center py-4 text-muted">No sales found</td></tr>'}</tbody></table></div></div>
+                    `;
                 document.getElementById('salesBadge').textContent = sales.length;
-            } catch (e) { showToast('Error loading sales', 'error'); }
+            } catch (e) {
+                showToast('Error loading sales', 'error');
+            }
         }
 
         function filterSales() {
@@ -1834,18 +2015,18 @@
             });
         }
 
-        // ===== CUSTOMERS =====
+        // ===== CUSTOMERS (unchanged) =====
         async function loadCustomers() {
             const content = document.getElementById('mainContent');
             try {
                 const customers = await API.get('/api/customers');
                 content.innerHTML = `
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchCustomer" placeholder="Search customers..." onkeyup="loadCustomersData()"></div>
-                        <button class="btn btn-primary-custom btn-sm" onclick="showAddCustomerModal()"><i class="fas fa-plus me-1"></i> Add</button>
-                    </div>
-                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Points</th><th>Group</th><th>Actions</th></tr></thead><tbody id="customersBody">${customers.map((c,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(c.name)}</strong></td><td>${escapeHtml(c.phone||'-')}</td><td>${escapeHtml(c.email||'-')}</td><td>${c.loyalty_points||0}</td><td><span class="badge-status ${c.customer_group==='vip'?'success':c.customer_group==='wholesale'?'warning':c.customer_group==='credit'?'danger':'info'}">${c.customer_group||'regular'}</span></td><td><button class="btn-sm-custom info" onclick="editCustomer(${c.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteCustomer(${c.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No customers found</td></tr>'}</tbody></table></div></div>
-                `;
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchCustomer" placeholder="Search customers..." onkeyup="loadCustomersData()"></div>
+                            <button class="btn btn-primary-custom btn-sm" onclick="showAddCustomerModal()"><i class="fas fa-plus me-1"></i> Add</button>
+                        </div>
+                        <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Points</th><th>Group</th><th>Actions</th></tr></thead><tbody id="customersBody">${customers.map((c,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(c.name)}</strong></td><td>${escapeHtml(c.phone||'-')}</td><td>${escapeHtml(c.email||'-')}</td><td>${c.loyalty_points||0}</td><td><span class="badge-status ${c.customer_group==='vip'?'success':c.customer_group==='wholesale'?'warning':c.customer_group==='credit'?'danger':'info'}">${c.customer_group||'regular'}</span></td><td><button class="btn-sm-custom info" onclick="editCustomer(${c.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteCustomer(${c.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No customers found</td></tr>'}</tbody></table></div></div>
+                    `;
                 document.getElementById('customerBadge').textContent = customers.length;
             } catch (e) { showToast('Error loading customers', 'error'); }
         }
@@ -1854,9 +2035,11 @@
             const search = document.getElementById('searchCustomer').value.toLowerCase();
             try {
                 const customers = await API.get('/api/customers');
-                const filtered = search ? customers.filter(c => c.name.toLowerCase().includes(search) || (c.phone && c.phone.includes(search))) : customers;
+                const filtered = search ? customers.filter(c => c.name.toLowerCase().includes(search) || (c.phone && c
+                    .phone.includes(search))) : customers;
                 const tbody = document.getElementById('customersBody');
-                if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No customers found</td></tr>'; return; }
+                if (!filtered.length) { tbody.innerHTML =
+                        '<tr><td colspan="7" class="text-center py-4 text-muted">No customers found</td></tr>'; return; }
                 tbody.innerHTML = filtered.map((c, i) =>
                     `<tr><td>${i+1}</td><td><strong>${escapeHtml(c.name)}</strong></td><td>${escapeHtml(c.phone||'-')}</td><td>${escapeHtml(c.email||'-')}</td><td>${c.loyalty_points||0}</td><td><span class="badge-status ${c.customer_group==='vip'?'success':c.customer_group==='wholesale'?'warning':c.customer_group==='credit'?'danger':'info'}">${c.customer_group||'regular'}</span></td><td><button class="btn-sm-custom info" onclick="editCustomer(${c.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteCustomer(${c.id})"><i class="fas fa-trash"></i></button></td></tr>`
                 ).join('');
@@ -1926,7 +2109,7 @@
             });
         }
 
-        // ===== PAYMENTS =====
+        // ===== PAYMENTS (unchanged) =====
         async function loadPayments() {
             const content = document.getElementById('mainContent');
             try {
@@ -1934,83 +2117,140 @@
                 const sales = salesData.sales || [];
                 const totalPurchases = sales.reduce((s, p) => s + p.total, 0);
                 const paidAmount = sales.filter(s => s.payment_method !== 'credit').reduce((s, p) => s + p.total, 0);
-                const pendingAmount = sales.filter(s => s.payment_method === 'credit' && s.status !== 'paid').reduce((s, p) => s + p.total, 0);
+                const pendingAmount = sales.filter(s => s.payment_method === 'credit' && s.status !== 'paid').reduce((s,
+                    p) => s + p.total, 0);
 
                 content.innerHTML = `
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <h6 class="mb-0"><i class="fas fa-file-invoice me-2"></i>Payment Summary</h6>
-                    </div>
-                    <div class="card-custom">
-                        <div class="card-header-custom"><h6><i class="fas fa-shopping-cart me-2"></i>Combined Purchases Payment Summary</h6></div>
-                        <div class="payment-summary-grid">
-                            <div class="ps-card primary"><div class="ps-value">${formatKsh(totalPurchases)}</div><div class="ps-label">Total Purchases</div></div>
-                            <div class="ps-card success"><div class="ps-value">${formatKsh(paidAmount)}</div><div class="ps-label">Paid Amount</div></div>
-                            <div class="ps-card danger"><div class="ps-value">${formatKsh(pendingAmount)}</div><div class="ps-label">Pending Amount</div></div>
-                            <div class="ps-card warning"><div class="ps-value">${sales.length}</div><div class="ps-label">Total Sales</div></div>
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <h6 class="mb-0"><i class="fas fa-file-invoice me-2"></i>Payment Summary</h6>
                         </div>
-                    </div>
-                    <div class="card-custom">
-                        <div class="card-header-custom"><h6><i class="fas fa-list me-2"></i>Sales Records</h6></div>
-                        <div class="table-responsive">
-                            <table class="table table-custom table-hover">
-                                <thead><tr><th>Order</th><th>Customer</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead>
-                                <tbody>
-                                    ${sales.slice(0,20).map(s => `
-                                        <tr>
-                                            <td>${s.order_number}</td>
-                                            <td>${s.customer_name||'Walk-in'}</td>
-                                            <td>${formatKsh(s.total)}</td>
-                                            <td>${getStatusBadge(s.payment_method)}</td>
-                                            <td>${getStatusBadge(s.status)}</td>
-                                            <td><small>${new Date(s.date).toLocaleDateString()}</small></td>
-                                        </tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No sales records</td></tr>'}
-                                </tbody>
-                            </table>
+                        <div class="card-custom">
+                            <div class="card-header-custom"><h6><i class="fas fa-shopping-cart me-2"></i>Combined Purchases Payment Summary</h6></div>
+                            <div class="payment-summary-grid">
+                                <div class="ps-card primary"><div class="ps-value">${formatKsh(totalPurchases)}</div><div class="ps-label">Total Purchases</div></div>
+                                <div class="ps-card success"><div class="ps-value">${formatKsh(paidAmount)}</div><div class="ps-label">Paid Amount</div></div>
+                                <div class="ps-card danger"><div class="ps-value">${formatKsh(pendingAmount)}</div><div class="ps-label">Pending Amount</div></div>
+                                <div class="ps-card warning"><div class="ps-value">${sales.length}</div><div class="ps-label">Total Sales</div></div>
+                            </div>
                         </div>
-                    </div>
-                `;
+                        <div class="card-custom">
+                            <div class="card-header-custom"><h6><i class="fas fa-list me-2"></i>Sales Records</h6></div>
+                            <div class="table-responsive">
+                                <table class="table table-custom table-hover">
+                                    <thead><tr><th>Order</th><th>Customer</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead>
+                                    <tbody>
+                                        ${sales.slice(0,20).map(s => `
+                                            <tr>
+                                                <td>${s.order_number}</td>
+                                                <td>${s.customer_name||'Walk-in'}</td>
+                                                <td>${formatKsh(s.total)}</td>
+                                                <td>${getStatusBadge(s.payment_method)}</td>
+                                                <td>${getStatusBadge(s.status)}</td>
+                                                <td><small>${new Date(s.date).toLocaleDateString()}</small></td>
+                                            </tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No sales records</td></tr>'}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
             } catch (e) { showToast('Error loading payments', 'error'); }
         }
 
-        // ===== M-PESA LOGS (with delete) =====
-        async function loadMpesaLogs() {
+        // ===== M-PESA LOGS (NOW DISPLAYS M-PESA SALES) =====
+        async function loadMpesaLogs(page = 1) {
             const content = document.getElementById('mainContent');
             try {
-                const txns = await API.get('/api/mpesa/transactions');
+                // Fetch sales filtered by M-Pesa payment method
+                const data = await API.get('/api/sales/report?method=mpesa');
+                const sales = data.sales || [];
+
+                // For each sale, fetch item names to display in the "Item(s)" column
+                const salesWithItems = await Promise.all(sales.map(async (s) => {
+                    try {
+                        const itemsData = await API.get(`/api/sale-items/${s.id}`);
+                        s.item_names = itemsData.map(item => item.name).join(', ');
+                    } catch (e) {
+                        s.item_names = 'N/A';
+                    }
+                    return s;
+                }));
+
                 content.innerHTML = `
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <h6 class="mb-0"><i class="fas fa-mobile-alt me-2"></i>M-Pesa Transaction Logs</h6>
-                        <button class="btn-sm-custom info" onclick="loadMpesaLogs()"><i class="fas fa-sync-alt me-1"></i> Refresh</button>
-                    </div>
-                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>Receipt</th><th>Phone</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>${txns.map(t => `<tr><td>${t.receipt_number||'-'}</td><td>${t.phone_number}</td><td><strong>${formatKsh(t.amount)}</strong></td><td>${getStatusBadge(t.status)}</td><td><small>${new Date(t.date).toLocaleString()}</small></td><td><button class="btn-sm-custom danger" onclick="deleteMpesaLog(${t.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No M-Pesa transactions</td></tr>'}</tbody></table></div></div>
-                `;
-            } catch (e) { showToast('Error loading M-Pesa logs', 'error'); }
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <div class="d-flex gap-2 flex-wrap" style="flex:1;min-width:200px;">
+                                <input type="text" class="form-control form-control-custom" id="mpesaSearch" placeholder="Search by order or customer..." style="flex:1;min-width:150px;" onkeyup="filterMpesaSales()">
+                                <button class="btn-sm-custom info" onclick="loadMpesaLogs(1)"><i class="fas fa-search me-1"></i> Search</button>
+                                <button class="btn-sm-custom neutral" onclick="document.getElementById('mpesaSearch').value='';loadMpesaLogs(1);"><i class="fas fa-times"></i> Clear</button>
+                            </div>
+                            <button class="btn-sm-custom info" onclick="loadMpesaLogs(${page})"><i class="fas fa-sync-alt me-1"></i> Refresh</button>
+                        </div>
+                        <div class="card-custom">
+                            <div class="card-header-custom">
+                                <h6><i class="fas fa-mobile-alt me-2"></i>M-Pesa Sales</h6>
+                                <span class="badge bg-success">${sales.length} transactions</span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-custom table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Order</th>
+                                            <th>Item(s)</th>
+                                            <th>Customer (Phone)</th>
+                                            <th>Items</th>
+                                            <th>Total</th>
+                                            <th>Date</th>
+                                            <th>Cashier</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="mpesaSalesBody">
+                                        ${salesWithItems.map(s => `
+                                            <tr data-order="${s.order_number.toLowerCase()}" data-customer="${(s.customer_name||'').toLowerCase()}">
+                                                <td><strong>${s.order_number}</strong></td>
+                                                <td>${s.item_names || 'N/A'}</td>
+                                                <td>${s.customer_phone || s.customer_name || 'Walk-in'}</td>
+                                                <td>${s.item_count||0}</td>
+                                                <td><strong>${formatKsh(s.total)}</strong></td>
+                                                <td><small>${new Date(s.date).toLocaleString()}</small></td>
+                                                <td>${s.cashier_name||'Admin'}</td>
+                                                <td>
+                                                    <button class="btn-sm-custom info" onclick="showToast('Receipt #${s.order_number}','info')"><i class="fas fa-receipt"></i></button>
+                                                    <button class="btn-sm-custom danger" onclick="deleteSale(${s.id})"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        `).join('') || '<tr><td colspan="8" class="text-center py-4 text-muted">No M-Pesa sales found</td></tr>'}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                // Add search filter function
+                window.filterMpesaSales = function() {
+                    const search = document.getElementById('mpesaSearch').value.toLowerCase();
+                    document.querySelectorAll('#mpesaSalesBody tr').forEach(row => {
+                        const order = row.dataset.order || '';
+                        const customer = row.dataset.customer || '';
+                        row.style.display = (order.includes(search) || customer.includes(search)) ? '' : 'none';
+                    });
+                };
+            } catch (e) {
+                showToast('Error loading M-Pesa sales: ' + e.message, 'error');
+                content.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Failed to load M-Pesa sales</p></div>`;
+            }
         }
 
-        async function deleteMpesaLog(id) {
-            showConfirm('Delete this M-Pesa log entry?', async function() {
-                try {
-                    await API.delete(`/api/mpesa/transactions/${id}`);
-                    loadMpesaLogs();
-                    showToast('M-Pesa log deleted', 'success');
-                } catch (e) {
-                    showToast('Error deleting: ' + e.message, 'error');
-                }
-            });
-        }
-
-        // ===== EXPENSES =====
+        // ===== EXPENSES (unchanged) =====
         async function loadExpenses() {
             const content = document.getElementById('mainContent');
             try {
                 const expenses = await API.get('/api/expenses');
                 content.innerHTML = `
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchExpense" placeholder="Search expenses..." onkeyup="loadExpensesData()"></div>
-                        <button class="btn btn-primary-custom btn-sm" onclick="showAddExpenseModal()"><i class="fas fa-plus me-1"></i> Add</button>
-                    </div>
-                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Description</th><th>Category</th><th>Amount</th><th>Date</th><th>Actions</th></tr></thead><tbody id="expensesBody">${expenses.map((e,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(e.description)}</strong></td><td><span class="badge-status ${e.category==='rent'?'warning':e.category==='salaries'?'success':e.category==='utilities'?'info':'neutral'}">${e.category||'other'}</span></td><td><strong>${formatKsh(e.amount)}</strong></td><td><small>${new Date(e.date).toLocaleDateString()}</small></td><td><button class="btn-sm-custom info" onclick="editExpense(${e.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteExpense(${e.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No expenses found</td></tr>'}</tbody></table></div></div>
-                `;
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <div style="flex:1;min-width:150px;"><input type="text" class="form-control form-control-custom" id="searchExpense" placeholder="Search expenses..." onkeyup="loadExpensesData()"></div>
+                            <button class="btn btn-primary-custom btn-sm" onclick="showAddExpenseModal()"><i class="fas fa-plus me-1"></i> Add</button>
+                        </div>
+                        <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>#</th><th>Description</th><th>Category</th><th>Amount</th><th>Date</th><th>Actions</th></tr></thead><tbody id="expensesBody">${expenses.map((e,i) => `<tr><td>${i+1}</td><td><strong>${escapeHtml(e.description)}</strong></td><td><span class="badge-status ${e.category==='rent'?'warning':e.category==='salaries'?'success':e.category==='utilities'?'info':'neutral'}">${e.category||'other'}</span></td><td><strong>${formatKsh(e.amount)}</strong></td><td><small>${new Date(e.date).toLocaleDateString()}</small></td><td><button class="btn-sm-custom info" onclick="editExpense(${e.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteExpense(${e.id})"><i class="fas fa-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-muted">No expenses found</td></tr>'}</tbody></table></div></div>
+                    `;
             } catch (e) { showToast('Error loading expenses', 'error'); }
         }
 
@@ -2020,7 +2260,8 @@
                 const expenses = await API.get('/api/expenses');
                 const filtered = search ? expenses.filter(e => e.description.toLowerCase().includes(search)) : expenses;
                 const tbody = document.getElementById('expensesBody');
-                if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No expenses found</td></tr>'; return; }
+                if (!filtered.length) { tbody.innerHTML =
+                        '<tr><td colspan="6" class="text-center py-4 text-muted">No expenses found</td></tr>'; return; }
                 tbody.innerHTML = filtered.map((e, i) =>
                     `<tr><td>${i+1}</td><td><strong>${escapeHtml(e.description)}</strong></td><td><span class="badge-status ${e.category==='rent'?'warning':e.category==='salaries'?'success':e.category==='utilities'?'info':'neutral'}">${e.category||'other'}</span></td><td><strong>${formatKsh(e.amount)}</strong></td><td><small>${new Date(e.date).toLocaleDateString()}</small></td><td><button class="btn-sm-custom info" onclick="editExpense(${e.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteExpense(${e.id})"><i class="fas fa-trash"></i></button></td></tr>`
                 ).join('');
@@ -2085,35 +2326,314 @@
             });
         }
 
-        // ===== REPORTS =====
-        function loadReports() {
-            document.getElementById('mainContent').innerHTML = `
-                <div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-chart-pie me-2"></i>Reports Center</h6></div>
-                <div class="row g-2 g-md-3">
-                    <div class="col-md-4"><div class="stat-card" onclick="navigateTo('sales')" style="cursor:pointer;"><div class="text-center"><i class="fas fa-shopping-bag fa-2x text-primary"></i><div class="stat-number">Sales</div><small class="text-muted">Daily, Weekly, Monthly</small></div></div></div>
-                    <div class="col-md-4"><div class="stat-card" onclick="navigateTo('inventory')" style="cursor:pointer;"><div class="text-center"><i class="fas fa-warehouse fa-2x text-warning"></i><div class="stat-number">Inventory</div><small class="text-muted">Stock valuation</small></div></div></div>
-                    <div class="col-md-4"><div class="stat-card" onclick="navigateTo('expenses')" style="cursor:pointer;"><div class="text-center"><i class="fas fa-wallet fa-2x text-danger"></i><div class="stat-number">Financial</div><small class="text-muted">Profit & Loss</small></div></div></div>
-                </div></div>
-            `;
+        // ===== DEBTS (FULLY FUNCTIONAL WITH ADD MODAL) =====
+        async function loadDebts() {
+            const content = document.getElementById('mainContent');
+            try {
+                // Fetch debts from the debts table
+                const debts = await API.get('/api/debts');
+                const totalDebt = debts.reduce((sum, d) => sum + (d.total_amount - d.amount_paid), 0);
+                const unpaidCount = debts.filter(d => d.status !== 'paid' && d.status !== 'completed').length;
+                const paidCount = debts.filter(d => d.status === 'paid' || d.status === 'completed').length;
+
+                content.innerHTML = `
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <h6 class="mb-0"><i class="fas fa-file-invoice-dollar me-2"></i>Debts Management</h6>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <button class="btn btn-primary-custom btn-sm" onclick="showAddDebtModal()"><i class="fas fa-plus me-1"></i> Add Debt</button>
+                                <button class="btn btn-success-custom btn-sm" onclick="window.open('/pos','_blank')"><i class="fas fa-plus me-1"></i> New Credit Sale</button>
+                            </div>
+                        </div>
+
+                        <!-- Debt Summary Cards -->
+                        <div class="debt-summary-grid">
+                            <div class="ds-card primary"><div class="ds-value">${formatKsh(totalDebt)}</div><div class="ds-label">Total Outstanding</div></div>
+                            <div class="ds-card danger"><div class="ds-value">${unpaidCount}</div><div class="ds-label">Unpaid Debts</div></div>
+                            <div class="ds-card success"><div class="ds-value">${paidCount}</div><div class="ds-label">Paid Debts</div></div>
+                            <div class="ds-card warning"><div class="ds-value">${debts.length}</div><div class="ds-label">Total Debt Records</div></div>
+                        </div>
+
+                        <div class="card-custom">
+                            <div class="card-header-custom">
+                                <h6><i class="fas fa-list me-2"></i>Debt Records</h6>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <input type="text" class="form-control form-control-custom" id="searchDebt" placeholder="Search customer..." style="width:180px;font-size:0.75rem;" onkeyup="filterDebts()">
+                                    <select class="form-select form-select-custom" id="debtStatusFilter" style="width:130px;font-size:0.75rem;" onchange="filterDebts()">
+                                        <option value="all">All Status</option>
+                                        <option value="unpaid">Unpaid</option>
+                                        <option value="paid">Paid</option>
+                                        <option value="partial">Partial</option>
+                                    </select>
+                                    <button class="btn-sm-custom info" onclick="document.getElementById('searchDebt').value='';document.getElementById('debtStatusFilter').value='all';filterDebts();"><i class="fas fa-times"></i> Clear</button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-custom table-hover" id="debtsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Customer</th>
+                                            <th>Phone</th>
+                                            <th>Amount</th>
+                                            <th>Paid</th>
+                                            <th>Balance</th>
+                                            <th>Status</th>
+                                            <th>Due Date</th>
+                                            <th>Description</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="debtsBody">
+                                        ${debts.map(d => {
+                                            const balance = d.total_amount - d.amount_paid;
+                                            const status = balance <= 0 ? 'paid' : (d.amount_paid > 0 ? 'partial' : 'unpaid');
+                                            return `<tr data-customer="${(d.customer_name||'').toLowerCase()}" data-status="${status}">
+                                            <tr>
+                                                <td>${d.id}</td>
+                                                <td>${escapeHtml(d.customer_name)}</td>
+                                                <td>${escapeHtml(d.phone||'-')}</td>
+                                                <td><strong>${formatKsh(d.total_amount)}</strong></td>
+                                                <td>${formatKsh(d.amount_paid)}</td>
+                                                <td class="${balance>0?'text-danger fw-bold':''}">${formatKsh(balance)}</td>
+                                                <td>${getDebtStatusBadge(status)}</td>
+                                                <td>${d.due_date ? new Date(d.due_date).toLocaleDateString() : '-'}</td>
+                                                <td>${escapeHtml(d.description||'')}</td>
+                                                <td>
+                                                    <button class="btn-sm-custom success" onclick="viewDebt(${d.id})" title="View / Pay"><i class="fas fa-eye"></i></button>
+                                                    <button class="btn-sm-custom danger" onclick="deleteDebtRecord(${d.id})" title="Delete"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>`;
+                                        }).join('') || '<tr><td colspan="10" class="text-center py-4 text-muted">No debt records found</td></tr>'}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+            } catch (e) {
+                showToast('Error loading debts: ' + e.message, 'error');
+                content.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Failed to load debts</p><small>${e.message}</small></div>`;
+            }
         }
 
-        // ===== USERS =====
+        function filterDebts() {
+            const search = document.getElementById('searchDebt').value.toLowerCase();
+            const statusFilter = document.getElementById('debtStatusFilter').value;
+            document.querySelectorAll('#debtsBody tr').forEach(row => {
+                const customer = row.dataset.customer || '';
+                const status = row.dataset.status || '';
+                let show = true;
+                if (search && !customer.includes(search)) show = false;
+                if (statusFilter !== 'all' && status !== statusFilter) show = false;
+                row.style.display = show ? '' : 'none';
+            });
+        }
+
+        // Show Add Debt Modal
+        function showAddDebtModal() {
+            document.getElementById('addDebtForm').reset();
+            // Set default due date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('debtDueDate').value = tomorrow.toISOString().split('T')[0];
+            new bootstrap.Modal(document.getElementById('addDebtModal')).show();
+        }
+document.getElementById('saveDebtBtn').addEventListener('click', async function() {
+    const customer_name = document.getElementById('debtCustomerName').value.trim();
+    const phone = document.getElementById('debtPhone').value.trim();
+    const vehicle_registration = document.getElementById('debtVehicleReg').value.trim();
+    const total_amount = parseFloat(document.getElementById('debtTotalAmount').value);
+    const due_date = document.getElementById('debtDueDate').value;
+    const description = document.getElementById('debtDescription').value.trim();
+    const debt_type = document.getElementById('debtType').value;
+
+    if (!customer_name) {
+        showToast('Name is required', 'error');
+        return;
+    }
+    if (!total_amount || total_amount <= 0) {
+        showToast('Enter a valid total amount', 'error');
+        return;
+    }
+
+    const data = {
+        customer_name,
+        phone,
+        vehicle_registration,
+        total_amount,
+        due_date,
+        description,
+        debt_type
+    };
+
+    try {
+        await API.post('/api/debts', data);
+        showToast('Debt added successfully!', 'success');
+        bootstrap.Modal.getInstance(document.getElementById('addDebtModal')).hide();
+        loadDebts();
+    } catch (e) {
+        showToast('Error adding debt: ' + e.message, 'error');
+    }
+});
+  
+        // View debt details (using existing debt modal)
+        async function viewDebt(debtId) {
+            debtModalSaleId = debtId; // Reuse the same variable name
+            const modal = new bootstrap.Modal(document.getElementById('debtModal'));
+            const body = document.getElementById('debtModalBody');
+            body.innerHTML =
+                `<div class="text-center py-3"><div class="loading-spinner" style="margin:0 auto 12px;"></div><p class="text-muted">Loading debt details...</p></div>`;
+            modal.show();
+
+            try {
+                const debts = await API.get('/api/debts');
+                const debt = debts.find(d => d.id === debtId);
+                if (!debt) {
+                    body.innerHTML =
+                        `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Debt record not found</p></div>`;
+                    return;
+                }
+                const balance = debt.total_amount - debt.amount_paid;
+                const status = balance <= 0 ? 'paid' : (debt.amount_paid > 0 ? 'partial' : 'unpaid');
+
+                body.innerHTML = `
+                        <div class="row g-3">
+                            <div class="col-6"><strong>Customer:</strong> ${escapeHtml(debt.customer_name)}</div>
+                            <div class="col-6"><strong>Phone:</strong> ${escapeHtml(debt.phone||'N/A')}</div>
+                            <div class="col-6"><strong>Vehicle:</strong> ${escapeHtml(debt.vehicle_registration||'N/A')}</div>
+                            <div class="col-6"><strong>Due Date:</strong> ${debt.due_date ? new Date(debt.due_date).toLocaleDateString() : 'N/A'}</div>
+                            <div class="col-6"><strong>Total Amount:</strong> <span class="fw-bold">${formatKsh(debt.total_amount)}</span></div>
+                            <div class="col-6"><strong>Amount Paid:</strong> <span class="fw-bold">${formatKsh(debt.amount_paid)}</span></div>
+                            <div class="col-6"><strong>Balance:</strong> <span class="fw-bold ${balance>0?'text-danger':''}">${formatKsh(balance)}</span></div>
+                            <div class="col-6"><strong>Status:</strong> ${getDebtStatusBadge(status)}</div>
+                            ${debt.description ? `<div class="col-12"><strong>Description:</strong> ${escapeHtml(debt.description)}</div>` : ''}
+                            ${balance > 0 ? `
+                            <div class="col-12 mt-2 pt-2 border-top">
+                                <label class="form-label"><strong>Record Payment</strong></label>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <input type="number" id="debtPaymentAmount" class="form-control form-control-custom" style="width:150px;" placeholder="Amount" min="0.01" step="0.01" value="${balance}">
+                                    <input type="text" id="debtPaymentNote" class="form-control form-control-custom" style="flex:1;min-width:120px;" placeholder="Payment note (optional)">
+                                    <button class="btn btn-success-custom btn-sm" onclick="recordDebtPayment(${debtId})"><i class="fas fa-check me-1"></i> Record Payment</button>
+                                </div>
+                            </div>` : ''}
+                        </div>
+                    `;
+                document.getElementById('debtModalTitle').textContent = `Debt #${debtId}`;
+
+                // Show/hide buttons based on status
+                const markPaidBtn = document.getElementById('debtMarkPaidBtn');
+                const deleteBtn = document.getElementById('debtDeleteBtn');
+                if (status === 'paid') {
+                    markPaidBtn.style.display = 'none';
+                } else {
+                    markPaidBtn.style.display = 'inline-block';
+                    markPaidBtn.textContent = `💰 Mark as Paid (${formatKsh(balance)})`;
+                }
+                deleteBtn.style.display = 'inline-block';
+                // Update the callback functions for the modal buttons
+                window.debtModalSaleId = debtId; // store debt id for actions
+            } catch (e) {
+                body.innerHTML =
+                    `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading debt details</p><small>${e.message}</small></div>`;
+            }
+        }
+
+        // Record a partial payment on a debt (uses the debt payment endpoint)
+        async function recordDebtPayment(debtId) {
+            const amountInput = document.getElementById('debtPaymentAmount');
+            const noteInput = document.getElementById('debtPaymentNote');
+            const amount = parseFloat(amountInput.value);
+            const note = noteInput.value.trim();
+
+            if (!amount || amount <= 0) {
+                showToast('Enter a valid payment amount', 'error');
+                return;
+            }
+
+            try {
+                await API.post(`/api/debts/${debtId}/payment`, { amount, note });
+                showToast(`Payment of ${formatKsh(amount)} recorded!`, 'success');
+                bootstrap.Modal.getInstance(document.getElementById('debtModal')).hide();
+                loadDebts(); // Refresh the debts list
+            } catch (e) {
+                showToast('Error recording payment: ' + e.message, 'error');
+            }
+        }
+
+        // Mark entire debt as paid (uses the debt pay-full endpoint)
+        async function markDebtPaid() {
+            const debtId = window.debtModalSaleId;
+            if (!debtId) return;
+            showConfirm('Mark this debt as fully paid?', async function() {
+                try {
+                    await API.post(`/api/debts/${debtId}/pay-full`);
+                    showToast('Debt marked as paid!', 'success');
+                    bootstrap.Modal.getInstance(document.getElementById('debtModal')).hide();
+                    loadDebts();
+                } catch (e) {
+                    showToast('Error marking as paid: ' + e.message, 'error');
+                }
+            });
+        }
+
+        // Delete a debt record
+        async function deleteDebt() {
+            const debtId = window.debtModalSaleId;
+            if (!debtId) return;
+            showConfirm('Delete this debt record? This cannot be undone.', async function() {
+                try {
+                    await API.delete(`/api/debts/${debtId}`);
+                    showToast('Debt record deleted', 'success');
+                    bootstrap.Modal.getInstance(document.getElementById('debtModal')).hide();
+                    loadDebts();
+                } catch (e) {
+                    showToast('Error deleting debt: ' + e.message, 'error');
+                }
+            });
+        }
+
+        // Delete debt record from table (without modal)
+        async function deleteDebtRecord(debtId) {
+            showConfirm('Delete this debt record? This cannot be undone.', async function() {
+                try {
+                    await API.delete(`/api/debts/${debtId}`);
+                    showToast('Debt record deleted', 'success');
+                    loadDebts();
+                } catch (e) {
+                    showToast('Error deleting debt: ' + e.message, 'error');
+                }
+            });
+        }
+
+        // ===== REPORTS (unchanged) =====
+        function loadReports() {
+            document.getElementById('mainContent').innerHTML = `
+                    <div class="card-custom"><div class="card-header-custom"><h6><i class="fas fa-chart-pie me-2"></i>Reports Center</h6></div>
+                    <div class="row g-2 g-md-3">
+                        <div class="col-md-4"><div class="stat-card" onclick="navigateTo('sales')" style="cursor:pointer;"><div class="text-center"><i class="fas fa-shopping-bag fa-2x text-primary"></i><div class="stat-number">Sales</div><small class="text-muted">Daily, Weekly, Monthly</small></div></div></div>
+                        <div class="col-md-4"><div class="stat-card" onclick="navigateTo('inventory')" style="cursor:pointer;"><div class="text-center"><i class="fas fa-warehouse fa-2x text-warning"></i><div class="stat-number">Inventory</div><small class="text-muted">Stock valuation</small></div></div></div>
+                        <div class="col-md-4"><div class="stat-card" onclick="navigateTo('expenses')" style="cursor:pointer;"><div class="text-center"><i class="fas fa-wallet fa-2x text-danger"></i><div class="stat-number">Financial</div><small class="text-muted">Profit & Loss</small></div></div></div>
+                    </div></div>
+                `;
+        }
+
+        // ===== USERS (unchanged) =====
         async function loadUsers() {
             const content = document.getElementById('mainContent');
             try {
                 const users = await API.get('/api/users');
                 const shops = await API.get('/api/shops');
                 content.innerHTML = `
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                        <h6 class="mb-0"><i class="fas fa-users me-2"></i>System Users</h6>
-                        <button class="btn btn-primary-custom btn-sm" onclick="showAddUserModal()"><i class="fas fa-plus me-1"></i> Add User</button>
-                    </div>
-                    <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>ID</th><th>Username</th><th>Name</th><th>Shop</th><th>Role</th><th>Commission</th><th>Actions</th></tr></thead><tbody>${users.map(u => {
-                        const shop = shops.find(s => s.id === u.shop_id);
-                        const commBadge = u.commission_rate > 0 ? `<span class="commission-badge ${u.commission_rate>5?'high':''}">${u.commission_rate}%</span>` : '<span class="text-muted" style="font-size:0.6rem;">-</span>';
-                        return `<tr><td>${u.id}</td><td><strong>${escapeHtml(u.username)}</strong></td><td>${escapeHtml(u.full_name||'-')}</td><td>${shop?escapeHtml(shop.name):'Global'}</td><td>${getRoleBadge(u.role)}</td><td>${commBadge}</td><td>${u.username!=='admin'?`<button class="btn-sm-custom info" onclick="editUser(${u.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteUser(${u.id})"><i class="fas fa-trash"></i></button>`:'<span class="text-muted" style="font-size:0.6rem;">Protected</span>'}</td></tr>`;
-                    }).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No users found</td></tr>'}</tbody></table></div></div>
-                `;
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                            <h6 class="mb-0"><i class="fas fa-users me-2"></i>System Users</h6>
+                            <button class="btn btn-primary-custom btn-sm" onclick="showAddUserModal()"><i class="fas fa-plus me-1"></i> Add User</button>
+                        </div>
+                        <div class="card-custom"><div class="table-responsive"><table class="table table-custom table-hover"><thead><tr><th>ID</th><th>Username</th><th>Name</th><th>Shop</th><th>Role</th><th>Commission</th><th>Actions</th></tr></thead><tbody>${users.map(u => {
+                            const shop = shops.find(s => s.id === u.shop_id);
+                            const commBadge = u.commission_rate > 0 ? `<span class="commission-badge ${u.commission_rate>5?'high':''}">${u.commission_rate}%</span>` : '<span class="text-muted" style="font-size:0.6rem;">-</span>';
+                            return `<tr><td>${u.id}</td><td><strong>${escapeHtml(u.username)}</strong></td><td>${escapeHtml(u.full_name||'-')}</td><td>${shop?escapeHtml(shop.name):'Global'}</td><td>${getRoleBadge(u.role)}</td><td>${commBadge}</td><td>${u.username!=='admin'?`<button class="btn-sm-custom info" onclick="editUser(${u.id})"><i class="fas fa-edit"></i></button><button class="btn-sm-custom danger" onclick="deleteUser(${u.id})"><i class="fas fa-trash"></i></button>`:'<span class="text-muted" style="font-size:0.6rem;">Protected</span>'}</td></tr>`;
+                        }).join('') || '<tr><td colspan="7" class="text-center py-4 text-muted">No users found</td></tr>'}</tbody></table></div></div>
+                    `;
                 document.getElementById('userBadge').textContent = users.length;
                 await loadShopsForUserSelect();
             } catch (e) { showToast('Error loading users', 'error'); }
@@ -2141,7 +2661,8 @@
                     checks.forEach(c => {
                         const module = c.dataset.module;
                         const perm = c.dataset.perm;
-                        if (['products', 'sales'].includes(module) && ['view', 'add'].includes(perm)) c.checked = true;
+                        if (['products', 'sales'].includes(module) && ['view', 'add'].includes(perm)) c.checked =
+                            true;
                         else if (module === 'customers' && perm === 'view') c.checked = true;
                         else c.checked = false;
                     });
@@ -2200,7 +2721,8 @@
                 document.querySelectorAll('.perm-check').forEach(c => {
                     const module = c.dataset.module;
                     const perm = c.dataset.perm;
-                    if (u.is_admin) { c.checked = true; } else if (perms[module] && perms[module][perm] !== undefined) {
+                    if (u.is_admin) { c.checked = true; } else if (perms[module] && perms[module][perm] !==
+                        undefined) {
                         c.checked = perms[module][perm];
                     } else {
                         c.checked = false;
@@ -2229,7 +2751,8 @@
                 full_name: document.getElementById('userFullName').value.trim(),
                 email: document.getElementById('userEmail').value.trim(),
                 role: isAdmin ? 'admin' : role,
-                shop_id: document.getElementById('userShop').value ? parseInt(document.getElementById('userShop').value) : null,
+                shop_id: document.getElementById('userShop').value ? parseInt(document.getElementById('userShop')
+                    .value) : null,
                 commission_rate: parseFloat(document.getElementById('userCommission').value) || 0,
                 is_admin: isAdmin,
                 permissions: isAdmin ? {} : perms
@@ -2259,27 +2782,27 @@
             });
         }
 
-        // ===== SETTINGS =====
+        // ===== SETTINGS (unchanged) =====
         async function loadSettings() {
             const content = document.getElementById('mainContent');
             try {
                 const settings = await API.get('/api/settings');
                 content.innerHTML = `
-                    <div class="card-custom">
-                        <div class="card-header-custom"><h6><i class="fas fa-cog me-2"></i>Business Settings</h6><button class="btn btn-primary-custom btn-sm" onclick="showSettingsModal()"><i class="fas fa-edit me-1"></i> Edit</button></div>
-                        <div class="row" id="settingsDisplay">
-                            <div class="col-md-6 mb-2"><strong>Business Name:</strong> <span>${escapeHtml(settings.business_name||'General Shop')}</span></div>
-                            <div class="col-md-6 mb-2"><strong>Phone:</strong> <span>${escapeHtml(settings.phone||'+254 700 000 000')}</span></div>
-                            <div class="col-md-6 mb-2"><strong>Email:</strong> <span>${escapeHtml(settings.email||'info@generalshop.com')}</span></div>
-                            <div class="col-md-6 mb-2"><strong>Address:</strong> <span>${escapeHtml(settings.address||'Nairobi, Kenya')}</span></div>
-                            <div class="col-md-6 mb-2"><strong>PIN:</strong> <span>${escapeHtml(settings.pin||'A123456789')}</span></div>
-                            <div class="col-md-6 mb-2"><strong>Currency:</strong> <span>${escapeHtml(settings.currency||'KES')}</span></div>
-                            <div class="col-md-6 mb-2"><strong>Tax Rate:</strong> <span>${settings.tax_rate||16}%</span></div>
-                            <div class="col-md-6 mb-2"><strong>Default Commission:</strong> <span>${settings.default_commission||0}%</span></div>
-                            <div class="col-md-12 mb-2"><strong>Receipt Footer:</strong> <span>${escapeHtml(settings.footer||'Thank you for shopping with us!')}</span></div>
+                        <div class="card-custom">
+                            <div class="card-header-custom"><h6><i class="fas fa-cog me-2"></i>Business Settings</h6><button class="btn btn-primary-custom btn-sm" onclick="showSettingsModal()"><i class="fas fa-edit me-1"></i> Edit</button></div>
+                            <div class="row" id="settingsDisplay">
+                                <div class="col-md-6 mb-2"><strong>Business Name:</strong> <span>${escapeHtml(settings.business_name||'General Shop')}</span></div>
+                                <div class="col-md-6 mb-2"><strong>Phone:</strong> <span>${escapeHtml(settings.phone||'+254 700 000 000')}</span></div>
+                                <div class="col-md-6 mb-2"><strong>Email:</strong> <span>${escapeHtml(settings.email||'info@generalshop.com')}</span></div>
+                                <div class="col-md-6 mb-2"><strong>Address:</strong> <span>${escapeHtml(settings.address||'Nairobi, Kenya')}</span></div>
+                                <div class="col-md-6 mb-2"><strong>PIN:</strong> <span>${escapeHtml(settings.pin||'A123456789')}</span></div>
+                                <div class="col-md-6 mb-2"><strong>Currency:</strong> <span>${escapeHtml(settings.currency||'KES')}</span></div>
+                                <div class="col-md-6 mb-2"><strong>Tax Rate:</strong> <span>${settings.tax_rate||16}%</span></div>
+                                <div class="col-md-6 mb-2"><strong>Default Commission:</strong> <span>${settings.default_commission||0}%</span></div>
+                                <div class="col-md-12 mb-2"><strong>Receipt Footer:</strong> <span>${escapeHtml(settings.footer||'Thank you for shopping with us!')}</span></div>
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
             } catch (e) { showToast('Error loading settings', 'error'); }
         }
 
@@ -2350,7 +2873,8 @@
             });
 
             document.addEventListener('keydown', function(e) {
-                if (e.ctrlKey && e.key === 'r') { e.preventDefault(); refreshPage(); }
+                if (e.ctrlKey && e.key === 'r') { e.preventDefault();
+                    refreshPage(); }
             });
 
             $('.user-btn').on('click', function(e) { e.stopPropagation(); });

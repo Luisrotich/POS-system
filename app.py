@@ -17,11 +17,13 @@ import pytz
 
 app = Flask(__name__)
 CORS(app)
+
 # ==================== TIMEZONE HELPER ====================
 def get_nairobi_time():
     """Return current datetime in Nairobi timezone (UTC+3)"""
     nairobi_tz = pytz.timezone('Africa/Nairobi')
     return datetime.now(nairobi_tz)
+
 # ==================== SESSION CONFIGURATION ====================
 app.config['SECRET_KEY'] = 'your-secret-key-change-in-production-12345'
 app.config['SESSION_COOKIE_NAME'] = 'pos_session'
@@ -70,17 +72,24 @@ def column_exists(table, column):
     return column in columns
 
 def add_column_if_not_exists(table, column, column_type):
-    if not column_exists(table, column):
+    """
+    Robustly add a column to a table if it doesn't exist.
+    Uses PRAGMA to check existence, then ALTER TABLE.
+    """
+    try:
         conn = get_db()
         c = conn.cursor()
-        try:
+        c.execute(f"PRAGMA table_info({table})")
+        columns = [row[1] for row in c.fetchall()]
+        if column not in columns:
             c.execute(f"ALTER TABLE {table} ADD COLUMN {column} {column_type}")
             conn.commit()
             print(f"✅ Added column '{column}' to '{table}'")
-        except sqlite3.OperationalError as e:
-            print(f"⚠️ Could not add column '{column}' to '{table}': {e}")
-        finally:
-            conn.close()
+        else:
+            print(f"ℹ️ Column '{column}' already exists in '{table}'")
+        conn.close()
+    except Exception as e:
+        print(f"⚠️ Could not add column '{column}' to '{table}': {e}")
 
 def get_current_shop_id():
     return session.get('shop_id')
@@ -89,21 +98,17 @@ def ensure_shop_id():
     """Ensure the session has a shop_id set"""
     if 'user_id' not in session:
         return False
-    
     shop_id = session.get('shop_id')
     if shop_id:
         return True
-    
     # Try to get shop_id from user's record
     conn = get_db()
     c = conn.cursor()
     c.execute("SELECT shop_id FROM users WHERE id = ?", (session['user_id'],))
     user = c.fetchone()
     conn.close()
-    
     if user and user[0]:
         session['shop_id'] = user[0]
-        # Also get shop name
         conn = get_db()
         c = conn.cursor()
         c.execute("SELECT name FROM shops WHERE id = ?", (user[0],))
@@ -112,7 +117,6 @@ def ensure_shop_id():
         if shop:
             session['shop_name'] = shop[0]
         return True
-    
     # If user has no shop assigned, get first available shop
     conn = get_db()
     c = conn.cursor()
@@ -123,7 +127,6 @@ def ensure_shop_id():
         session['shop_id'] = shop[0]
         session['shop_name'] = shop[1]
         return True
-    
     return False
 
 def shop_required(f):
@@ -131,45 +134,15 @@ def shop_required(f):
     def decorated(*args, **kwargs):
         if 'user_id' not in session:
             return jsonify({'error': 'Authentication required'}), 401
-        
         if not ensure_shop_id():
             return jsonify({'error': 'No shop available'}), 400
-            
         return f(*args, **kwargs)
     return decorated
-
-# ==================== AFTER REQUEST HANDLER ====================
-
-@app.after_request
-def after_request(response):
-    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    response.headers['Pragma'] = 'no-cache'
-    response.headers['Expires'] = '0'
-    return response
-
-# ==================== DATABASE ====================
 
 def init_db():
     conn = get_db()
     c = conn.cursor()
-    
-    # Shops table
-    c.execute('''CREATE TABLE IF NOT EXISTS shops (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        slug TEXT UNIQUE NOT NULL,
-        address TEXT,
-        phone TEXT,
-        email TEXT,
-        logo_url TEXT,
-        currency TEXT DEFAULT 'KES',
-        tax_rate REAL DEFAULT 16,
-        is_active BOOLEAN DEFAULT 1,
-        owner_id INTEGER,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )''')
-    
-    # Users table
+
     c.execute('''CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
@@ -183,7 +156,6 @@ def init_db():
         FOREIGN KEY (shop_id) REFERENCES shops(id)
     )''')
     
-    # Categories table
     c.execute('''CREATE TABLE IF NOT EXISTS categories (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -194,7 +166,6 @@ def init_db():
         UNIQUE(name, shop_id)
     )''')
     
-    # Brands table
     c.execute('''CREATE TABLE IF NOT EXISTS brands (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -204,7 +175,6 @@ def init_db():
         UNIQUE(name, shop_id)
     )''')
     
-    # Units table
     c.execute('''CREATE TABLE IF NOT EXISTS units (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -214,7 +184,6 @@ def init_db():
         UNIQUE(name, shop_id)
     )''')
     
-    # Suppliers table
     c.execute('''CREATE TABLE IF NOT EXISTS suppliers (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -226,7 +195,6 @@ def init_db():
         FOREIGN KEY (shop_id) REFERENCES shops(id)
     )''')
     
-    # Products table
     c.execute('''CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -254,7 +222,7 @@ def init_db():
         UNIQUE(sku, shop_id)
     )''')
     
-    # Sales table
+    # Sales table now includes amount_paid
     c.execute('''CREATE TABLE IF NOT EXISTS sales (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         order_number TEXT UNIQUE NOT NULL,
@@ -270,11 +238,11 @@ def init_db():
         cashier_name TEXT,
         shop_id INTEGER,
         sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        amount_paid REAL DEFAULT 0,
         FOREIGN KEY (user_id) REFERENCES users(id),
         FOREIGN KEY (shop_id) REFERENCES shops(id)
     )''')
     
-    # Sale items table
     c.execute('''CREATE TABLE IF NOT EXISTS sale_items (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         sale_id INTEGER,
@@ -285,7 +253,6 @@ def init_db():
         FOREIGN KEY (product_id) REFERENCES products(id)
     )''')
     
-    # M-Pesa transactions table
     c.execute('''CREATE TABLE IF NOT EXISTS mpesa_transactions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         checkout_request_id TEXT UNIQUE,
@@ -294,11 +261,14 @@ def init_db():
         amount REAL,
         status TEXT,
         shop_id INTEGER,
+        invoice_id INTEGER,
+        customer_id INTEGER,
+        user_id INTEGER,
+        processed INTEGER DEFAULT 0,
         transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (shop_id) REFERENCES shops(id)
     )''')
     
-    # Inventory transactions table
     c.execute('''CREATE TABLE IF NOT EXISTS inventory_transactions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         product_id INTEGER,
@@ -311,7 +281,6 @@ def init_db():
         FOREIGN KEY (shop_id) REFERENCES shops(id)
     )''')
     
-    # Customers table
     c.execute('''CREATE TABLE IF NOT EXISTS customers (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
@@ -328,13 +297,11 @@ def init_db():
         UNIQUE(phone, shop_id)
     )''')
     
-    # Settings table
     c.execute('''CREATE TABLE IF NOT EXISTS settings (
         key TEXT PRIMARY KEY,
         value TEXT
     )''')
     
-    # Orders table
     c.execute('''CREATE TABLE IF NOT EXISTS orders (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         order_number TEXT UNIQUE,
@@ -352,7 +319,6 @@ def init_db():
         FOREIGN KEY (shop_id) REFERENCES shops(id)
     )''')
     
-    # Expenses table
     c.execute('''CREATE TABLE IF NOT EXISTS expenses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         amount REAL NOT NULL,
@@ -364,7 +330,6 @@ def init_db():
         FOREIGN KEY (shop_id) REFERENCES shops(id)
     )''')
     
-    # Invoices table
     c.execute('''CREATE TABLE IF NOT EXISTS invoices (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         invoice_number TEXT UNIQUE NOT NULL,
@@ -387,7 +352,6 @@ def init_db():
         FOREIGN KEY (shop_id) REFERENCES shops(id)
     )''')
     
-    # Invoice items table
     c.execute('''CREATE TABLE IF NOT EXISTS invoice_items (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         invoice_id INTEGER,
@@ -397,11 +361,64 @@ def init_db():
         total REAL,
         FOREIGN KEY (invoice_id) REFERENCES invoices(id)
     )''')
+
+    c.execute('''CREATE TABLE IF NOT EXISTS payments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        invoice_id INTEGER,
+        sale_id INTEGER,
+        mpesa_transaction_id INTEGER,
+        amount REAL NOT NULL,
+        payment_method TEXT NOT NULL,
+        receipt_number TEXT,
+        status TEXT DEFAULT 'PENDING',
+        user_id INTEGER,
+        shop_id INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (invoice_id) REFERENCES invoices(id),
+        FOREIGN KEY (sale_id) REFERENCES sales(id),
+        FOREIGN KEY (mpesa_transaction_id) REFERENCES mpesa_transactions(id),
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (shop_id) REFERENCES shops(id)
+    )''')
+
+    c.execute('''CREATE TABLE IF NOT EXISTS debts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        customer_id INTEGER,
+        customer_name TEXT,
+        phone TEXT,
+        vehicle_registration TEXT,
+        invoice_ref TEXT,
+        total_amount REAL NOT NULL,
+        amount_paid REAL DEFAULT 0,
+        balance REAL DEFAULT 0,
+        description TEXT,
+        due_date DATE,
+        status TEXT DEFAULT 'UNPAID',
+        debt_type TEXT DEFAULT 'customer',
+        recorded_by INTEGER,
+        shop_id INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (customer_id) REFERENCES customers(id),
+        FOREIGN KEY (recorded_by) REFERENCES users(id),
+        FOREIGN KEY (shop_id) REFERENCES shops(id)
+    )''')
+
+    c.execute('''CREATE TABLE IF NOT EXISTS debt_payments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        debt_id INTEGER,
+        payment_id INTEGER,
+        amount REAL NOT NULL,
+        recorded_by INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (debt_id) REFERENCES debts(id),
+        FOREIGN KEY (payment_id) REFERENCES payments(id),
+        FOREIGN KEY (recorded_by) REFERENCES users(id)
+    )''')
     
     conn.commit()
     conn.close()
     
-    # Add missing columns
+    # ========== ADD MISSING COLUMNS (Robust) ==========
     add_column_if_not_exists('users', 'commission_rate', 'REAL DEFAULT 0')
     add_column_if_not_exists('users', 'email', 'TEXT')
     add_column_if_not_exists('users', 'shop_id', 'INTEGER')
@@ -425,100 +442,18 @@ def init_db():
     add_column_if_not_exists('customers', 'shop_id', 'INTEGER')
     add_column_if_not_exists('orders', 'shop_id', 'INTEGER')
     add_column_if_not_exists('mpesa_transactions', 'shop_id', 'INTEGER')
+    add_column_if_not_exists('mpesa_transactions', 'invoice_id', 'INTEGER')
+    add_column_if_not_exists('mpesa_transactions', 'customer_id', 'INTEGER')
+    add_column_if_not_exists('mpesa_transactions', 'user_id', 'INTEGER')
+    add_column_if_not_exists('mpesa_transactions', 'processed', 'INTEGER DEFAULT 0')
+    add_column_if_not_exists('invoices', 'paid_amount', 'REAL DEFAULT 0')
+    add_column_if_not_exists('invoices', 'balance', 'REAL DEFAULT 0')
     add_column_if_not_exists('inventory_transactions', 'shop_id', 'INTEGER')
-    
-    # Insert default data
-    conn = get_db()
-    c = conn.cursor()
-    
-    c.execute("SELECT COUNT(*) FROM shops")
-    if c.fetchone()[0] == 0:
-        c.execute("""INSERT INTO shops (name, slug, address, phone, email, currency, tax_rate, is_active)
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-                  ('Main Shop', 'main-shop', 'Nairobi, Kenya', '+254 700 000 000', 'info@generalshop.com', 'KES', 16, 1))
-        default_shop_id = c.lastrowid
-    else:
-        c.execute("SELECT id FROM shops LIMIT 1")
-        default_shop_id = c.fetchone()[0]
-    
-    c.execute("SELECT COUNT(*) FROM categories WHERE shop_id = ?", (default_shop_id,))
-    if c.fetchone()[0] == 0:
-        default_categories = [
-            ('Food', '#FF6B6B', '🍔'),
-            ('Drinks', '#4ECDC4', '🥤'),
-            ('Household', '#45B7D1', '🏠'),
-            ('Electronics', '#96CEB4', '📱'),
-            ('Cosmetics', '#FFEAA7', '💄'),
-            ('Stationery', '#DFE6E9', '📚'),
-            ('Snacks', '#FDCB6E', '🍿'),
-            ('Milk Products', '#6C5CE7', '🥛'),
-            ('Cleaning Products', '#A8E6CF', '🧹'),
-            ('Others', '#B2C9AB', '📦')
-        ]
-        for cat in default_categories:
-            c.execute("INSERT OR IGNORE INTO categories (name, color, icon, shop_id) VALUES (?, ?, ?, ?)",
-                      (cat[0], cat[1], cat[2], default_shop_id))
-    
-    c.execute("SELECT COUNT(*) FROM brands WHERE shop_id = ?", (default_shop_id,))
-    if c.fetchone()[0] == 0:
-        default_brands = ['Generic', 'Premium', 'Economy', 'Local']
-        for brand in default_brands:
-            c.execute("INSERT OR IGNORE INTO brands (name, shop_id) VALUES (?, ?)", (brand, default_shop_id))
-    
-    c.execute("SELECT COUNT(*) FROM units WHERE shop_id = ?", (default_shop_id,))
-    if c.fetchone()[0] == 0:
-        default_units = [('Piece', 'pc'), ('Kilogram', 'kg'), ('Litre', 'L'), ('Gram', 'g'), ('Millilitre', 'ml'), ('Pack', 'pk'), ('Carton', 'ctn')]
-        for unit in default_units:
-            c.execute("INSERT OR IGNORE INTO units (name, code, shop_id) VALUES (?, ?, ?)", (unit[0], unit[1], default_shop_id))
-    
-    c.execute("SELECT COUNT(*) FROM users")
-    if c.fetchone()[0] == 0:
-        admin_pass = generate_password_hash('admin123')
-        cashier_pass = generate_password_hash('cashier123')
-        c.execute("INSERT INTO users (username, password, role, full_name, email, shop_id, commission_rate) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                  ('admin', admin_pass, 'admin', 'System Administrator', 'admin@generalshop.com', default_shop_id, 0))
-        c.execute("INSERT INTO users (username, password, role, full_name, email, shop_id, commission_rate) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                  ('cashier', cashier_pass, 'cashier', 'Store Cashier', 'cashier@generalshop.com', default_shop_id, 5))
-    
-    default_settings = {
-        'business_name': 'General Shop',
-        'logo': '',
-        'phone': '+254 700 000 000',
-        'email': 'info@generalshop.com',
-        'address': 'Nairobi, Kenya',
-        'pin': 'A123456789',
-        'currency': 'KES',
-        'tax_rate': '16',
-        'footer': 'Thank you for shopping with us!',
-        'default_commission': '5'
-    }
-    for key, value in default_settings.items():
-        c.execute("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)", (key, value))
-    
-    c.execute("SELECT COUNT(*) FROM products WHERE shop_id = ?", (default_shop_id,))
-    if c.fetchone()[0] == 0:
-        c.execute("SELECT id FROM categories WHERE name = 'Food' AND shop_id = ? LIMIT 1", (default_shop_id,))
-        food_row = c.fetchone()
-        if food_row:
-            food_id = food_row[0]
-            sample_products = [
-                ('White Bread', 'BREAD001', '123456', food_id, 50, 70, 100, 5, 'piece', 16, 0, 'Baker\'s Delight', ''),
-                ('Fresh Milk 1L', 'MILK001', '123457', food_id, 80, 120, 50, 5, 'litre', 16, 0, 'Dairy Farm', ''),
-                ('Sugar 1kg', 'SUGAR001', '123459', food_id, 100, 180, 75, 5, 'kg', 16, 0, 'Sugar Corp', ''),
-                ('Cooking Oil 2L', 'OIL001', '123460', food_id, 250, 350, 40, 5, 'litre', 16, 0, 'Oil Company', ''),
-            ]
-            for p in sample_products:
-                c.execute("""INSERT INTO products (name, sku, barcode, category_id, buying_price, 
-                             selling_price, stock_quantity, low_stock_threshold, unit, tax_rate, 
-                             discount, supplier, expiry_date, shop_id)
-                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", 
-                          (p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11], p[12], default_shop_id))
-    
-    conn.commit()
-    conn.close()
-    print("✅ Database initialized with multi-shop support, brands, units, and commission")
+    add_column_if_not_exists('sales', 'amount_paid', 'REAL DEFAULT 0')
+    add_column_if_not_exists('debts', 'customer_name', 'TEXT')
+    add_column_if_not_exists('debts', 'debt_type', 'TEXT DEFAULT "customer"')
 
-init_db()
+    print("✅ Database initialized (no demo data seeded)")
 
 # ==================== AUTH DECORATORS ====================
 
@@ -529,8 +464,6 @@ def admin_required(f):
             return jsonify({'error': 'Authentication required'}), 401
         if session.get('role') != 'admin':
             return jsonify({'error': 'Admin access required'}), 403
-        
-        # Ensure shop_id is set for admin
         ensure_shop_id()
         return f(*args, **kwargs)
     return decorated
@@ -542,8 +475,6 @@ def cashier_required(f):
             return jsonify({'error': 'Authentication required'}), 401
         if session.get('role') not in ['admin', 'cashier']:
             return jsonify({'error': 'Cashier access required'}), 403
-        
-        # Ensure shop_id is set
         ensure_shop_id()
         return f(*args, **kwargs)
     return decorated
@@ -578,7 +509,6 @@ def login():
         session['commission_rate'] = user[6] or 0
         session.modified = True
         
-        # Set shop_id
         if user[4]:
             session['shop_id'] = user[4]
             conn = get_db()
@@ -589,7 +519,6 @@ def login():
             if shop:
                 session['shop_name'] = shop[0]
         else:
-            # If no shop assigned, get first available shop
             conn = get_db()
             c = conn.cursor()
             c.execute("SELECT id, name FROM shops WHERE is_active = 1 LIMIT 1")
@@ -618,12 +547,10 @@ def logout():
 def pos():
     if 'user_id' not in session:
         return redirect(url_for('index'))
-    
     if not session.get('shop_id'):
         ensure_shop_id()
         if not session.get('shop_id'):
             return redirect(url_for('select_shop'))
-    
     return render_template('index.html')
 
 @app.route('/admin')
@@ -1551,7 +1478,8 @@ def get_inventory_transactions():
     conn.close()
     return jsonify(transactions)
 
-# ---------- SALES ----------
+# ---------- SALES (enhanced with amount_paid and payment endpoints) ----------
+
 @app.route('/api/sale', methods=['POST'])
 @cashier_required
 @shop_required
@@ -1563,48 +1491,48 @@ def create_sale():
     customer_phone = data.get('customer_phone', '')
     payment_method = data.get('payment_method', 'cash')
     mpesa_transaction_id = data.get('mpesa_transaction_id', None)
-    
+    amount_paid = data.get('amount_paid', 0)
+
     if not items:
         return jsonify({'error': 'No items in sale'}), 400
-    
+
     conn = get_db()
     c = conn.cursor()
-    
+
     subtotal = 0
     for item in items:
         price = float(item.get('price', 0))
         quantity = int(item.get('quantity', 0))
         subtotal += price * quantity
-    
+
     tax_rate = float(data.get('tax_rate', 16))
     tax = subtotal * (tax_rate / 100)
     total = subtotal + tax
-    
-    now = get_nairobi_time()  # Nairobi time once per request
-    
+
+    now = get_nairobi_time()
+
     order_number = f"ORD-{now.strftime('%Y%m%d%H%M%S')}"
     receipt_number = f"RCP-{now.strftime('%Y%m%d%H%M%S')}"
     cashier_name = session.get('full_name') or session.get('username') or 'Unknown Cashier'
-    
-    # Insert sale with explicit sale_date in Nairobi time
+
     c.execute("""INSERT INTO sales (order_number, user_id, customer_name, customer_phone, 
-                      subtotal, tax, total, payment_method, receipt_number, status, cashier_name, shop_id, sale_date)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-              (order_number, session['user_id'], customer_name, customer_phone, 
-               subtotal, tax, total, payment_method, receipt_number, 'completed', cashier_name, shop_id, now))
+                      subtotal, tax, total, payment_method, receipt_number, status, cashier_name, shop_id, sale_date, amount_paid)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+              (order_number, session['user_id'], customer_name, customer_phone,
+               subtotal, tax, total, payment_method, receipt_number, 'completed', cashier_name, shop_id, now, amount_paid))
     sale_id = c.lastrowid
-    
+
     for item in items:
         c.execute("INSERT INTO sale_items (sale_id, product_id, quantity, price_at_time) VALUES (?, ?, ?, ?)",
                   (sale_id, item['id'], item['quantity'], item['price']))
-        c.execute("UPDATE products SET stock_quantity = stock_quantity - ? WHERE id = ? AND shop_id = ?", 
+        c.execute("UPDATE products SET stock_quantity = stock_quantity - ? WHERE id = ? AND shop_id = ?",
                   (item['quantity'], item['id'], shop_id))
-    
+
     if payment_method == 'mpesa' and mpesa_transaction_id:
         c.execute("UPDATE mpesa_transactions SET status = 'completed', receipt_number = ? WHERE checkout_request_id = ? AND shop_id = ?",
                   (receipt_number, mpesa_transaction_id, shop_id))
-    
-    # Create invoice automatically for the sale
+
+    # Create invoice automatically
     if sale_id:
         try:
             invoice_number = f"INV-{now.strftime('%Y%m%d%H%M%S')}"
@@ -1614,8 +1542,6 @@ def create_sale():
                       (invoice_number, sale_id, customer_name, customer_phone,
                        subtotal, tax, total, payment_method, shop_id))
             invoice_id = c.lastrowid
-            
-            # Get sale items for invoice
             c.execute("""SELECT p.name, si.quantity, si.price_at_time 
                          FROM sale_items si 
                          JOIN products p ON si.product_id = p.id 
@@ -1626,7 +1552,7 @@ def create_sale():
                           (invoice_id, row[0], row[1], row[2], row[1] * row[2]))
         except Exception as e:
             print(f"Error creating invoice: {e}")
-    
+
     # Update customer
     if customer_name and customer_phone:
         c.execute("SELECT id FROM customers WHERE phone = ? AND shop_id = ?", (customer_phone, shop_id))
@@ -1637,13 +1563,13 @@ def create_sale():
         else:
             c.execute("INSERT INTO customers (name, phone, total_spent, loyalty_points, shop_id) VALUES (?, ?, ?, ?, ?)",
                       (customer_name, customer_phone, total, int(total / 100), shop_id))
-    
+
     conn.commit()
-    
+
     c.execute("""SELECT p.name, si.quantity, si.price_at_time FROM sale_items si 
                  JOIN products p ON si.product_id = p.id WHERE si.sale_id = ?""", (sale_id,))
     sale_items = [{'name': row[0], 'quantity': row[1], 'price': row[2]} for row in c.fetchall()]
-    
+
     receipt_data = {
         'order_number': order_number,
         'receipt_number': receipt_number,
@@ -1656,8 +1582,115 @@ def create_sale():
         'payment_method': 'M-Pesa' if payment_method == 'mpesa' else 'Cash'
     }
     conn.close()
-    return jsonify({'success': True, 'sale_id': sale_id, 'order_number': order_number, 
-                    'receipt_number': receipt_number, 'receipt_data': receipt_data})
+    return jsonify({'success': True, 'sale_id': sale_id, 'order_number': order_number,
+    'receipt_number': receipt_number, 'receipt_data': receipt_data})
+    
+@app.route('/api/sale-items/<int:sale_id>')
+@shop_required
+def get_sale_items(sale_id):
+    shop_id = get_current_shop_id()
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("""
+        SELECT p.name, si.quantity, si.price_at_time
+        FROM sale_items si
+        JOIN products p ON si.product_id = p.id
+        JOIN sales s ON si.sale_id = s.id
+        WHERE si.sale_id = ? AND s.shop_id = ?
+    """, (sale_id, shop_id))
+    items = [{'name': row[0], 'quantity': row[1], 'price': row[2]} for row in c.fetchall()]
+    conn.close()
+    return jsonify(items)
+
+@app.route('/api/sales/<int:sale_id>/payment', methods=['POST'])
+@cashier_required
+@shop_required
+def record_sale_payment(sale_id):
+    shop_id = get_current_shop_id()
+    data = request.get_json()
+    amount = data.get('amount')
+    note = data.get('note', '')
+
+    if not amount or amount <= 0:
+        return jsonify({'error': 'Valid amount required'}), 400
+
+    conn = get_db()
+    c = conn.cursor()
+
+    c.execute("SELECT id, total, amount_paid, status FROM sales WHERE id = ? AND shop_id = ?", (sale_id, shop_id))
+    sale = c.fetchone()
+    if not sale:
+        conn.close()
+        return jsonify({'error': 'Sale not found'}), 404
+
+    total = sale[1] or 0
+    current_paid = sale[2] or 0
+    status = sale[3]
+
+    if status in ('refunded', 'voided'):
+        conn.close()
+        return jsonify({'error': f'Sale is {status}, cannot accept payments'}), 400
+
+    new_paid = current_paid + amount
+    if new_paid > total:
+        conn.close()
+        return jsonify({'error': f'Amount exceeds remaining balance. Remaining: {total - current_paid}'}), 400
+
+    c.execute("UPDATE sales SET amount_paid = ? WHERE id = ? AND shop_id = ?", (new_paid, sale_id, shop_id))
+    if new_paid >= total:
+        c.execute("UPDATE sales SET status = 'paid' WHERE id = ? AND shop_id = ?", (sale_id, shop_id))
+
+    c.execute("""INSERT INTO payments (sale_id, amount, payment_method, status, user_id, shop_id)
+                 VALUES (?, ?, 'cash', 'SUCCESS', ?, ?)""",
+              (sale_id, amount, session.get('user_id'), shop_id))
+    payment_id = c.lastrowid
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        'success': True,
+        'message': f'Payment of {amount} recorded. New paid: {new_paid}',
+        'new_paid': new_paid,
+        'balance': total - new_paid
+    })
+
+@app.route('/api/sales/<int:sale_id>/pay-full', methods=['POST'])
+@cashier_required
+@shop_required
+def mark_sale_paid_full(sale_id):
+    shop_id = get_current_shop_id()
+    conn = get_db()
+    c = conn.cursor()
+
+    c.execute("SELECT id, total, amount_paid FROM sales WHERE id = ? AND shop_id = ?", (sale_id, shop_id))
+    sale = c.fetchone()
+    if not sale:
+        conn.close()
+        return jsonify({'error': 'Sale not found'}), 404
+
+    total = sale[1] or 0
+    current_paid = sale[2] or 0
+    remaining = total - current_paid
+
+    if remaining <= 0:
+        conn.close()
+        return jsonify({'error': 'Sale is already fully paid'}), 400
+
+    c.execute("UPDATE sales SET amount_paid = ?, status = 'paid' WHERE id = ? AND shop_id = ?", (total, sale_id, shop_id))
+
+    c.execute("""INSERT INTO payments (sale_id, amount, payment_method, status, user_id, shop_id)
+                 VALUES (?, ?, 'cash', 'SUCCESS', ?, ?)""",
+              (sale_id, remaining, session.get('user_id'), shop_id))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        'success': True,
+        'message': f'Sale marked as fully paid. Remaining amount {remaining} recorded.',
+        'amount_paid': total
+    })
 
 @app.route('/api/sales/<int:sale_id>/void', methods=['POST'])
 @admin_required
@@ -1695,30 +1728,26 @@ def delete_sale(sale_id):
     shop_id = get_current_shop_id()
     conn = get_db()
     c = conn.cursor()
-    
-    # Check if sale exists and belongs to shop
+
     c.execute("SELECT id, status FROM sales WHERE id = ? AND shop_id = ?", (sale_id, shop_id))
     sale = c.fetchone()
     if not sale:
         conn.close()
         return jsonify({'error': 'Sale not found'}), 404
-    
-    # If sale is not refunded or voided, restore stock
+
     if sale[1] not in ('refunded', 'voided'):
         c.execute("SELECT product_id, quantity FROM sale_items WHERE sale_id = ?", (sale_id,))
         items = c.fetchall()
         for product_id, quantity in items:
             c.execute("UPDATE products SET stock_quantity = stock_quantity + ? WHERE id = ? AND shop_id = ?",
                       (quantity, product_id, shop_id))
-    
-    # Delete sale items and sale
+
     c.execute("DELETE FROM sale_items WHERE sale_id = ?", (sale_id,))
     c.execute("DELETE FROM sales WHERE id = ? AND shop_id = ?", (sale_id, shop_id))
-    
-    # Delete associated invoices and invoice items
+    c.execute("DELETE FROM payments WHERE sale_id = ?", (sale_id,))
     c.execute("DELETE FROM invoice_items WHERE invoice_id IN (SELECT id FROM invoices WHERE sale_id = ?)", (sale_id,))
     c.execute("DELETE FROM invoices WHERE sale_id = ?", (sale_id,))
-    
+
     conn.commit()
     conn.close()
     return jsonify({'success': True, 'message': 'Sale deleted successfully'})
@@ -1731,40 +1760,64 @@ def sales_report():
     from_date = request.args.get('from')
     to_date = request.args.get('to')
     method = request.args.get('method')
-    
+
     conn = get_db()
     c = conn.cursor()
-    
-    query = """SELECT id, order_number, customer_name, 
-                      COALESCE(subtotal, 0) as subtotal, 
-                      COALESCE(tax, 0) as tax, 
-                      COALESCE(total, 0) as total, 
-                      payment_method, sale_date, cashier_name,
-                      (SELECT COUNT(*) FROM sale_items WHERE sale_id = sales.id) as item_count
-               FROM sales 
-               WHERE shop_id = ? AND (status IS NULL OR status != 'refunded')"""
+
+    query = """SELECT s.id, s.order_number, s.customer_name, 
+                      COALESCE(s.customer_phone, '') as customer_phone,
+                      COALESCE(s.subtotal, 0) as subtotal, 
+                      COALESCE(s.tax, 0) as tax, 
+                      COALESCE(s.total, 0) as total, 
+                      s.payment_method, s.sale_date, s.cashier_name,
+                      COALESCE(s.amount_paid, 0) as amount_paid,
+                      (SELECT COUNT(*) FROM sale_items WHERE sale_id = s.id) as item_count,
+                      m.phone_number as mpesa_phone
+               FROM sales s
+               LEFT JOIN mpesa_transactions m ON s.receipt_number = m.receipt_number
+               WHERE s.shop_id = ? AND (s.status IS NULL OR s.status != 'refunded')"""
     params = [shop_id]
-    
+
     if from_date:
-        query += " AND DATE(sale_date) >= ?"
+        query += " AND DATE(s.sale_date) >= ?"
         params.append(from_date)
     if to_date:
-        query += " AND DATE(sale_date) <= ?"
+        query += " AND DATE(s.sale_date) <= ?"
         params.append(to_date)
     if method and method != 'all':
-        query += " AND payment_method = ?"
+        query += " AND s.payment_method = ?"
         params.append(method)
-    
-    query += " ORDER BY sale_date DESC LIMIT 200"
+
+    query += " ORDER BY s.sale_date DESC LIMIT 200"
     c.execute(query, params)
-    
+
     sales = []
     for row in c.fetchall():
+        payment_method = row[7]
+        mpesa_phone = row[12] if row[12] else None
+        customer_phone = row[3]
+
+        if payment_method == 'mpesa' and mpesa_phone:
+            display_phone = mpesa_phone
+        elif customer_phone:
+            display_phone = customer_phone
+        else:
+            display_phone = 'Walk-in'
+
         sales.append({
-            'id': row[0], 'order_number': row[1], 'customer_name': row[2] or 'Walk-in',
-            'subtotal': row[3] or 0, 'tax': row[4] or 0, 'total': row[5] or 0,
-            'payment_method': row[6], 'date': row[7], 'cashier_name': row[8] or 'Unknown',
-            'item_count': row[9] or 0
+            'id': row[0],
+            'order_number': row[1],
+            'customer_name': row[2] or 'Walk-in',
+            'customer_phone': row[3] or '',
+            'subtotal': row[4] or 0,
+            'tax': row[5] or 0,
+            'total': row[6] or 0,
+            'payment_method': row[7],
+            'date': row[8],
+            'cashier_name': row[9] or 'Unknown',
+            'amount_paid': row[10] or 0,
+            'item_count': row[11] or 0,
+            'display_phone': display_phone
         })
     conn.close()
     return jsonify({'sales': sales})
@@ -2116,6 +2169,9 @@ def mpesa_payment():
     data = request.get_json()
     phone_number = data.get('phone_number')
     amount = data.get('amount')
+    invoice_id = data.get('invoice_id')
+    customer_id = data.get('customer_id')
+    user_id = session.get('user_id')
     
     if not phone_number or not amount:
         return jsonify({'error': 'Phone number and amount required'}), 400
@@ -2130,8 +2186,8 @@ def mpesa_payment():
     
     conn = get_db()
     c = conn.cursor()
-    c.execute("INSERT INTO mpesa_transactions (checkout_request_id, phone_number, amount, status, shop_id) VALUES (?, ?, ?, 'pending', ?)",
-              (checkout_request_id, phone_number, amount, shop_id))
+    c.execute("INSERT INTO mpesa_transactions (checkout_request_id, phone_number, amount, status, shop_id, invoice_id, customer_id, user_id, processed) VALUES (?, ?, ?, 'pending', ?, ?, ?, ?, 0)",
+              (checkout_request_id, phone_number, amount, shop_id, invoice_id, customer_id, user_id))
     conn.commit()
     conn.close()
     
@@ -2148,25 +2204,74 @@ def mpesa_callback():
     stk_callback = body.get('stkCallback', {})
     checkout_request_id = stk_callback.get('CheckoutRequestID')
     result_code = stk_callback.get('ResultCode')
-    
     conn = get_db()
     c = conn.cursor()
-    
-    if result_code == 0:
-        callback_metadata = stk_callback.get('CallbackMetadata', {})
-        items = callback_metadata.get('Item', [])
-        receipt_number = None
-        for item in items:
-            if item.get('Name') == 'MpesaReceiptNumber':
-                receipt_number = item.get('Value')
-        c.execute("UPDATE mpesa_transactions SET status = 'completed', receipt_number = ? WHERE checkout_request_id = ?",
-                  (receipt_number, checkout_request_id))
-    else:
-        c.execute("UPDATE mpesa_transactions SET status = 'failed' WHERE checkout_request_id = ?", (checkout_request_id,))
-    
-    conn.commit()
-    conn.close()
-    return jsonify({'ResultCode': 0, 'ResultDesc': 'Success'})
+
+    try:
+        conn.execute('BEGIN')
+
+        c.execute("SELECT id, receipt_number, phone_number, amount, status, shop_id, invoice_id FROM mpesa_transactions WHERE checkout_request_id = ?", (checkout_request_id,))
+        tx = c.fetchone()
+        if not tx:
+            conn.commit()
+            return jsonify({'ResultCode': 0, 'ResultDesc': 'Ignored - unknown checkout'}), 200
+
+        tx_id = tx[0]
+        existing_receipt = tx[1]
+        phone = tx[2]
+        amount = tx[3]
+        shop_id = tx[5]
+        invoice_id = tx[6]
+
+        if result_code == 0:
+            callback_metadata = stk_callback.get('CallbackMetadata', {})
+            items = callback_metadata.get('Item', [])
+            receipt_number = None
+            for item in items:
+                if item.get('Name') == 'MpesaReceiptNumber':
+                    receipt_number = item.get('Value')
+
+            c.execute("SELECT id FROM payments WHERE receipt_number = ?", (receipt_number,))
+            if c.fetchone():
+                c.execute("UPDATE mpesa_transactions SET status = 'completed', receipt_number = ?, processed = 1 WHERE id = ?", (receipt_number, tx_id))
+                conn.commit()
+                return jsonify({'ResultCode': 0, 'ResultDesc': 'Already processed'})
+
+            c.execute("INSERT INTO payments (invoice_id, mpesa_transaction_id, amount, payment_method, receipt_number, status, user_id, shop_id) VALUES (?, ?, ?, 'mpesa', ?, 'SUCCESS', ?, ?)",
+                      (invoice_id, tx_id, amount, receipt_number, None, shop_id))
+            payment_id = c.lastrowid
+
+            if invoice_id:
+                c.execute("SELECT total, paid_amount FROM invoices WHERE id = ?", (invoice_id,))
+                inv = c.fetchone()
+                if inv:
+                    inv_total = inv[0] or 0
+                    inv_paid = inv[1] or 0
+                    new_paid = inv_paid + amount
+                    new_balance = inv_total - new_paid
+                    status = 'paid' if new_balance <= 0 else 'partial'
+                    c.execute("UPDATE invoices SET paid_amount = ?, balance = ?, payment_status = ? WHERE id = ?", (new_paid, new_balance, status, invoice_id))
+
+            c.execute("UPDATE mpesa_transactions SET status = 'completed', receipt_number = ?, processed = 1 WHERE id = ?", (receipt_number, tx_id))
+
+            conn.commit()
+            return jsonify({'ResultCode': 0, 'ResultDesc': 'Success'})
+        else:
+            c.execute("UPDATE mpesa_transactions SET status = 'failed' WHERE id = ?", (tx_id,))
+            conn.commit()
+            return jsonify({'ResultCode': 0, 'ResultDesc': 'Recorded failure'})
+
+    except Exception as e:
+        conn.rollback()
+        print('MPESA callback error:', e)
+        try:
+            c.execute("UPDATE mpesa_transactions SET status = 'failed' WHERE checkout_request_id = ?", (checkout_request_id,))
+            conn.commit()
+        except:
+            pass
+        return jsonify({'ResultCode': 0, 'ResultDesc': 'Error handled'})
+    finally:
+        conn.close()
 
 @app.route('/api/mpesa/status/<checkout_request_id>')
 def mpesa_status(checkout_request_id):
@@ -2184,16 +2289,45 @@ def mpesa_status(checkout_request_id):
 @shop_required
 def mpesa_transactions():
     shop_id = get_current_shop_id()
+    page = int(request.args.get('page', 1))
+    page_size = int(request.args.get('page_size', 10))
+    status = request.args.get('status')
+    search = request.args.get('search')
+    date_from = request.args.get('date_from')
+    date_to = request.args.get('date_to')
+
+    offset = (page - 1) * page_size
+
     conn = get_db()
     c = conn.cursor()
-    c.execute("""SELECT id, receipt_number, phone_number, amount, status, transaction_date 
-                 FROM mpesa_transactions 
-                 WHERE shop_id = ? 
-                 ORDER BY transaction_date DESC LIMIT 50""", (shop_id,))
+
+    base_where = "WHERE shop_id = ?"
+    params = [shop_id]
+    if status:
+        base_where += " AND status = ?"
+        params.append(status)
+    if search:
+        base_where += " AND (receipt_number LIKE ? OR phone_number LIKE ?)"
+        params.extend([f"%{search}%", f"%{search}%"])
+    if date_from:
+        base_where += " AND date(transaction_date) >= date(?)"
+        params.append(date_from)
+    if date_to:
+        base_where += " AND date(transaction_date) <= date(?)"
+        params.append(date_to)
+
+    count_sql = f"SELECT COUNT(*) FROM mpesa_transactions {base_where}"
+    c.execute(count_sql, params)
+    total = c.fetchone()[0]
+
+    sql = f"SELECT id, receipt_number, phone_number, amount, status, transaction_date FROM mpesa_transactions {base_where} ORDER BY transaction_date DESC LIMIT ? OFFSET ?"
+    params_with_limit = params + [page_size, offset]
+    c.execute(sql, params_with_limit)
+
     transactions = []
     for row in c.fetchall():
         transactions.append({
-            'id': row[0],                     # <-- now included
+            'id': row[0],
             'receipt_number': row[1] or '-',
             'phone_number': row[2],
             'amount': row[3] or 0,
@@ -2201,7 +2335,7 @@ def mpesa_transactions():
             'date': row[5]
         })
     conn.close()
-    return jsonify(transactions)
+    return jsonify({'total': total, 'page': page, 'page_size': page_size, 'transactions': transactions})
 
 @app.route('/api/mpesa/test', methods=['GET'])
 def test_mpesa():
@@ -2241,10 +2375,12 @@ def test_mpesa():
 
 @app.route('/api/mpesa/transactions/<int:transaction_id>', methods=['DELETE'])
 @admin_required
+@shop_required
 def delete_mpesa_transaction(transaction_id):
+    shop_id = get_current_shop_id()
     conn = get_db()
     c = conn.cursor()
-    c.execute("DELETE FROM mpesa_transactions WHERE id = ?", (transaction_id,))
+    c.execute("DELETE FROM mpesa_transactions WHERE id = ? AND shop_id = ?", (transaction_id, shop_id))
     conn.commit()
     conn.close()
     return jsonify({'success': True})
@@ -2920,7 +3056,6 @@ def print_invoice(invoice_id):
     items = c.fetchall()
     conn.close()
     
-    # Get business settings
     conn = get_db()
     c = conn.cursor()
     c.execute("SELECT key, value FROM settings WHERE key IN ('business_name', 'phone', 'address', 'email', 'footer')")
@@ -2949,7 +3084,7 @@ def print_invoice(invoice_id):
                 background: white;
                 color: #333;
             }}
-            .invoice-header {{
+            .invoice-header {{ 
                 display: flex;
                 justify-content: space-between;
                 border-bottom: 3px solid #1e3c72;
@@ -3233,6 +3368,213 @@ def uploaded_file(filename):
         return '', 404
     return send_file(filepath)
 
+
+@app.route('/templates/logo.jpeg')
+def serve_template_logo():
+    filepath = os.path.join('templates', 'logo.jpeg')
+    if not os.path.exists(filepath):
+        return '', 404
+    return send_file(filepath, mimetype='image/jpeg')
+
+# ==================== DEBT MANAGEMENT ENDPOINTS ====================
+
+@app.route('/api/debts', methods=['GET'])
+@admin_required
+@shop_required
+def get_debts():
+    shop_id = get_current_shop_id()
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("""SELECT id, customer_id, customer_name, phone, vehicle_registration,
+                      total_amount, amount_paid, balance, description, due_date, status,
+                      debt_type, recorded_by, created_at
+               FROM debts
+               WHERE shop_id = ?
+               ORDER BY created_at DESC""", (shop_id,))
+    debts = []
+    for row in c.fetchall():
+        debts.append({
+            'id': row[0],
+            'customer_id': row[1],
+            'customer_name': row[2] or 'Unknown',
+            'phone': row[3] or '',
+            'vehicle_registration': row[4] or '',
+            'total_amount': row[5] or 0,
+            'amount_paid': row[6] or 0,
+            'balance': row[7] or 0,
+            'description': row[8] or '',
+            'due_date': row[9],
+            'status': row[10] or 'UNPAID',
+            'debt_type': row[11] or 'customer',
+            'recorded_by': row[12],
+            'created_at': row[13]
+        })
+    conn.close()
+    return jsonify(debts)
+
+@app.route('/api/debts', methods=['POST'])
+@admin_required
+@shop_required
+def create_debt():
+    shop_id = get_current_shop_id()
+    data = request.get_json()
+    customer_name = data.get('customer_name', '').strip()
+    phone = data.get('phone', '').strip()
+    vehicle_registration = data.get('vehicle_registration', '').strip()
+    total_amount = data.get('total_amount')
+    due_date = data.get('due_date')
+    description = data.get('description', '').strip()
+    debt_type = data.get('debt_type', 'customer')  # 'customer' or 'supplier'
+
+    if not customer_name:
+        return jsonify({'error': 'Customer/Supplier name is required'}), 400
+    if not total_amount or total_amount <= 0:
+        return jsonify({'error': 'Valid total amount is required'}), 400
+
+    conn = get_db()
+    c = conn.cursor()
+    
+    # Check if customer exists; if not, create a new customer entry
+    c.execute("SELECT id FROM customers WHERE phone = ? AND shop_id = ?", (phone, shop_id))
+    customer = c.fetchone()
+    if customer:
+        customer_id = customer[0]
+    else:
+        c.execute("""INSERT INTO customers (name, phone, shop_id, customer_group)
+                     VALUES (?, ?, ?, 'regular')""", (customer_name, phone, shop_id))
+        customer_id = c.lastrowid
+
+    c.execute("""INSERT INTO debts (customer_id, customer_name, phone, vehicle_registration,
+                      total_amount, amount_paid, balance, description, due_date, debt_type, recorded_by, shop_id)
+               VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)""",
+              (customer_id, customer_name, phone, vehicle_registration,
+               total_amount, total_amount, description, due_date, debt_type, session['user_id'], shop_id))
+    debt_id = c.lastrowid
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        'success': True,
+        'debt_id': debt_id,
+        'message': 'Debt created successfully'
+    })
+
+@app.route('/api/debts/<int:debt_id>/payment', methods=['POST'])
+@cashier_required
+@shop_required
+def record_debt_payment(debt_id):
+    shop_id = get_current_shop_id()
+    data = request.get_json()
+    amount = data.get('amount')
+    note = data.get('note', '')
+
+    if not amount or amount <= 0:
+        return jsonify({'error': 'Valid amount required'}), 400
+
+    conn = get_db()
+    c = conn.cursor()
+
+    c.execute("SELECT id, total_amount, amount_paid, balance FROM debts WHERE id = ? AND shop_id = ?", (debt_id, shop_id))
+    debt = c.fetchone()
+    if not debt:
+        conn.close()
+        return jsonify({'error': 'Debt not found'}), 404
+
+    total_amount = debt[1] or 0
+    current_paid = debt[2] or 0
+    current_balance = debt[3] or total_amount
+
+    if amount > current_balance:
+        conn.close()
+        return jsonify({'error': f'Amount exceeds remaining balance: {current_balance}'}), 400
+
+    new_paid = current_paid + amount
+    new_balance = total_amount - new_paid
+    status = 'PAID' if new_balance <= 0 else ('PARTIAL' if new_paid > 0 else 'UNPAID')
+
+    c.execute("""UPDATE debts SET amount_paid = ?, balance = ?, status = ?
+                 WHERE id = ? AND shop_id = ?""",
+              (new_paid, new_balance, status, debt_id, shop_id))
+
+    # Record payment in debt_payments
+    c.execute("""INSERT INTO debt_payments (debt_id, amount, recorded_by)
+                 VALUES (?, ?, ?)""", (debt_id, amount, session['user_id']))
+    payment_id = c.lastrowid
+
+    # Also record in payments table (optional)
+    c.execute("""INSERT INTO payments (sale_id, amount, payment_method, status, user_id, shop_id)
+                 VALUES (NULL, ?, 'cash', 'SUCCESS', ?, ?)""",
+              (amount, session['user_id'], shop_id))
+    payment_id = c.lastrowid
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        'success': True,
+        'message': f'Payment of {amount} recorded. New balance: {new_balance}',
+        'new_balance': new_balance,
+        'status': status
+    })
+
+@app.route('/api/debts/<int:debt_id>/pay-full', methods=['POST'])
+@cashier_required
+@shop_required
+def mark_debt_paid_full(debt_id):
+    shop_id = get_current_shop_id()
+    conn = get_db()
+    c = conn.cursor()
+
+    c.execute("SELECT id, total_amount, amount_paid, balance FROM debts WHERE id = ? AND shop_id = ?", (debt_id, shop_id))
+    debt = c.fetchone()
+    if not debt:
+        conn.close()
+        return jsonify({'error': 'Debt not found'}), 404
+
+    total_amount = debt[1] or 0
+    current_paid = debt[2] or 0
+    remaining = total_amount - current_paid
+
+    if remaining <= 0:
+        conn.close()
+        return jsonify({'error': 'Debt is already fully paid'}), 400
+
+    c.execute("""UPDATE debts SET amount_paid = ?, balance = 0, status = 'PAID'
+                 WHERE id = ? AND shop_id = ?""",
+              (total_amount, debt_id, shop_id))
+
+    c.execute("""INSERT INTO debt_payments (debt_id, amount, recorded_by)
+                 VALUES (?, ?, ?)""", (debt_id, remaining, session['user_id']))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        'success': True,
+        'message': 'Debt marked as fully paid',
+        'amount_paid': remaining
+    })
+
+@app.route('/api/debts/<int:debt_id>', methods=['DELETE'])
+@admin_required
+@shop_required
+def delete_debt(debt_id):
+    shop_id = get_current_shop_id()
+    conn = get_db()
+    c = conn.cursor()
+
+    c.execute("DELETE FROM debts WHERE id = ? AND shop_id = ?", (debt_id, shop_id))
+    if c.rowcount == 0:
+        conn.close()
+        return jsonify({'error': 'Debt not found'}), 404
+
+    # Optionally delete associated debt_payments
+    c.execute("DELETE FROM debt_payments WHERE debt_id = ?", (debt_id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'success': True, 'message': 'Debt deleted'})
+
 # ==================== PWA ROUTES ====================
 
 @app.route('/manifest.json')
@@ -3298,6 +3640,9 @@ self.addEventListener('fetch', event => {
 
 # ==================== RUN SERVER ====================
 if __name__ == '__main__':
+    # IMPORTANT: Initialize database before starting the server
+    init_db()
+
     print("\n" + "="*60)
     print("🚀 GENERAL SHOP POS SYSTEM STARTING...")
     print("="*60)
